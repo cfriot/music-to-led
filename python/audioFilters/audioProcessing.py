@@ -11,13 +11,13 @@ mel_smoothing = ExpFilter(np.tile(1e-1, config.N_FFT_BINS),
                           alpha_decay=0.5, alpha_rise=0.99)
 fft_window = np.hamming(int(config.MIC_RATE / config.FPS)
                         * config.N_ROLLING_HISTORY)
-samples_per_frame = int(config.MIC_RATE / config.FPS)
 
 
 class AudioProcessing():
     def __init__(self):
+        self.samples_per_frame = int(config.MIC_RATE / config.FPS)
         self.y_roll = np.random.rand(
-            config.N_ROLLING_HISTORY, samples_per_frame) / 1e16
+            config.N_ROLLING_HISTORY, self.samples_per_frame) / 1e16
 
     def render(self, audio_samples):
         # Sound case

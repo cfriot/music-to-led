@@ -17,19 +17,24 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Tests
+/python-tests
+/midi-test-files
 
-# =========================
-# Operating System Files
-# =========================
+# Images
+images/sources
+*.afdesign
+
+# B
+__pycache__/
+*.py[cod]
 
 # OSX
-# =========================
-
 .DS_Store
 .AppleDouble
 .LSOverride
 
-#py2app
+# py2app
 /dist
 /build
 

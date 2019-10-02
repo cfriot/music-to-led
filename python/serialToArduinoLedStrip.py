@@ -7,9 +7,10 @@ import numpy as np
 
 
 class SerialToArduinoLedStrip:
-    def __init__(self, number_of_pixels=30, serial_port_to_use=[]):
-        self.serial_ports = []
-        self.serial_classes = []
+    def __init__(self, number_of_pixels=30, serial_port_to_use=""):
+        self.serial_port = serial_port_to_use
+        self.serial_class = None
+        self.trying_to_connect = False
         self.clear_command = b'\xff'
         self.show_command = b'\x00'
         self.send_data_command = b'\x01'
@@ -18,7 +19,7 @@ class SerialToArduinoLedStrip:
         self.pixels = np.tile(.0, (3, number_of_pixels))
         self.raw_data = []
         self.baud_rate = 1000000  # 1228800
-        self.mapUsbPortAvailable(serial_port_to_use)
+        self.setup()
 
     # create listAvailableUsbSerialPorts static method
     @staticmethod
@@ -36,7 +37,7 @@ class SerialToArduinoLedStrip:
             # this excludes your current terminal "/dev/tty"
             ports = glob.glob('/dev/tty[A-Za-z]*')
         elif sys.platform.startswith('darwin'):
-            # this excluses all ttys that are not usb serial
+            # this excluses all ttys that are not tagged usbserial like arduinos
             ports = glob.glob('/dev/tty.usbserial*')
         else:
             raise EnvironmentError('Unsupported platform')
@@ -51,33 +52,25 @@ class SerialToArduinoLedStrip:
                 pass
         return result
 
-    def mapUsbPortAvailable(self, serial_port_to_use=[]):
-        if(serial_port_to_use == []):
-            self.ports = self.listAvailableUsbSerialPorts()
-        else:
-            self.ports = serial_port_to_use
-        self.number_of_strips = len(self.ports)
-        for port in self.ports:
-            self.serial_ports.append(port)
-            self.serial_classes.append(serial.Serial(
-                port, self.baud_rate, timeout=1, bytesize=serial.EIGHTBITS))
-
     def setup(self):
-
-        for serial_class in self.serial_classes:
-            serial_class.setDTR(False)
+        try:
+            self.serial_class = serial.Serial(
+                self.serial_port, self.baud_rate, timeout=1, bytesize=serial.EIGHTBITS)
+            self.serial_class.setDTR(False)
             time.sleep(1)
-            serial_class.flushInput()
-            serial_class.setDTR(True)
-            print("Setup begin for %s" % serial_class.name)
+            self.serial_class.flushInput()
+            self.serial_class.setDTR(True)
+            print("Setup begin for %s" % self.serial_port)
             while True:
-                message = serial_class.readline()
+                message = self.serial_class.readline()
                 if("Setup ok" in str(message)):
                     break
-            print("Setup finished for %s" % serial_class.name)
+            print("Setup finished for %s" % self.serial_port)
             while (message != self.show_command):
-                message = serial_class.read(1)
-            print("Begin transmision for %s" % serial_class.name)
+                message = self.serial_class.read(1)
+            print("Begin transmision for %s" % self.serial_port)
+        except IOError:
+            return
 
     def getVector(self, array, col):
         vector = []
@@ -103,35 +96,33 @@ class SerialToArduinoLedStrip:
         for i in range(self.number_of_pixels):
             self.raw_data += self.getVector(array, i)
 
-    def sendFrame(self, serial_class):
-        """ Send frame to the arduino """
-        serial_class.write(self.show_command)
-        serial_class.read(1)
-        self.getRawPixels(self.pixels)
-        message = self.send_data_command[:1] + \
-            self.number_of_pixel_command[:1] + bytes(self.raw_data)
-        serial_class.write(message)
 
     def update(self, pixels):
-        """ Activate sendFrame for each port """
+        """ Send frame to the arduino """
         self.pixels = pixels
-        for serial_class in self.serial_classes:
-            self.sendFrame(serial_class)
-
-    def updateSpecificDevice(self, pixels, destination):
-        """ Activate sendFrame for each port """
-        self.pixels = pixels
-        for serial_class in self.serial_classes:
-            if(serial_class.name == destination):
-                self.sendFrame(serial_class)
-
+        if(not self.trying_to_connect and self.serial_class):
+            try:
+                self.serial_class.write(self.show_command)
+                self.serial_class.read(1)
+                self.getRawPixels(self.pixels)
+                message = self.send_data_command[:1] + \
+                    self.number_of_pixel_command[:1] + bytes(self.raw_data)
+                self.serial_class.write(message)
+            except IOError:
+                print("Hey it seem's that your cable has been unpluged on port ", self.serial_port)
+                self.trying_to_connect = True
+                self.setup()
+                self.trying_to_connect = False
+                return
 
 if __name__ == "__main__":
 
-    print('Starting LED strand test on ports :')
+    print('Starting SerialToArduinoLedStrip test on ports :')
+    ports = SerialToArduinoLedStrip.listAvailableUsbSerialPorts()
     print(SerialToArduinoLedStrip.listAvailableUsbSerialPorts())
 
     number_of_pixels = 254
+    serialToArduinoLedStrips = []
 
     pixels = np.tile(1, (3, number_of_pixels))
     pixels *= 0
@@ -139,10 +130,12 @@ if __name__ == "__main__":
     pixels[1, 1] = 255  # Set 2nd pixel green
     pixels[2, 2] = 255  # Set 3rd pixel blue
 
-    serialToArduinoLedStrip = SerialToArduinoLedStrip(
-        number_of_pixels, [])
-    serialToArduinoLedStrip.setup()
+    for port in ports:
+        serialToArduinoLedStrips.append(SerialToArduinoLedStrip(
+            number_of_pixels, port))
 
     while True:
         pixels = np.roll(pixels, 1, axis=1)
-        serialToArduinoLedStrip.update(pixels)
+        for serialToArduinoLedStrip in serialToArduinoLedStrips:
+            serialToArduinoLedStrip.update(pixels)
+        time.sleep(.002)

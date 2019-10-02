@@ -11,6 +11,12 @@ class TimeSinceProcessStart():
         elapsed = self.end - self.start
         return int(elapsed)
 
+    def getMs(self):
+        self.end = time.time()
+        elapsed = self.end - self.start
+        elapsed *= 100
+        return int(elapsed)
+
 
 class BPMTicker():
     def __init__(self, bpm, bpb):
@@ -36,12 +42,14 @@ class BPMTicker():
 
 if __name__ == "__main__":
 
+    print('Starting timeSinceProcessStart test on ports :')
+
     timeSinceProcessStart = TimeSinceProcessStart()
-    bpmTicker = BPMTicker(120, 4)
+    # bpmTicker = BPMTicker(240, 4)
     while True:
-        # print(timeSinceProcessStart.get())
-        toto = bpmTicker.isTicking()
-        if(toto == 1):
-            print("toto")
-        if(toto == 2):
-            print("titi")
+        print(timeSinceProcessStart.getMs())
+        # toto = bpmTicker.isTicking()
+        # if(toto == 1):
+        #     print("toto")
+        # if(toto == 2):
+        #     print("titi")

@@ -13,10 +13,10 @@ from colour import Color
 class ColorDictionary:
     def __init__(self):
         self.color_list = []
+        self.number_of_colors = 0
         for i in range(30):
             self.color_list.append(
                 Color(hue=i / 30, saturation=1, luminance=0.5))
-
         # self.color_list = [
         #     Color("red"),
         #     Color("green"),
@@ -34,6 +34,7 @@ class ColorDictionary:
             rgb_255_color = self.interpolate_to_rgb_255(color)
             self.dictionary.append(
                 [rgb_255_color[0], rgb_255_color[1], rgb_255_color[2]])
+        self.number_of_colors = len(self.dictionary)
 
     @staticmethod
     def interpolate_to_rgb_255(color):
@@ -49,7 +50,7 @@ if __name__ == '__main__':
     import time
     from serialToArduinoLedStrip import SerialToArduinoLedStrip
 
-    print('Starting color dictionary test on ports :')
+    print('Starting ColorDictionary test on ports :')
     print(SerialToArduinoLedStrip.listAvailableUsbSerialPorts())
 
     colorDictionary = ColorDictionary()

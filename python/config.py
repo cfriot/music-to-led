@@ -3,7 +3,83 @@ from __future__ import print_function
 from __future__ import division
 import os
 
-N_PIXELS = 254
+ginger_strips_shape = [
+    [34, 52, 50],
+    [16, 16, 26, 26, 24, 24]
+]
+
+data = {
+    "audio_ports": [
+        {
+            "name": "Built-in Microphone",
+            "min_frequency": 200,
+            "max_frequency": 12000,
+        },
+        # {
+        #     "name": "Background Music",
+        #     "min_frequency": 200,
+        #     "max_frequency": 12000,
+        # }
+    ],
+    "midi_ports": [
+        "Ableton-virtual-midi-ouput ChangeMod",
+        "Ableton-virtual-midi-ouput LeftSynth",
+        "Ableton-virtual-midi-ouput RightSynth"
+    ],
+    "strips": [
+        {
+            "serial_port_name": "/dev/tty.usbserial-14210",
+            "active_audio_channel": 0,
+            "associated_midi_channels": ["Ableton-virtual-midi-ouput RightSynth"],
+            "strip_shapes": [
+                [62, 62, 62, 62],
+                [126, 126],
+            ],
+            "active_visualizer": "scroll",
+            "strip_mods": {
+                "is_full_strip": False,
+                "is_reverse": False,
+                "is_mirror": True,
+                "is_monochromatic": False
+            }
+        },
+        {
+            "serial_port_name": "/dev/tty.usbserial-14220",
+            "active_audio_channel": 0,
+            "associated_midi_channels": ["Ableton-virtual-midi-ouput LeftSynth"],
+            "strip_shapes": [
+                [62, 62, 62, 62],
+                [126, 126],
+            ],
+            "active_visualizer": "scroll",
+            "strip_mods": {
+                "is_full_strip": False,
+                "is_reverse": False,
+                "is_mirror": True,
+                "is_monochromatic": False
+            }
+        },
+        {
+            "serial_port_name": "/dev/tty.usbserial-14230",
+            "active_audio_channel": 0,
+            "associated_midi_channels": [],
+            "strip_shapes": [
+                [62, 62, 62, 62],
+                [126, 126],
+            ],
+            "active_visualizer": "scroll",
+            "strip_mods": {
+                "is_full_strip": False,
+                "is_reverse": False,
+                "is_mirror": True,
+                "is_monochromatic": False
+            }
+        }
+    ]
+}
+
+
+N_PIXELS = 252
 """Number of pixels in the LED strip"""
 
 DISPLAY_SHELL_INTERFACE = False
@@ -18,7 +94,7 @@ MIC_RATE = 44100
 DISPLAY_FPS = False
 """Whether to display the FPS when running (can reduce performance)"""
 
-FPS = 60
+FPS = 100
 """Desired refresh rate of the visualization (frames per second)
 
 FPS indicates the desired refresh rate, or frames-per-second, of the audio

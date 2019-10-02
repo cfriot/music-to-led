@@ -1,225 +1,208 @@
-import time
-import os
 import sys
-import logging
-import psutil
-
+import struct
+import serial
+import time
+import glob
+import multiprocessing
+import concurrent.futures
 import numpy as np
-from scipy.ndimage.filters import gaussian_filter1d
+from multiprocessing import Pool
 
 import config
-
-from debugInterface import DebugInterface
-from audioInterface import AudioInterface
 from timeSinceProcessStart import TimeSinceProcessStart
-
+from serialToArduinoLedStrip import SerialToArduinoLedStrip
+from audioInput import AudioInput
+from debugInterface import DebugInterface, FramerateCalculator
+from midiInput import MidiInput
 from audioFilters.audioProcessing import AudioProcessing
 from audioFilters.dsp import *
-
-from audioInput import AudioInput
-from midiInput import MidiInput
-from serialToArduinoLedStrip import SerialToArduinoLedStrip
-
 from visualization import Visualization
 from pixelReshaper import PixelReshaper
 
 
-def setProcessDebugLevel():
-    logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+if __name__ == "__main__":
 
+    def audioProcess(shared_list):
+        print("AUDIO PROCESS")
+        config = shared_list[0]
 
-def setProcessPriority():
-    """Setup high process priority to prevent lag"""
-    process = psutil.Process(os.getpid())
-    process.nice(10)
-    process.nice()
+        audio_ports = config["audio_ports"]
+        audio_channel_number = len(config["audio_ports"])
+        audio_datas = np.tile(0., (audio_channel_number, 24))
+        audio_input_classes = []
+        audio_processors = []
+        for audio_port in audio_ports:
+            audio_input_classes.append(AudioInput(audio_port["name"]))
+            audio_processors.append(AudioProcessing())
 
+        shared_list[1] = audio_datas
 
-class LedStripVisualizer():
-    def __init__(self, default_visualization_mod, audio_ports, midi_ports, serial_ports, strips_shape):
-        self.active_mod = default_visualization_mod
-        self.timeSinceProcessStart = TimeSinceProcessStart()
+        while 1:
+            audio_datas = []
+            for i in range(audio_channel_number):
+                audio_datas.append(audio_processors[i].render(audio_input_classes[i].getRawData()))
+            shared_list[1] = audio_datas
+            # print(audio_datas)
+            time.sleep(0.01)
 
-        self.audio_ports = audio_ports
-        self.audio_channel_number = len(audio_ports)
-        self.audio_datas = np.tile(0., (self.audio_channel_number, 24))
-        self.active_audio_channel = 1
-        self.audio_input_classes = []
-        self.audio_processors = []
-        for audio_port_name in audio_ports:
-            self.audio_input_classes.append(AudioInput(audio_port_name))
-            self.audio_processors.append(AudioProcessing())
+    def handleChangeMod(midi_notes, active_audio_channel, audio_channel_number, visualization, pixelReshaper):
+        if(midi_notes):
+            print("CHANGEMOD")
+            for midi_note in midi_notes:
+                if(midi_note["note"] == 0):
+                    visualization.active_mod = "scroll"
+                    visualization.resetFrame()
+                    visualization.visualizationEffect = visualization.visualizeScroll
+                elif(midi_note["note"] == 2):
+                    visualization.active_mod = "energy"
+                    visualization.resetFrame()
+                    visualization.visualizationEffect = visualization.visualizeEnergy
+                elif(midi_note["note"] == 4):
+                    visualization.active_mod = "synth"
+                    visualization.resetFrame()
+                    visualization.visualizationEffect = visualization.visualizeSynth
+                elif(midi_note["note"] == 5):
+                    visualization.active_mod = "full"
+                    visualization.resetFrame()
+                    old_full_intensity = 0
+                    visualization.visualizationEffect = visualization.visualizeFull
+                elif(midi_note["note"] == 7):
+                    visualization.active_mod = "nothing"
+                    old_full_intensity = 1
+                    visualization.visualizationEffect = visualization.visualizeNothing
+                elif(midi_note["note"] == 9):
+                    visualization.active_mod = "intensity_bounce"
+                    visualization.resetFrame()
+                    visualization.visualizationEffect = visualization.visualizeIntensityBounce
+                elif(midi_note["note"] == 11):
+                    visualization.active_mod = "visualize_alternate_colors"
+                    visualization.resetFrame()
+                    visualization.visualizationEffect = visualization.visualizeAlternateColors
+                elif(midi_note["note"] == 12):
+                    pixelReshaper.is_reverse = not pixelReshaper.is_reverse
+                    print("Change mod to reverse mod => %s" %
+                          pixelReshaper.is_reverse)
+                elif(midi_note["note"] == 14):
+                    pixelReshaper.is_full_strip = not pixelReshaper.is_full_strip
+                    print("Change mod to full strip mod => %s" %
+                          pixelReshaper.is_full_strip)
+                elif(midi_note["note"] == 16):
+                    pixelReshaper.is_mirror = not pixelReshaper.is_mirror
+                    print("Change mod to mirror mod => %s" %
+                          pixelReshaper.is_mirror)
+                elif(midi_note["note"] == 17):
+                    visualization.is_monochrome = not visualization.is_monochrome
+                    print("Change mod to monochrome => %s" %
+                          visualization.is_monochrome)
+                elif(midi_note["note"] == 19):
+                    visualization.active_audio_channel += 1
+                    if(visualization.active_audio_channel > visualization.audio_channel_number):
+                        visualization.active_audio_channel = 0
+                    print("Change audio mod to => %s" %
+                          active_audio_channel)
+                elif(midi_note["note"] == 21):
+                    visualization.current_color += 1
+                    if(visualization.current_color > visualization.colorDictionary.number_of_colors - 1):
+                        visualization.current_color = 0
+                    print("Change color to => %s" %
+                          visualization.colorDictionary.dictionary[visualization.current_color])
 
-        self.midi_ports = midi_ports
-        self.midi_notes = []
-        self.midi_input_classes = []
-        for midi_port_name in midi_ports:
-            self.midi_input_classes.append(MidiInput(midi_port_name))
+    def stripProcess(index, shared_list):
+        print("STRIP PROCESS")
+        config = shared_list[0]
+        timeSinceProcessStart = shared_list[2]
+        stripConfig = config["strips"][index]
+        number_of_strips = len(stripConfig["strip_shapes"][0])
+        strip_shape = stripConfig["strip_shapes"][0]
+        print("shape", strip_shape)
+        port = stripConfig["serial_port_name"]
+        print("port", port)
+        strip_mods = stripConfig["strip_mods"]
+        print("mods", strip_mods)
+        default_visualization_mod = stripConfig["active_visualizer"]
+        print(default_visualization_mod)
+        active_audio_channel = stripConfig["active_audio_channel"]
+        print("active audio channel", active_audio_channel)
+        audio_channel_number = len(shared_list[1])
+        print("number of audio channels", audio_channel_number)
 
-        self.serial_ports = serial_ports
-        self.visualizations = []
-        self.pixel_reshapers = []
-        self.serial_to_arduino_led_strip_classes = []
+        midi_ports = config["midi_ports"]
+        print("midi ports", midi_ports)
+        associated_midi_channels = stripConfig["associated_midi_channels"]
+        print("associated_midi_channels", associated_midi_channels)
+        midi_notes = []
+        midi_input_classes = []
+        for midi_port in midi_ports:
+            midi_input_classes.append(MidiInput(midi_port))
 
-        self.total_pixel_number = 0
-        self.number_of_strips = len(strips_shape)
-        self.strips_shape = strips_shape
-        for strip_length in strips_shape:
-            self.total_pixel_number += strip_length
+        total_pixel_number = 0
+        for strip_length in strip_shape:
+            total_pixel_number += strip_length
+        print("pixels", total_pixel_number)
 
-        for i, serial_port_name in enumerate(serial_ports):
-            self.visualizations.append(
-                Visualization(
-                    self.timeSinceProcessStart,
-                    default_visualization_mod="scroll",
-                    total_pixel_number=self.total_pixel_number
+        visualization = Visualization(
+            timeSinceProcessStart,
+            default_visualization_mod=default_visualization_mod,
+            total_pixel_number=total_pixel_number
+        )
+        pixelReshaper = PixelReshaper(
+            total_pixel_number=total_pixel_number,
+            strip_shape=strip_shape,
+            default_mods=strip_mods
+        )
+        serialToArduinoLedStrip = SerialToArduinoLedStrip(
+            total_pixel_number,
+            port
+        )
+        serialToArduinoLedStrip.setup()
+
+        print("Begin")
+
+        while 1:
+            midi_notes = []
+            midi_notes_for_visualization = []
+            midi_notes_for_changing_mode = []
+            for i, midi_input_class in enumerate(midi_input_classes):
+                midi_notes = midi_input_classes[i].getRawData()
+                if(midi_notes):
+                    for midi_note in midi_notes:
+                        if(midi_note["port"] == "Ableton-virtual-midi-ouput ChangeMod"):
+                            midi_notes_for_changing_mode.append(midi_note)
+                        else :
+                            for channel in associated_midi_channels:
+                                if(midi_note["port"] == channel):
+                                    midi_notes_for_visualization.append(midi_note)
+
+            if(index == 0 and midi_notes_for_changing_mode != []):
+                print(midi_notes_for_changing_mode)
+
+            visualization.audio_data = shared_list[1][0]
+            visualization.midi_notes = midi_notes_for_visualization
+            handleChangeMod(midi_notes_for_changing_mode, active_audio_channel, audio_channel_number, visualization, pixelReshaper)
+
+            serialToArduinoLedStrip.update(
+                pixelReshaper.reshape(
+                    visualization.drawFrame()
                 )
             )
-            self.pixel_reshapers.append(
-                PixelReshaper(
-                    total_pixel_number=self.total_pixel_number,
-                    strips_shape=self.strips_shape,
-                    default_mods={"is_full_strip": True,
-                                  "is_reverse": False, "is_mirror": False}
-                )
-            )
-            print(serial_port_name)
-            self.serial_to_arduino_led_strip_classes.append(
-                SerialToArduinoLedStrip(
-                    self.total_pixel_number,
-                    [serial_port_name]
-                )
-            )
-            self.serial_to_arduino_led_strip_classes[i].setup()
+            # print(FPS.getFps())
+            time.sleep(0.01)
 
-    # HANDLE TIC #####
-    def handleTic(self):
+    manager = multiprocessing.Manager()
+    shared_list = manager.list()
+    # Shared list :
+    # 0 : Config
+    # 1 : Audio datas
+    # 2 : TimeSinceProcessStart
+    shared_list.append(config.data)
+    shared_list.append(np.tile(0.,(len(config.data["audio_ports"]), 24)))
+    shared_list.append(TimeSinceProcessStart())
 
-        self.audio_datas = np.tile(0., (len(self.audio_ports), 24))
-        for i, audio_input_class in enumerate(self.audio_input_classes):
-            self.audio_datas[i] = self.audio_processors[i].render(
-                audio_input_class.getRawData())
+    number_of_strips = len(config.data["strips"])
 
-        self.midi_notes = []
-        for midi_input_class in self.midi_input_classes:
-            self.midi_notes += midi_input_class.getRawData()
+    print("start")
 
-        for i, serial_to_arduino_led_strip_class in enumerate(self.serial_to_arduino_led_strip_classes):
-            self.visualizations[i].audio_data = self.audio_datas[self.active_audio_channel]
-            filtered_midi_notes = []
-            for midi_note in self.midi_notes:
-                if(midi_note["port"] == "Ableton-virtual-midi-ouput LeftSynth" and i == 0):
-                    filtered_midi_notes.append(midi_note)
-                if(midi_note["port"] == "Ableton-virtual-midi-ouput RightSynth" and i == 1):
-                    filtered_midi_notes.append(midi_note)
-            self.visualizations[i].midi_notes = filtered_midi_notes
-            self.serial_to_arduino_led_strip_classes[i].update(
-                self.pixel_reshapers[i].reshape(
-                    self.visualizations[i].drawFrame()
-                )
-            )
-            self.handleChangeMod(
-                self.visualizations[i], self.pixel_reshapers[i])
-
-    # CHANGE MOD #####
-    def handleChangeMod(self, visualization, pixelReshaper):
-        if(self.midi_notes):
-            for midi_note in self.midi_notes:
-                if(midi_note["port"] == "Ableton-virtual-midi-ouput ChangeMod"):
-                    if(midi_note["note"] == 0):
-                        self.active_mod = "scroll"
-                        visualization.resetFrame()
-                        visualization.visualizationEffect = visualization.visualizeScroll
-                    elif(midi_note["note"] == 2):
-                        self.active_mod = "energy"
-                        visualization.resetFrame()
-                        visualization.visualizationEffect = visualization.visualizeEnergy
-                    elif(midi_note["note"] == 4):
-                        self.active_mod = "synth"
-                        visualization.resetFrame()
-                        visualization.visualizationEffect = visualization.visualizeSynth
-                    elif(midi_note["note"] == 5):
-                        self.active_mod = "full"
-                        visualization.resetFrame()
-                        self.old_full_intensity = 0
-                        visualization.visualizationEffect = visualization.visualizeFull
-                    elif(midi_note["note"] == 7):
-                        self.active_mod = "nothing"
-                        self.old_full_intensity = 1
-                        visualization.visualizationEffect = visualization.visualizeNothing
-                    elif(midi_note["note"] == 9):
-                        self.active_mod = "intensity_bounce"
-                        visualization.resetFrame()
-                        visualization.visualizationEffect = visualization.visualizeIntensityBounce
-                    elif(midi_note["note"] == 11):
-                        self.active_mod = "visualize_alternate_colors"
-                        visualization.resetFrame()
-                        visualization.visualizationEffect = visualization.visualizeAlternateColors
-                    elif(midi_note["note"] == 12):
-                        pixelReshaper.is_reverse = not pixelReshaper.is_reverse
-                        print("Change mod to reverse mod => %s" %
-                              pixelReshaper.is_reverse)
-                    elif(midi_note["note"] == 14):
-                        pixelReshaper.is_full_strip = not pixelReshaper.is_full_strip
-                        print("Change mod to full strip mod => %s" %
-                              pixelReshaper.is_full_strip)
-                    elif(midi_note["note"] == 16):
-                        pixelReshaper.is_mirror = not pixelReshaper.is_mirror
-                        print("Change mod to mirror mod => %s" %
-                              pixelReshaper.is_mirror)
-                    elif(midi_note["note"] == 17):
-                        visualization.is_monochrome = not visualization.is_monochrome
-                        print("Change mod to monochrome => %s" %
-                              visualization.is_monochrome)
-                    elif(midi_note["note"] == 19):
-                        self.active_audio_channel += 1
-                        if(self.active_audio_channel > self.audio_channel_number - 1):
-                            self.active_audio_channel = 0
-                        print("Change audio mod to => %s" %
-                              self.active_audio_channel)
-
-
-if __name__ == '__main__':
-
-    setProcessDebugLevel()
-    setProcessPriority()
-
-    audio_channels = [{
-        "port": "Background Music",
-        "min_frequency": 200,
-        "max_frequency": 12000,
-    }, {
-        "port": "Built-in Microphone",
-        "min_frequency": 200,
-        "max_frequency": 12000,
-    }]
-
-    # strips_shape = [34, 52, 50]
-    strips_shape = [126, 126]
-    strips_shape = [63, 63, 63, 63]
-    strips_shape = [34, 52, 50]
-    # strips_shape = [5, 15]
-
-    audio_ports = ["Background Music", "Built-in Microphone"]
-    midi_ports = ["Ableton-virtual-midi-ouput ChangeMod",
-                  "Ableton-virtual-midi-ouput LeftSynth",
-                  "Ableton-virtual-midi-ouput RightSynth"]
-    serial_ports = ["/dev/tty.usbserial-14210"]
-    # serial_ports = SerialToArduinoLedStrip.listAvailableUsbSerialPorts()
-
-    ledStripVisualizer = LedStripVisualizer(
-        "scroll", audio_ports, midi_ports, serial_ports, strips_shape)
-
-    if(config.DISPLAY_AUDIO_INTERFACE):
-        audioInterface = AudioInterface(ledStripVisualizer.visualizations[0])
-    if(config.DISPLAY_SHELL_INTERFACE):
-        debugInterface = DebugInterface(ledStripVisualizer.visualizations[0])
-
-    while True:
-
-        ledStripVisualizer.handleTic()
-
-        if(config.DISPLAY_AUDIO_INTERFACE):
-            audioInterface.drawFrame()
-        if(config.DISPLAY_SHELL_INTERFACE):
-            debugInterfac
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        executor.submit(audioProcess, shared_list)
+        for i in range(number_of_strips):
+            executor.submit(stripProcess, i, shared_list)

@@ -16,7 +16,7 @@
 
 #include <Adafruit_NeoPixel.h>
 
-#define NODE_CMU false
+#define NODE_CMU true
 
 #if NODE_CMU
   #define DATAPIN D4

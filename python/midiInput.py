@@ -32,12 +32,22 @@ class MidiInput:
 
 if __name__ == "__main__":
 
+    print('Starting MidiInput test on ports :')
     print(MidiInput.listAvailablePortsName())
 
-    port_name = "Ableton-virtual-midi-ouput ChangeMod"
-    midiInput = MidiInput(port_name)
+    port_name_1 = "Ableton-virtual-midi-ouput ChangeMod"
+    midiInput_1 = MidiInput(port_name_1)
+    port_name_2 = "Ableton-virtual-midi-ouput ChangeMod"
+    midiInput_2 = MidiInput(port_name_2)
+    port_name_3 = "Ableton-virtual-midi-ouput RightSynth"
+    midiInput_3 = MidiInput(port_name_3)
 
-    while True:
-        notes = midiInput.getRawData()
-        if(notes != []):
-            print(notes)
+    while 1:
+        notes_1 = []
+        notes_2 = []
+        notes_1 += midiInput_1.getRawData()
+        notes_2 += midiInput_2.getRawData()
+        if(notes_1 != []):
+            print(notes_1)
+        if(notes_2 != []):
+            print(notes_2)

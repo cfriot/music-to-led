@@ -77,9 +77,9 @@ def shiftArray(arr, num, decrease_amount):
 
 
 def shiftPixelsSmoothly(pixels):
-    pixels[0] = shiftArray(pixels[0], 1, 50)
-    pixels[1] = shiftArray(pixels[1], 1, 50)
-    pixels[2] = shiftArray(pixels[2], 1, 50)
+    pixels[0] = shiftArray(pixels[0], 1, 100)
+    pixels[1] = shiftArray(pixels[1], 1, 100)
+    pixels[2] = shiftArray(pixels[2], 1, 100)
 
 
 def putPixel(strip, ledIndex, r, g, b):
@@ -103,7 +103,7 @@ def octaveColor(strip, note):
 
 class Visualization:
 
-    def __init__(self, timeSinceProcessStart, total_pixel_number=60, default_visualization_mod="scroll", default_audio_input="audio"):
+    def __init__(self, timeSinceProcessStart, total_pixel_number=60, default_visualization_mod="scroll"):
 
         self.total_pixel_number = total_pixel_number
         self.pixels = np.tile(.0, (3,
@@ -114,6 +114,7 @@ class Visualization:
         self.midi_notes = []
 
         self.colorDictionary = ColorDictionary()
+        self.current_color = 0
 
         self.gain = ExpFilter(np.tile(0.01, config.N_FFT_BINS),
                               alpha_decay=0.001, alpha_rise=0.99)
@@ -168,12 +169,14 @@ class Visualization:
     # VISUALIZE AlternateColors #####
     def visualizeAlternateColors(self):
         """Effect that alternate two colors moving forward"""
-        length = 10
-        colors = [self.colorDictionary.dictionary[0],
-                  self.colorDictionary.dictionary[15]]
+        size = 10
+        colors = [
+            [0, 0, 0],
+            self.colorDictionary.dictionary[self.current_color]
+        ]
         which_color = 0
         for i in range(self.total_pixel_number):
-            if(i % length == 0):
+            if(i % size == 0):
                 if(which_color == 1):
                     which_color = 0
                 else:
@@ -181,9 +184,8 @@ class Visualization:
             self.pixels[0][i] = colors[which_color][0]
             self.pixels[1][i] = colors[which_color][1]
             self.pixels[2][i] = colors[which_color][2]
-            # print(self.timeSinceProcessStart.get())
         self.pixels = np.roll(
-            self.pixels, self.timeSinceProcessStart.get(), axis=1)
+            self.pixels, self.timeSinceProcessStart.getMs(), axis=1)
 
     # VISUALIZE SCROLL #####
     def visualizeScroll(self):
@@ -195,13 +197,16 @@ class Visualization:
 
         if(self.is_monochrome):
             value = (int(np.max(self.audio_data[:len(self.audio_data) // 3])) + int(np.max(self.audio_data[len(
-                self.audio_data) // 3: 2 * len(self.audio_data) // 3])) + int(np.max(self.audio_data[2 * len(self.audio_data) // 3:]))) // 3
+                self.audio_data) // 3: 2 * len(self.audio_data) // 3])) + int(np.max(self.audio_data[2 * len(self.audio_data) // 3:]))) // 5
             self.pixels[:, 1:] = self.pixels[:, :-1]
             self.pixels *= 0.98
             self.pixels = gaussian_filter1d(self.pixels, sigma=0.7)
-            self.pixels[0, 0] = value * 255.0
-            self.pixels[1, 0] = value * 255.0
-            self.pixels[2, 0] = value * 255.0
+            self.pixels[0, 0] = value * \
+                self.colorDictionary.dictionary[self.current_color][0]
+            self.pixels[1, 0] = value * \
+                self.colorDictionary.dictionary[self.current_color][1]
+            self.pixels[2, 0] = value * \
+                self.colorDictionary.dictionary[self.current_color][2]
         else:
             r = int(np.max(self.audio_data[:len(self.audio_data) // 3]))
             g = int(np.max(
@@ -229,12 +234,12 @@ class Visualization:
         new_intensity = self.old_intensity_bounce - 1
         if(new_intensity > intensity):
             intensity = new_intensity
-        # print(intensity)
+        print(intensity)
         # Assign color to different frequency regions
         self.pixels[0] = 0.5 * intensity
         self.pixels[1] = 0.5 * intensity
         self.pixels[2] = 0.5 * intensity
-        # print(self.pixels[0][0])
+        print(self.pixels[0][0])
         self.p_filt.update(self.pixels)
         self.pixels = np.round(self.p_filt.value)
         self.old_intensity_bounce = intensity
@@ -253,11 +258,11 @@ class Visualization:
             value = (int(np.mean(self.audio_data[:len(self.audio_data) // 3]**scale)) + int(np.mean(self.audio_data[len(self.audio_data) // 3: 2 * len(
                 self.audio_data) // 3]**scale)) + int(np.mean(self.audio_data[2 * len(self.audio_data) // 3:]**scale))) // 3
             # Assign color to different frequency regions
-            self.pixels[0, :value] = 255.0
+            self.pixels[0, :value] = self.colorDictionary.dictionary[self.current_color][0]
             self.pixels[0, value:] = 0.0
-            self.pixels[1, :value] = 255.0
+            self.pixels[1, :value] = self.colorDictionary.dictionary[self.current_color][1]
             self.pixels[1, value:] = 0.0
-            self.pixels[2, :value] = 255.0
+            self.pixels[2, :value] = self.colorDictionary.dictionary[self.current_color][2]
             self.pixels[2, value:] = 0.0
             self.p_filt.update(self.pixels)
             self.pixels = np.round(self.p_filt.value)
@@ -309,8 +314,10 @@ class Visualization:
     # SYNTH VIZ #####
     def visualizeSynth(self):
         """Piano"""
-
         for midi_note in self.midi_notes:
             real_note = midi_note["note"]
-            putPixel(self.pixels, 0, 255, 255, 255)
+            r = self.colorDictionary.dictionary[self.current_color][0]
+            g = self.colorDictionary.dictionary[self.current_color][1]
+            b = self.colorDictionary.dictionary[self.current_color][2]
+            putPixel(self.pixels, 0, r, g, b)
         shiftPixelsSmoothly(self.pixels)

@@ -2,13 +2,14 @@ import time
 import numpy as np
 import pyaudio
 import rtmidi
+import config
 
 
 class AudioInput:
     def __init__(self, port_name):
         self.audio = pyaudio.PyAudio()
         self.rate = 44100
-        self.fps = 60
+        self.fps = config.FPS
         self.overflows = 0
         self.data = []
         self.prev_overflow_time = time.time()
@@ -72,11 +73,11 @@ class AudioInput:
 
 if __name__ == "__main__":
 
-    port_name = "Background Music"
+    print('Starting Audio tests test on ports :')
+    print(AudioInput.listAvailablePortsInfos())
+
+    port_name = "Built-in Microphone" # "Background Music"
     audioInput = AudioInput(port_name)
 
-    print('Starting Audio tests test on ports :')
-    print(audioInput.listAvailablePortsInfos())
-
-    while True:
+    while 1:
         print(audioInput.getRawData())
