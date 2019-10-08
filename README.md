@@ -8,6 +8,18 @@ This program is linked with Ableton live midi outputs to change visualizations m
 - More control for Ableton Live
 - Finish debug shell and audio interfaces
 
+# Features
+- Theorically unlimited audio inputs and ability to change it on the fly for each strip
+- Theorically unlimited midi inputs and ability to change it on the fly for each strip
+- Multi shapes gesture and ability to change it on the fly
+- Revese, mirror and monochromatic mods
+- 5+ viz Effects
+
+# Effects
+
+- Scroll
+- Energy
+
 # Arduino
 
 ![arduino-case](images/arduino-case.png)
@@ -24,18 +36,19 @@ This program is linked with Ableton live midi outputs to change visualizations m
 
 ## Led number limitation
 
-For the moment, the protocol is limited to 254 leds by physical case
-and you have to use a even number of leds
+It depends on the board you will use
+
+A nano is limited to 255 leds
+An esp8266 is limited to 300 ( or more )
 
 ## Calculating led power consumtion
 Each individual NeoPixel draws up to 60 milliamps at maximum brightness white (red + green + blue).
 
-60 NeoPixels × 60 mA ÷ 1,000 = 3.6 Amps minimum
-135 NeoPixels × 60 mA ÷ 1,000 = 8.1 Amps minimum
-135 NeoPixels × 60 mA ÷ 1,000 / 2 (for each led to 125,125,125) = 4.05 Amps minimum
-
-300 NeoPixels × 60 mA ÷ 1,000 = 18 Amps minimum
-300 NeoPixels × 60 mA ÷ 1,000 / 2 (for each led to 125,125,125) = 9 Amps minimum
+- 60 NeoPixels × 60 mA ÷ 1,000 = 3.6 Amps minimum
+- 135 NeoPixels × 60 mA ÷ 1,000 = 8.1 Amps minimum
+- 135 NeoPixels × 60 mA ÷ 1,000 / 2 (for each led to 125,125,125) = 4.05 Amps minimum
+- 300 NeoPixels × 60 mA ÷ 1,000 = 18 Amps minimum
+- 300 NeoPixels × 60 mA ÷ 1,000 / 2 (for each led to 125,125,125) = 9 Amps minimum
 
 # Computer
 
@@ -44,9 +57,10 @@ Visualization code is compatible with Python 3.7. A few Python dependencies must
 
 ### Installing dependencies with Anaconda
 Install dependencies using pip and the conda package manager
+
 ```
-conda install numpy scipy pyqtgraph colour psutil python-rtmidi
-pip install pyaudio
+pip install -r requirements.txt
+conda install --file requirements.txt
 ```
 
 ## Ableton live
@@ -69,6 +83,14 @@ Example :
 For a bpm of 150 you have to send the node 101 with 32 velocity ( 127 + 32 )
 For a bpm of 280 you have to send the node 102 with 50 velocity ( 127 + 127 + 24 )
 
+# Viz functions
+
+Scroll and energy are forked from
+audio-reactive-led-strip project
+
+# Links
+
+- https://fr.wikipedia.org/wiki/DMX_(%C3%A9clairage)
 
 # License
 This project was developed by Thibaud FRERE and is released under the MIT License.

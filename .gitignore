@@ -17,15 +17,20 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+
 # Tests
 /python-tests
 /midi-test-files
+singleStripMain.py
 
 # Images
 images/sources
 *.afdesign
 
-# B
+# Logs
+*.out
+
+# Bytecode python
 __pycache__/
 *.py[cod]
 

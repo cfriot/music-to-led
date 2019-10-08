@@ -1,0 +1,136 @@
+---  # document start
+
+################
+# CONFIG FILE  #
+################
+
+fps: 60
+
+display_shell_interface: false
+display_audio_interface: false
+
+midi_port_for_changing_mode: Ableton-virtual-midi-ouput ChangeMod
+
+n_rolling_history: 4
+number_of_audio_samples: 24
+
+audio_ports:
+  -
+    name: Built-in Microphone
+    min_frequency: 200
+    max_frequency: 12000
+    sampling_rate: 44000
+    number_of_audio_samples: 24
+    min_volume_threshold: 1e-7
+  # -
+  #   name: Background Music
+  #   min_frequency: 200
+  #   max_frequency: 12000
+  #   sampling_rate: 44000
+  #   number_of_audio_samples: 24
+  #   min_volume_threshold: 1e-7
+
+strips:
+  -
+    serial_port_name: /dev/tty.usbserial-14210
+    associated_midi_channels:
+      - Ableton-virtual-midi-ouput RightSynth
+    shapes:
+      -
+        - 254
+      -
+        - 62
+        - 62
+        - 62
+        - 62
+      -
+        - 30
+        - 30
+        - 30
+        - 30
+        - 30
+        - 30
+        - 30
+        - 30
+    active_audio_channel_index: 0
+    active_color_index: 0
+    active_shape_index: 0
+    is_reverse: false
+    is_mirror: false
+    active_color_scheme_index: 0
+    color_schemes:
+      -
+        - "#FFFFFF"
+        - "#00EDFF"
+      -
+        - "#FF00C8"
+        - "#00EDFF"
+      -
+        - "#FF00C8"
+        - "#000000"
+      -
+        - red
+        - green
+        - blue
+
+    active_visualizer_effect: scroll
+
+  -
+    serial_port_name: /dev/tty.usbserial-14230
+    associated_midi_channels:
+      - Ableton-virtual-midi-ouput LeftSynth
+    shapes:
+      -
+        - 34
+        - 52
+        - 50
+      -
+        - 24
+        - 24
+    active_audio_channel_index: 0
+    active_color_index: 0
+    active_shape_index: 0
+    is_reverse: false
+    is_mirror: false
+    active_color_scheme_index: 0
+    color_schemes:
+      -
+        - "#FF00C8"
+        - "#00EDFF"
+    active_visualizer_effect: energy
+
+  -
+    serial_port_name: /dev/tty.usbserial-14240
+    associated_midi_channels: []
+    shapes:
+      -
+        - 148
+        - 250
+      -
+        - 64
+        - 64
+        - 125
+        - 125
+      -
+        - 32
+        - 32
+        - 32
+        - 32
+        - 64
+        - 64
+        - 64
+        - 64
+
+    active_audio_channel_index: 0
+    active_color_index: 0
+    active_shape_index: 0
+    is_reverse: false
+    is_mirror: false
+    active_color_scheme_index: 0
+    color_schemes:
+      -
+        - "#FF00C8"
+        - "#00EDFF"
+    active_visualizer_effect: energy
+
+...  # document end

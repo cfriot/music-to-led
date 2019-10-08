@@ -1,13 +1,11 @@
-"""This module implements a Mel Filter Bank.
+"""
+This module implements a Mel Filter Bank.
 In other words it is a filter bank with triangular shaped bands
 arnged on the mel frequency scale.
 An example ist shown in the following figure:
-
----------
 """
 
 from numpy import abs, append, arange, insert, linspace, log10, round, zeros
-
 
 class Melbank:
     @staticmethod
@@ -68,8 +66,13 @@ class Melbank:
         return center_frequencies_mel, lower_edges_mel, upper_edges_mel
 
     @staticmethod
-    def compute_melmat(num_mel_bands=12, freq_min=64, freq_max=8000,
-                       num_fft_bands=513, sample_rate=16000):
+    def compute_melmat(
+        num_mel_bands = 12,
+        freq_min = 64,
+        freq_max = 8000,
+        num_fft_bands = 513,
+        sample_rate = 16000
+    ):
         """Returns tranformation matrix for mel spectrum.
         Parameters
         ----------
@@ -128,29 +131,3 @@ class Melbank:
             )
 
         return melmat, (center_frequencies_mel, freqs)
-
-
-if __name__ == '__main__':
-    from pylab import plt
-    f1, f2 = 1000, 8000
-    melmat, (melfreq, fftfreq) = Melbank.compute_melmat(
-        6, f1, f2, num_fft_bands=4097)
-    fig, ax = plt.subplots(figsize=(8, 3))
-    ax.plot(fftfreq, melmat.T)
-    ax.grid(True)
-    ax.set_ylabel('Weight')
-    ax.set_xlabel('Frequency / Hz')
-    ax.set_xlim((f1, f2))
-    ax2 = ax.twiny()
-    ax2.xaxis.set_ticks_position('top')
-    ax2.set_xlim((f1, f2))
-    ax2.xaxis.set_ticks(Melbank.mel_to_hertz(melfreq))
-    ax2.xaxis.set_ticklabels(['{:.0f}'.format(mf) for mf in melfreq])
-    ax2.set_xlabel('Frequency / mel')
-    plt.tight_layout()
-    fig, ax = plt.subplots()
-    ax.matshow(melmat)
-    plt.axis('equal')
-    plt.axis('tight')
-    plt.title('Mel Matrix')
-    plt.tight_layout()

@@ -7,8 +7,33 @@ import pyqtgraph as pg
 from pyqtgraph.dockarea import *
 from pyqtgraph.Qt import QtGui, QtCore
 
-from audioFilters.dsp import ExpFilter, create_mel_bank
+from helpers.expFilter import ExpFilter
 
+N_FFT_BINS = 24
+N_ROLLING_HISTORY = 4
+FPS = 60
+MIC_RATE = 44100
+MIN_FREQUENCY = 200
+MAX_FREQUENCY = 12000
+MIN_VOLUME_THRESHOLD = 1e-7
+
+def create_mel_bank():
+    global samples, mel_y, mel_x
+    samples = int(MIC_RATE *
+                  N_ROLLING_HISTORY / (2.0 * FPS))
+    mel_y, (_, mel_x) = Melbank.compute_melmat(
+        num_mel_bands = N_FFT_BINS,
+        freq_min = MIN_FREQUENCY,
+        freq_max = MAX_FREQUENCY,
+        num_fft_bands = samples,
+        sample_rate = MIC_RATE
+    )
+
+
+samples = None
+mel_y = None
+mel_x = None
+create_mel_bank()
 
 class AudioInterface:
 

@@ -1,0 +1,7 @@
+numpy
+scipy
+pyqtgraph
+qt
+colour
+psutil
+python-rtmidi

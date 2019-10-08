@@ -5,7 +5,11 @@
    Displays the frame currently in the buffer
    Replies: 00
  *                                                 *
-   01 nn b1 g1 r1 b2 g2 r2 ... bn gn rn
+   02
+   Setup led strip length
+   Replies: nothing
+ *                                                 *
+    01 b1 g1 r1 b2 g2 r2 ... bn gn rn
    Reads nn pixels into the frame buffer
    Replies: nothing
  *                                                 *
@@ -16,17 +20,17 @@
 
 #include <Adafruit_NeoPixel.h>
 
-#define NODE_CMU true
-
-#if NODE_CMU
-  #define DATAPIN D4
-#else
+#if defined(ARDUINO_AVR_NANO)
   #define DATAPIN 4
+#else
+  #define DATAPIN D4
 #endif
-
+    
 #define PIXELS 500
 
 byte pixelBuffer[3];
+byte countBuffer[3];
+int count = 0;
 
 Adafruit_NeoPixel leds = Adafruit_NeoPixel(PIXELS, DATAPIN);
 
@@ -43,12 +47,20 @@ void setup()
   Serial.write(0x00);
 }
 
+int bytesToInt(unsigned int x_high, unsigned int x_low) {
+  int combined;
+  combined = x_high;
+  combined = combined*256;
+  combined |= x_low;
+  return combined;
+}
+
 void loop()
 {
   // Read a command
   while (Serial.available() == 0);
   byte command = Serial.read();
-  byte count;
+  
   switch (command)
   {
     // Show frame
@@ -67,10 +79,10 @@ void loop()
 
       // Read number of pixels
       while (Serial.available() == 0);
-      count = Serial.read();
-      if (count > PIXELS) {
-        count = PIXELS;
-      }
+      
+      Serial.readBytes(countBuffer, 2);
+      count = bytesToInt(countBuffer[0], countBuffer[1]);
+      
       // Read and update pixels
       for (int i = 0; i < count; i++)
       {
