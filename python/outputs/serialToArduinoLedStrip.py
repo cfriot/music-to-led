@@ -30,7 +30,6 @@ class SerialToArduinoLedStrip:
         """
         if sys.platform.startswith('win'):
             ports = ['COM%s' % (i + 1) for i in range(256)]
-            print(ports)
         elif sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
             # this excludes your current terminal "/dev/tty"
             ports = glob.glob('/dev/tty[A-Za-z]*')
@@ -101,7 +100,7 @@ class SerialToArduinoLedStrip:
 
     def update(self, pixels):
         """ Send frame to the arduino """
-        self.pixels = np.tile(.0, (3, self.number_of_pixels))
+        self.pixels = np.tile(.0, (3, len(pixels[0])))
         self.pixels = pixels
         if(not self.trying_to_connect and self.serial_class):
             try:
@@ -123,7 +122,7 @@ if __name__ == "__main__":
     print('Starting SerialToArduinoLedStrip test on ports :')
     ports = SerialToArduinoLedStrip.listAvailableUsbSerialPorts()
     print(SerialToArduinoLedStrip.listAvailableUsbSerialPorts())
-    ports = ['/dev/tty.usbserial-14230', '/dev/tty.usbserial-14240', '/dev/tty.usbserial-14210']
+    # ports = ['/dev/tty.usbserial-14240', '/dev/tty.usbserial-14210']
     # 148
     number_of_pixels = 250
     serialToArduinoLedStrips = []

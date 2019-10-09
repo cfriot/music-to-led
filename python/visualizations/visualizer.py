@@ -40,7 +40,7 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
         self.visualizer_effect = self.visualizeScroll
 
     def initVizualiser(self):
-        self.number_of_pixels = self.strip_config.shapes[0].number_of_pixels
+        self.number_of_pixels = self.strip_config.shapes[self.strip_config.active_shape_index].number_of_pixels
         self.gain = ExpFilter(
             np.tile(0.01, self.N_FFT_BINS),
             alpha_decay = 0.001,
@@ -61,13 +61,7 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
         """ Reset current pixels """
         self.pixels = np.tile(0., (3, self.number_of_pixels))
 
-    # DRAW FRAME #####
     def drawFrame(self):
         """ Draw current pixels """
         self.audio_data = self.audio_datas[self.strip_config.active_audio_channel_index]
-        # tmp = self.visualizer_effect()
-        # tmp2 = self.visualizeAlternateColors()
-        # tmp[0] += tmp2[0]
-        # tmp[1] += tmp2[1]
-        # tmp[2] += tmp2[2]
         return self.visualizer_effect()

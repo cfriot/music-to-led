@@ -4,10 +4,10 @@ class PixelReshaper:
 
     def __init__(self, strip_config):
         self.strip_config = strip_config
-        self.active_shape_index = self.strip_config.active_shape_index
         self.initActiveShape()
 
     def initActiveShape(self):
+        self.active_shape_index = self.strip_config.active_shape_index
         self.number_of_pixels = self.strip_config.shapes[self.active_shape_index].number_of_pixels
         self.number_of_strips = self.strip_config.shapes[self.active_shape_index].number_of_substrip
         self.pixels = np.tile(.0, (3, self.number_of_pixels))
@@ -68,13 +68,25 @@ class PixelReshaper:
             tmp = np.copy(pixels[:, :number_of_pixels // 2])
             return np.concatenate((tmp[:, ::-1], tmp), axis=1)
 
-    def reshape(self, pixels):
+
+    def reshapeFromStrips(self, strips):
+
+        tmp_s = []
+        for x, strip in enumerate(strips):
+            if(self.strip_config.is_reverse):
+                strip = self.reversePixels(strip)
+            if(self.strip_config.is_mirror):
+                strip = self.mirrorPixels(strip, len(strip[0]))
+            tmp_s.append(np.copy(strip))
+
+        return self.concatenatePixels(tmp_s)
+
+
+    def reshapeFromPixels(self, pixels):
 
         tmp_p = np.copy(pixels)
-
         if(self.strip_config.is_reverse):
             tmp_p = self.reversePixels(tmp_p)
-
         if(self.strip_config.is_mirror):
             tmp_p = self.mirrorPixels(tmp_p, self.number_of_pixels)
 
@@ -105,7 +117,7 @@ if __name__ == "__main__":
     pixels[0, number_of_pixels - 1] = 255
     pixels[1, number_of_pixels - 2] = 255
 
-    tmp = pixelReshaper.reshape(pixels)
+    tmp = pixelReshaper.reshapeFromPixels(pixels)
     serialToArduinoLedStrip = SerialToArduinoLedStrip(
         number_of_pixels, ports)
     serialToArduinoLedStrip.setup()
@@ -113,6 +125,6 @@ if __name__ == "__main__":
     while True:
         pixels = np.roll(pixels, 1, axis=1)
         serialToArduinoLedStrip.update(
-            pixelReshaper.reshape(pixels)
+            pixelReshaper.reshapeFromPixels(pixels)
         )
         time.sleep(.2)

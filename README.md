@@ -9,16 +9,33 @@ This program is linked with Ableton live midi outputs to change visualizations m
 - Finish debug shell and audio interfaces
 
 # Features
-- Theorically unlimited audio inputs and ability to change it on the fly for each strip
-- Theorically unlimited midi inputs and ability to change it on the fly for each strip
-- Multi shapes gesture and ability to change it on the fly
-- Revese, mirror and monochromatic mods
-- 5+ viz Effects
+- Multiple led strips
+- Multiple audio inputs
+- Multiple midi inputs
+- Multi shapes gesture
+- Multi color schemes gesture
+- Revese and mirror mods
+- 8 Vizualizer Effects
 
-# Effects
+# Effects and mods
+
+## Effects
 
 - Scroll
 - Energy
+- Piano ( that reflect notes played in the associated midi channels )
+- IntensityChannels
+- AlternateColors
+- Full
+- NeonFadeIn
+- Nothing
+
+## Mods
+
+- Reverse
+- Mirror
+- Shapes
+- Color schemes
 
 # Arduino
 
@@ -66,6 +83,8 @@ conda install --file requirements.txt
 ## Ableton live
 
 ### Midi channel configuration
+
+The config file called ports MUST match the created and open ports.
 
 ![abletonmidisettings](images/ableton-midi-settings-conf.png)
 ![osxmidisettings](images/osx-midi-settings-conf.png)

@@ -49,11 +49,4 @@ class IntensityChannels():
             strip[1, :] = gaussian_filter1d(strip[1, :], sigma=1.0)
             strip[2, :] = gaussian_filter1d(strip[2, :], sigma=1.0)
 
-            print(strip)
-            if(self.strip_config.is_reverse):
-                strip = self.pixelReshaper.reversePixels(strip)
-            if(self.strip_config.is_mirror):
-                strip = self.pixelReshaper.mirrorPixels(strip, max_length)
-            print(strip)
-
-        return self.pixelReshaper.concatenatePixels(self.pixelReshaper.strips)
+        return self.pixelReshaper.reshapeFromStrips(self.pixelReshaper.strips)

@@ -89,4 +89,4 @@ class Spectrum():
 
         self.pixels = np.array([r, g, b]) * 255
 
-        return self.pixelReshaper.reshape(self.pixels)
+        return self.pixelReshaper.reshapeFromPixels(self.pixels)

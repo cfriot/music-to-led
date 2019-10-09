@@ -28,7 +28,6 @@ if __name__ == "__main__":
 
     bpmTicker = BPMTicker(240, 4)
     while True:
-        print(timeSinceStart.getMs())
         toto = bpmTicker.isTicking()
         if(toto == 1):
             print("toto")

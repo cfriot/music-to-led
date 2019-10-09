@@ -38,18 +38,15 @@ if __name__ == "__main__":
 
         config = shared_list[0]
         audio_datas = shared_list[1]
-
         strip_config = config.strips[index]
-        serial_port_name = config.strips[index].serial_port_name
-        number_of_pixels = strip_config.shapes[strip_config.active_shape_index].number_of_pixels
-        associated_midi_channels = strip_config.associated_midi_channels
-        midi_port_for_changing_mode = config.midi_port_for_changing_mode
-        number_of_audio_ports = config.number_of_audio_ports
 
         framerateCalculator = FramerateCalculator(config.fps)
 
+        associated_midi_channels = strip_config.associated_midi_channels
+        midi_ports_for_changing_mode = strip_config.midi_ports_for_changing_mode
+
         midiDispatcher = MidiDispatcher(
-            midi_port_for_changing_mode,
+            midi_ports_for_changing_mode,
             associated_midi_channels
         )
 
@@ -57,6 +54,9 @@ if __name__ == "__main__":
             config,
             index
         )
+
+        serial_port_name = config.strips[index].serial_port_name
+        number_of_pixels = strip_config.shapes[strip_config.active_shape_index].number_of_pixels
 
         serialToArduinoLedStrip = SerialToArduinoLedStrip(
             number_of_pixels,

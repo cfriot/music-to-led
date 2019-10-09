@@ -38,4 +38,4 @@ class Energy():
         self.pixels[1, :] = gaussian_filter1d(self.pixels[1, :], sigma=1.0)
         self.pixels[2, :] = gaussian_filter1d(self.pixels[2, :], sigma=1.0)
 
-        return self.pixelReshaper.reshape(self.pixels)
+        return self.pixelReshaper.reshapeFromPixels(self.pixels)

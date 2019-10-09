@@ -52,6 +52,10 @@ class ShapeSettings() :
         for pixel_number in self.shape:
             self.number_of_pixels += pixel_number
 
+        print(self.shape)
+        print(self.number_of_substrip)
+        print(self.number_of_pixels)
+
     def print(self):
         print("--")
         print("----------------")
@@ -69,18 +73,23 @@ class StripSettings() :
     def __init__(
         self,
         serial_port_name = "/dev/tty.usbserial-14240",
+        max_brightness = 120,
+        midi_ports_for_changing_mode = ["Ableton-virtual-midi-ouput ChangeModLeftSynth"],
         associated_midi_channels = ["Ableton-virtual-midi-ouput LeftSynth"],
         active_visualizer_effect = "scroll",
         shapes = [[26,26],[12,12]],
         active_audio_channel_index = 0,
         active_shape_index = 0,
         is_reverse = False,
+        bpm = 120,
         is_mirror = False,
         active_color_scheme_index = 0,
         color_schemes = [["#FF0000", "#00FF00"]]
     ):
 
         self.serial_port_name = serial_port_name
+        self.max_brightness = max_brightness
+        self.midi_ports_for_changing_mode = midi_ports_for_changing_mode
         self.associated_midi_channels = associated_midi_channels
         self.active_audio_channel_index = active_audio_channel_index
 
@@ -91,6 +100,9 @@ class StripSettings() :
         self.number_of_shapes = len(self.shapes)
 
         self.active_visualizer_effect = active_visualizer_effect
+
+        self.bpm = bpm
+
         self.is_reverse = is_reverse
         self.is_mirror = is_mirror
 
@@ -109,6 +121,8 @@ class StripSettings() :
         print("Strip Settings : ")
         print("----------------")
         print("serial_port_name -> ", self.serial_port_name)
+        print("max_brightness -> ", self.max_brightness)
+        print("midi_ports_for_changing_mode -> ", self.midi_ports_for_changing_mode)
         print("associated_midi_channels -> ", self.associated_midi_channels)
         print("active_audio_channel_index -> ", self.active_audio_channel_index)
         print("active_shape_index -> ", self.active_shape_index)
@@ -116,6 +130,7 @@ class StripSettings() :
             shape.print()
         print("number_of_shapes -> ", self.number_of_shapes)
         print("active_visualizer_effect -> ", self.active_visualizer_effect)
+        print("bpm -> ", self.bpm)
         print("is_reverse -> ", self.is_reverse)
         print("is_mirror -> ", self.is_mirror)
         print("active_color_scheme_index -> ", self.active_color_scheme_index)
@@ -140,15 +155,19 @@ class Settings():
                 "min_volume_threshold": 1e-7
             }
         ],
-        midi_port_for_changing_mode = "Ableton-virtual-midi-ouput ChangeMod",
         strips = [
             {
                 "serial_port_name": "/dev/tty.usbserial-14210",
+                "max_brightness": 120,
+                "midi_ports_for_changing_mode": ["Ableton-virtual-midi-ouput ChangeModStripOne"],
                 "associated_midi_channels": ["Ableton-virtual-midi-ouput LeftSynth"],
                 "active_visualizer_effect": "scroll",
                 "shapes": [[26,26],[12,12]],
                 "active_audio_channel_index": 0,
-                "active_shape_index": 0
+                "active_shape_index": 0,
+                "is_reverse" : False,
+                "bpm" : 120,
+                "is_mirror" : False,
             }
         ]
     ):
@@ -170,19 +189,23 @@ class Settings():
                 )
             )
         self.number_of_audio_ports = len(self.audio_ports)
-        self.midi_port_for_changing_mode = "Ableton-virtual-midi-ouput ChangeMod"
         self.strips = []
         for strip in strips :
             self.strips.append(
                 StripSettings(
                     serial_port_name = strip["serial_port_name"],
+                    max_brightness = strip["max_brightness"],
+                    midi_ports_for_changing_mode = strip["midi_ports_for_changing_mode"],
                     associated_midi_channels = strip["associated_midi_channels"],
                     active_visualizer_effect = strip["active_visualizer_effect"],
                     shapes = strip["shapes"],
                     active_audio_channel_index = strip["active_audio_channel_index"],
                     active_shape_index = strip["active_shape_index"],
                     active_color_scheme_index = strip["active_color_scheme_index"],
-                    color_schemes = strip["color_schemes"]
+                    color_schemes = strip["color_schemes"],
+                    bpm = strip["bpm"],
+                    is_mirror = strip["is_mirror"],
+                    is_reverse = strip["is_reverse"]
                 )
             )
         self.number_of_strips = len(self.strips)
@@ -198,7 +221,6 @@ class Settings():
         for audio_port in self.audio_ports:
             audio_port.print()
         print("number_of_audio_ports -> ", self.number_of_audio_ports)
-        print("midi_port_for_changing_mode -> ", self.midi_port_for_changing_mode)
         for strip in self.strips:
             strip.print()
         print("number_of_strips -> ", self.number_of_strips)
@@ -220,7 +242,6 @@ class SettingsLoader():
                     fps = file["fps"],
                     n_rolling_history = file["n_rolling_history"],
                     audio_ports = file["audio_ports"],
-                    midi_port_for_changing_mode = file["midi_port_for_changing_mode"],
                     strips = file["strips"]
                 )
 
@@ -237,6 +258,5 @@ if __name__ == "__main__":
 
     # method_list = [func for func in dir(Visualizer) if callable(getattr(Visualizer, func)) and not func.startswith("__")]
     # print(method_list)
-
 
     print("YAML VALID")

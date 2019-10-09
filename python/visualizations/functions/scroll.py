@@ -37,4 +37,4 @@ class Scroll():
         self.pixels[1, 0] = g
         self.pixels[2, 0] = b
 
-        return self.pixelReshaper.reshape(self.pixels)
+        return self.pixelReshaper.reshapeFromPixels(self.pixels)

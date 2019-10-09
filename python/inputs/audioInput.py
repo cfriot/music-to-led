@@ -89,7 +89,7 @@ if __name__ == "__main__":
     print('Starting Audio tests test on ports :')
     print(AudioInput.listAvailablePortsInfos())
 
-    port_name = "Built-in Microphone"
+    port_name = "Loopback Audio 2"
     audioInput = AudioInput(port_name)
 
     while 1:
