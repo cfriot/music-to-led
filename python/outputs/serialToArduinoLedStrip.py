@@ -4,7 +4,7 @@ import numpy as np
 
 class SerialToArduinoLedStrip:
     """ Send pixels data to arduino via serial port """
-    def __init__(self, number_of_pixels=30, port=""):
+    def __init__(self, number_of_pixels=30, port="", baud_rate=1000000):
         self.serial_port = port
         self.serial_class = None
         self.trying_to_connect = False
@@ -16,8 +16,18 @@ class SerialToArduinoLedStrip:
         self.number_of_pixel_command = (self.number_of_pixels).to_bytes(2, byteorder="big")
         self.pixels = np.tile(.0, (3, number_of_pixels))
         self.raw_data = []
-        self.baud_rate = 1000000  # 1228800
+        self.baud_rate = baud_rate
         self.setup()
+
+    @staticmethod
+    def tryPort(port_name):
+        try:
+            s = serial.Serial(port_name)
+            s.close()
+        except (OSError, serial.SerialException):
+            print("Serial port not found or busy, please check your config file -> ", port_name)
+            print("Here's the audio ports available ->", SerialToArduinoLedStrip.listAvailableUsbSerialPorts())
+            quit()
 
     @staticmethod
     def listAvailableUsbSerialPorts():
@@ -101,6 +111,7 @@ class SerialToArduinoLedStrip:
     def update(self, pixels):
         """ Send frame to the arduino """
         self.pixels = np.tile(.0, (3, len(pixels[0])))
+        self.number_of_pixels = len(pixels[0])
         self.pixels = pixels
         if(not self.trying_to_connect and self.serial_class):
             try:
@@ -124,14 +135,17 @@ if __name__ == "__main__":
     print(SerialToArduinoLedStrip.listAvailableUsbSerialPorts())
     # ports = ['/dev/tty.usbserial-14240', '/dev/tty.usbserial-14210']
     # 148
-    number_of_pixels = 250
+    number_of_pixels = 200
     serialToArduinoLedStrips = []
 
     pixels = np.tile(1, (3, number_of_pixels))
     pixels *= 0
-    pixels[0, 0] = 255  # Set 1st pixel red
-    pixels[1, 1] = 255  # Set 2nd pixel green
-    pixels[2, 2] = 255  # Set 3rd pixel blue
+    pixels[0, 0] = 125  # Set 1st pixel red
+    pixels[1, 1] = 125  # Set 2nd pixel green
+    pixels[2, 2] = 125  # Set 3rd pixel blue
+    pixels[0, 3] = 255  # Set 1st pixel red
+    pixels[1, 4] = 255  # Set 2nd pixel green
+    pixels[2, 5] = 255  # Set 3rd pixel blue
 
     for port in ports:
         serialToArduinoLedStrips.append(SerialToArduinoLedStrip(

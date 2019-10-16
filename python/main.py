@@ -86,6 +86,7 @@ if __name__ == "__main__":
 
             # print("FPS from process ", serial_port_name, framerateCalculator.getFps())
 
+    print("Parsing config file")
     settingsLoader = SettingsLoader("settings/settings_file.yml")
     config = settingsLoader.data
 
@@ -99,8 +100,10 @@ if __name__ == "__main__":
 
     number_of_strips = config.number_of_strips
 
-    print("Start Sub Processes")
-    with concurrent.futures.ProcessPoolExecutor() as executor:
+    print("Starting sub-processes")
+    with concurrent.futures.ProcessPoolExecutor(
+        max_workers = config.number_of_strips + 1
+    ) as executor:
         executor.submit(audioProcess, shared_list)
-        for i in range(number_of_strips):
+        for i in range(config.number_of_strips):
             executor.submit(stripProcess, i, shared_list)

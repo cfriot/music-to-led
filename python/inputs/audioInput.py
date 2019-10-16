@@ -11,9 +11,11 @@ class AudioInput:
         self.fps = 60
         self.overflows = 0
         self.data = []
+        self.stream = 0
         self.prev_overflow_time = time.time()
         self.frames_per_buffer = int(self.rate / self.fps)
         self.port_index = AudioInput.getPortIndexFromName(port_name)
+        self.tryPort(port_name)
         self.stream = self.audio.open(
             format = pyaudio.paInt16,
             channels = 1,
@@ -24,12 +26,22 @@ class AudioInput:
         )
 
     @staticmethod
+    def tryPort(port_name):
+        if(AudioInput.getPortIndexFromName(port_name) == -1):
+            print("Audio port not found or not acceptable, please check your config file -> ", port_name)
+            list = []
+            for item in AudioInput.listAvailablePortsInfos():
+                if(item["maxInputChannels"] == 2):
+                    list.append(item["name"])
+            print("Here's the audio ports available ->", list)
+            quit()
+
+    @staticmethod
     def listAvailablePortsInfos():
         """ List available ports informations """
         audio = pyaudio.PyAudio()
         ports = []
         for i in range(audio.get_device_count()):
-            print(audio.get_device_info_by_index(i)["name"])
             ports.append(audio.get_device_info_by_index(i))
         return ports
 
@@ -42,8 +54,10 @@ class AudioInput:
         """
         audio = pyaudio.PyAudio()
         for i in range(audio.get_device_count()):
-            if(name == audio.get_device_info_by_index(i)["name"]):
-                return audio.get_device_info_by_index(i)["index"]
+            info = audio.get_device_info_by_index(i)
+            if(name == info["name"]):
+                return info["index"]
+        return -1
 
     @staticmethod
     def listAvailablePortsName():
@@ -51,7 +65,6 @@ class AudioInput:
         audio = pyaudio.PyAudio()
         ports = []
         for i in range(audio.get_device_count()):
-            print(audio.get_device_info_by_index(i)["name"])
             ports.append({"name": audio.get_device_info_by_index(
                 i)["name"], "index": audio.get_device_info_by_index(i)["index"]})
         return ports
@@ -79,17 +92,18 @@ class AudioInput:
                 print('Audio buffer has overflowed {} times'.format(overflows))
 
     def __del__(self):
-        self.stream.stop_stream()
-        self.stream.close()
-        self.audio.terminate()
+        if(self.stream != 0):
+            self.stream.stop_stream()
+            self.stream.close()
+            self.audio.terminate()
 
 
 if __name__ == "__main__":
 
     print('Starting Audio tests test on ports :')
-    print(AudioInput.listAvailablePortsInfos())
 
-    port_name = "Loopback Audio 2"
+    port_name = "Built-in Microphone"
+    print(AudioInput.getPortIndexFromName(port_name))
     audioInput = AudioInput(port_name)
 
     while 1:

@@ -3,6 +3,8 @@ from scipy.ndimage.filters import gaussian_filter1d
 
 from helpers.audio.expFilter import ExpFilter
 
+import time
+
 class IntensityChannels():
 
     def visualizeIntensityChannels(self):
@@ -48,5 +50,4 @@ class IntensityChannels():
             strip[0, :] = gaussian_filter1d(strip[0, :], sigma=1.0)
             strip[1, :] = gaussian_filter1d(strip[1, :], sigma=1.0)
             strip[2, :] = gaussian_filter1d(strip[2, :], sigma=1.0)
-
         return self.pixelReshaper.reshapeFromStrips(self.pixelReshaper.strips)

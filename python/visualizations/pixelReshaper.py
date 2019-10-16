@@ -17,6 +17,12 @@ class PixelReshaper:
             self.strips.append([])
             self.strips[i] = np.tile(.0, (3, strip_length))
 
+    def resetStrips(self):
+        self.strips = []
+        for i, strip_length in enumerate(self.strip_shape):
+            self.strips.append([])
+            self.strips[i] = np.tile(.0, (3, strip_length))
+
     def concatenatePixels(self, strips):
         """Concatenate the x strips into 1"""
         tmp = [[], [], []]

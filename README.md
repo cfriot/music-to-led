@@ -1,54 +1,100 @@
-# Audio Reactive LED Strip
-Real-time LED strip music visualization using Python and Arduino via serial communication.
-This program is linked with Ableton live midi outputs to change visualizations mods
+# Real-time Audio and Midi LED Strip animations via Serial
 
-## TO DO
-- App OSX package
-- Visualization effect mixer
-- More control for Ableton Live
-- Finish debug shell and audio interfaces
+Real-time LED strip music and midi visualization using Python and Arduino via serial communication.
+
+# How it works ?
+
+It takes multiple audio and midi inputs, use them to make awesome visualizations effects and output the result in multiple led strips via a serial protocol.
+
+
+# Table of contents
+
+- [Features](#features)
+- [Effects and mods](#effects-and-mods)
+  * [Effects](#effects)
+    + [Audio based](#audio-based)
+    + [Midi based](#midi-based)
+    + [Bpm based](#bpm-based)
+    + [Generic](#generic)
+  * [Mods](#mods)
+- [Install](#install)
+- [Arduino part](#arduino-part)
+- [Configuration](#configuration)
+  * [Ableton live](#ableton-live)
+    + [Midi channel configuration](#midi-channel-configuration)
+- [TO-DO](#TO-DO)
+- [Links](#links)
+- [License](#license)
 
 # Features
-- Multiple led strips
+
 - Multiple audio inputs
 - Multiple midi inputs
-- Multi shapes gesture
-- Multi color schemes gesture
+- Multiple led strips
+- Live config changer using dedicated MIDI channel
+- Multiple "virtual" strip shapes
+- Multiple color schemes
 - Revese and mirror mods
 - 8 Vizualizer Effects
+
 
 # Effects and mods
 
 ## Effects
 
-- Scroll
-- Energy
-- Piano ( that reflect notes played in the associated midi channels )
-- IntensityChannels
-- AlternateColors
-- Full
-- NeonFadeIn
-- Nothing
+### Audio based
+
+- 0 : Scroll
+- 1 : Energy
+- 2 : IntensityChannels
+- 3 : Spectrum
+
+### Midi based
+
+- 5 : Piano
+- 6 : Piano2
+- 7 : Envelope
+
+### Bpm based
+
+- 9 : AlternateColors
+- 10 : AlternateColorsFull
+- 11 : AlternateColorsForStrips
+
+### Generic
+
+- 13 : Full
+- 14 : Nothing
+
 
 ## Mods
 
-- Reverse
-- Mirror
-- Shapes
-- Color schemes
+- 16 : Reset Frame
 
-# Computer
+- 18 : (Boolean) Reverse
+- 19 : (Boolean) Mirror
 
-## Python program
-Visualization code is compatible with Python 3.7. A few Python dependencies must also be installed:
+- 21 : (Array) Shapes
+- 22 : (Array) Color schemes
+- 23 : (Int) Bpm
+- 24 : (Int) Audio channel
 
-### Installing dependencies with Anaconda
-Install dependencies using pip and the conda package manager
+
+# Install
+
+Code is compatible with Python 3.7. Install dependencies using pip and the conda package manager.
 
 ```
 pip install -r requirements.txt
 conda install --file requirements.txt
 ```
+
+# Arduino part
+
+[Electronic part](arduino/README.md)
+
+
+# Configuration
 
 ## Ableton live
 
@@ -59,23 +105,11 @@ The config file called ports MUST match the created and open ports.
 ![abletonmidisettings](images/ableton-midi-settings-conf.png)
 ![osxmidisettings](images/osx-midi-settings-conf.png)
 
-### Midi signals -- Not implemented yet
+# TO-DO
 
-Notes are clamped between -36 to 91 and gives us 127 possibilities
-Velocities are campled between 1 and 127 and gives us also 127 possibilities
-
-- Effects are in a range of 0 to 50
-- Mods are in a range of 50 to 100
-- Bpms are in a range of 100 to 110 and are using velocity
-
-Example :
-For a bpm of 150 you have to send the node 101 with 32 velocity ( 127 + 32 )
-For a bpm of 280 you have to send the node 102 with 50 velocity ( 127 + 127 + 24 )
-
-# Viz functions
-
-Scroll and energy are forked from
-audio-reactive-led-strip project
+- Electron package with a web interface
+- Remote control for changing modes ( via DMX ? )
+- Ability to mix effects
 
 # Links
 

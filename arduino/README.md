@@ -1,4 +1,3 @@
-
 # Arduino
 
 ![arduino-case](../images/arduino-case.png)

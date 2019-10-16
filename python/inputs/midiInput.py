@@ -1,7 +1,6 @@
 import time
 import numpy as np
 import pyaudio
-import rtmidi
 import mido
 from mido.ports import MultiPort
 
@@ -14,22 +13,35 @@ class MidiInput:
         self.port = mido.open_input(self.port_name)
 
     @staticmethod
+    def tryPort(port_name):
+        try :
+            port = mido.open_input(port_name)
+            port.close()
+        except IOError:
+            print("Midi port not found, please check your config file -> ", port_name)
+            quit()
+
+    @staticmethod
     def listAvailablePortsName():
         """ List avaiable ports names """
         return mido.get_output_names()
 
     def getRawData(self):
-        global toto
         """ Return actual midi data """
         self.notes = []
         for msg in self.port.iter_pending():
+            if(hasattr(msg, 'type') and (msg.type == "pitchwheel") and msg.pitch):
+                print(msg.pitch)
+            if(hasattr(msg, 'type') and (msg.type == "control_change") and msg.control):
+                print(msg.control)
             if(hasattr(msg, 'note') and hasattr(msg, 'type') and (msg.type == "note_on" or msg.type == "note_off") and msg.velocity):
                 self.notes.append(
                     {"port": self.port_name, "type": msg.type, "note": msg.note, "velocity": msg.velocity})
         return self.notes
 
     def __del__(self):
-        self.port.close()
+        if(self.port != 0):
+            self.port.close()
 
 
 if __name__ == "__main__":

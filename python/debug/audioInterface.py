@@ -1,13 +1,13 @@
 from __future__ import print_function
 from __future__ import division
 import time
-import config
 import numpy as np
 import pyqtgraph as pg
 from pyqtgraph.dockarea import *
-from pyqtgraph.Qt import QtGui, QtCore
+from pyqtgraph.Qt import QtGui, QtCore, QtWidgets
 
-from helpers.expFilter import ExpFilter
+from helpers.audio.expFilter import ExpFilter
+from helpers.audio.melbank import Melbank
 
 N_FFT_BINS = 24
 N_ROLLING_HISTORY = 4
@@ -29,7 +29,6 @@ def create_mel_bank():
         sample_rate = MIC_RATE
     )
 
-
 samples = None
 mel_y = None
 mel_x = None
@@ -37,7 +36,12 @@ create_mel_bank()
 
 class AudioInterface:
 
-    def __init__(self, visualization):
+    def __init__(self, visualization, config, index):
+
+        self.config = config
+        self.strip_config = config.strips[index]
+        self.audio_class = config.audio_ports[0]
+
 
         self.app = QtGui.QApplication([])
         self.view = pg.GraphicsView()
@@ -47,14 +51,14 @@ class AudioInterface:
         self.view.setWindowTitle("Visualization")
         self.view.resize(800, 600)
         self.visualization = visualization
-        self.fft_plot_filter = ExpFilter(np.tile(1e-1, config.N_FFT_BINS),
+        self.fft_plot_filter = ExpFilter(np.tile(1e-1, config.number_of_audio_samples),
                                          alpha_decay=0.5, alpha_rise=0.99)
 
         self.fft_plot = self.layout.addPlot(
             title='Filterbank Output', colspan=3)
         self.fft_plot.setRange(yRange=[-0.1, 1.2])
         self.fft_plot.disableAutoRange(axis=pg.ViewBox.YAxis)
-        self.x_data = np.array(range(1, config.N_FFT_BINS + 1))
+        self.x_data = np.array(range(1, N_FFT_BINS + 1))
         self.mel_curve = pg.PlotCurveItem()
         self.mel_curve.setData(x=self.x_data, y=self.x_data * 0)
         self.fft_plot.addItem(self.mel_curve)
@@ -73,7 +77,7 @@ class AudioInterface:
         self.g_curve = pg.PlotCurveItem(pen=self.g_pen)
         self.b_curve = pg.PlotCurveItem(pen=self.b_pen)
         # # Define x data
-        self.x_data = np.array(range(1, config.N_PIXELS + 1))
+        self.x_data = np.array(range(1, visualization.number_of_pixels + 1))
         self.r_curve.setData(x=self.x_data, y=self.x_data * 0)
         self.g_curve.setData(x=self.x_data, y=self.x_data * 0)
         self.b_curve.setData(x=self.x_data, y=self.x_data * 0)
@@ -87,13 +91,13 @@ class AudioInterface:
         self.freq_slider = pg.TickSliderItem(
             orientation='bottom', allowAdd=False)
         self.freq_slider.addTick(
-            (config.MIN_FREQUENCY / (config.MIC_RATE / 2.0))**0.5)
+            (MIN_FREQUENCY / (MIC_RATE / 2.0))**0.5)
         self.freq_slider.addTick(
-            (config.MAX_FREQUENCY / (config.MIC_RATE / 2.0))**0.5)
+            (MAX_FREQUENCY / (MIC_RATE / 2.0))**0.5)
         self.freq_slider.tickMoveFinished = self.freq_slider_change
         self.freq_label.setText('Frequency range: {} - {} Hz'.format(
-            config.MIN_FREQUENCY,
-            config.MAX_FREQUENCY))
+            MIN_FREQUENCY,
+            MAX_FREQUENCY))
         # # Effect selection
         self.active_color = '#16dbeb'
         self.inactive_color = '#FFFFFF'
@@ -104,17 +108,17 @@ class AudioInterface:
         self.layout.addItem(self.freq_slider, colspan=3)
 
     def freq_slider_change(self, tick):
-        minf = self.freq_slider.tickValue(0)**2.0 * (config.MIC_RATE / 2.0)
-        maxf = self.freq_slider.tickValue(1)**2.0 * (config.MIC_RATE / 2.0)
+        minf = self.freq_slider.tickValue(0)**2.0 * (MIC_RATE / 2.0)
+        maxf = self.freq_slider.tickValue(1)**2.0 * (MIC_RATE / 2.0)
         t = 'Frequency range: {:.0f} - {:.0f} Hz'.format(minf, maxf)
         self.freq_label.setText(t)
-        config.MIN_FREQUENCY = minf
-        config.MAX_FREQUENCY = maxf
+        MIN_FREQUENCY = minf
+        MAX_FREQUENCY = maxf
         create_mel_bank()
 
     def drawFrame(self):
         # Plot filterbank output
-        self.x = np.linspace(config.MIN_FREQUENCY, config.MAX_FREQUENCY, len(
+        self.x = np.linspace(MIN_FREQUENCY, MAX_FREQUENCY, len(
             self.visualization.audio_data))
         self.mel_curve.setData(x=self.x, y=self.fft_plot_filter.update(
             self.visualization.audio_data))

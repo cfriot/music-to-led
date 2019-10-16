@@ -5,6 +5,11 @@ from helpers.color.colorSchemeFormatter import ColorSchemeFormatter
 
 from visualizations.visualizer import Visualizer
 
+from inputs.midiInput import MidiInput
+from inputs.audioInput import AudioInput
+
+from outputs.serialToArduinoLedStrip import SerialToArduinoLedStrip
+
 class AudioPortSettings() :
 
     def __init__(
@@ -14,7 +19,8 @@ class AudioPortSettings() :
         max_frequency = 12000,
         sampling_rate = 44000,
         number_of_audio_samples = 24,
-        min_volume_threshold = 1e-7
+        min_volume_threshold = 1e-7,
+        debug = False
     ):
 
         self.name = name
@@ -23,6 +29,9 @@ class AudioPortSettings() :
         self.sampling_rate = sampling_rate
         self.number_of_audio_samples = number_of_audio_samples
         self.min_volume_threshold = min_volume_threshold
+
+        if(debug):
+            AudioInput.tryPort(name)
 
     def print(self):
         print("--")
@@ -52,10 +61,6 @@ class ShapeSettings() :
         for pixel_number in self.shape:
             self.number_of_pixels += pixel_number
 
-        print(self.shape)
-        print(self.number_of_substrip)
-        print(self.number_of_pixels)
-
     def print(self):
         print("--")
         print("----------------")
@@ -72,6 +77,7 @@ class StripSettings() :
 
     def __init__(
         self,
+        name = "strip",
         serial_port_name = "/dev/tty.usbserial-14240",
         max_brightness = 120,
         midi_ports_for_changing_mode = ["Ableton-virtual-midi-ouput ChangeModLeftSynth"],
@@ -84,14 +90,21 @@ class StripSettings() :
         bpm = 120,
         is_mirror = False,
         active_color_scheme_index = 0,
-        color_schemes = [["#FF0000", "#00FF00"]]
+        color_schemes = [["#FF0000", "#00FF00"]],
+        debug = False
     ):
 
+        self.name = name
         self.serial_port_name = serial_port_name
         self.max_brightness = max_brightness
         self.midi_ports_for_changing_mode = midi_ports_for_changing_mode
         self.associated_midi_channels = associated_midi_channels
         self.active_audio_channel_index = active_audio_channel_index
+
+        if(debug):
+            SerialToArduinoLedStrip.tryPort(serial_port_name)
+            for name in associated_midi_channels + midi_ports_for_changing_mode:
+                MidiInput.tryPort(name)
 
         self.active_shape_index = active_shape_index
         self.shapes = []
@@ -147,16 +160,18 @@ class Settings():
         fps = 60,
         number_of_audio_samples = 24,
         n_rolling_history = 4,
+        debug = False,
         audio_ports = [
             {
                 "name": "Built-in Microphone",
                 "min_frequency": 200,
                 "max_frequency": 12000,
-                "min_volume_threshold": 1e-7
+                "min_volume_threshold": 1e-7,
             }
         ],
         strips = [
             {
+                "name": "strip",
                 "serial_port_name": "/dev/tty.usbserial-14210",
                 "max_brightness": 120,
                 "midi_ports_for_changing_mode": ["Ableton-virtual-midi-ouput ChangeModStripOne"],
@@ -167,7 +182,7 @@ class Settings():
                 "active_shape_index": 0,
                 "is_reverse" : False,
                 "bpm" : 120,
-                "is_mirror" : False,
+                "is_mirror" : False
             }
         ]
     ):
@@ -185,7 +200,8 @@ class Settings():
                     max_frequency = audio_port["max_frequency"],
                     sampling_rate = audio_port["sampling_rate"],
                     number_of_audio_samples = audio_port["number_of_audio_samples"],
-                    min_volume_threshold = audio_port["min_volume_threshold"]
+                    min_volume_threshold = audio_port["min_volume_threshold"],
+                    debug = debug
                 )
             )
         self.number_of_audio_ports = len(self.audio_ports)
@@ -193,6 +209,7 @@ class Settings():
         for strip in strips :
             self.strips.append(
                 StripSettings(
+                    name = strip["name"],
                     serial_port_name = strip["serial_port_name"],
                     max_brightness = strip["max_brightness"],
                     midi_ports_for_changing_mode = strip["midi_ports_for_changing_mode"],
@@ -205,7 +222,8 @@ class Settings():
                     color_schemes = strip["color_schemes"],
                     bpm = strip["bpm"],
                     is_mirror = strip["is_mirror"],
-                    is_reverse = strip["is_reverse"]
+                    is_reverse = strip["is_reverse"],
+                    debug = debug
                 )
             )
         self.number_of_strips = len(self.strips)
@@ -230,7 +248,7 @@ class Settings():
 
 class SettingsLoader():
     """ Load and instanciate settings class from settings file """
-    def __init__(self, file):
+    def __init__(self, file, debug=False):
         with open(file, 'r') as stream:
             try:
                 file = yaml.load(
@@ -242,7 +260,8 @@ class SettingsLoader():
                     fps = file["fps"],
                     n_rolling_history = file["n_rolling_history"],
                     audio_ports = file["audio_ports"],
-                    strips = file["strips"]
+                    strips = file["strips"],
+                    debug = debug
                 )
 
             except yaml.YAMLError as exc:
@@ -253,7 +272,7 @@ if __name__ == "__main__":
 
     print('Starting SettingsLoader test on ports :')
 
-    config = SettingsLoader("settings/settings_file.yml")
+    config = SettingsLoader("settings/settings_file.yml", debug=True)
     config.data.print()
 
     # method_list = [func for func in dir(Visualizer) if callable(getattr(Visualizer, func)) and not func.startswith("__")]
