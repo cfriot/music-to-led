@@ -100,8 +100,10 @@ class AudioInput:
 
 if __name__ == "__main__":
 
-    print('Starting Audio tests test on ports :')
+    # print('Audio ports available :')
+    # print(AudioInput.listAvailablePortsName())
 
+    print('Starting Audio tests test on ports :')
     port_name = "Built-in Microphone"
     print(AudioInput.getPortIndexFromName(port_name))
     audioInput = AudioInput(port_name)

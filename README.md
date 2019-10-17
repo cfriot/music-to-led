@@ -6,10 +6,20 @@ Real-time LED strip music and midi visualization using Python and Arduino via se
 
 It takes multiple audio and midi inputs, use them to make awesome visualizations effects and output the result in multiple led strips via a serial protocol.
 
+# Features
+
+- Multiple audio inputs
+- Multiple midi inputs
+- Multiple led strips
+- Live config changer using dedicated MIDI channel
+- Multiple "virtual" strip shapes
+- Multiple color schemes
+- Revese and mirror mods
+- 8 Vizualizer Effects
+
 
 # Table of contents
 
-- [Features](#features)
 - [Effects and mods](#effects-and-mods)
   * [Effects](#effects)
     + [Audio based](#audio-based)
@@ -25,17 +35,6 @@ It takes multiple audio and midi inputs, use them to make awesome visualizations
 - [TO-DO](#TO-DO)
 - [Links](#links)
 - [License](#license)
-
-# Features
-
-- Multiple audio inputs
-- Multiple midi inputs
-- Multiple led strips
-- Live config changer using dedicated MIDI channel
-- Multiple "virtual" strip shapes
-- Multiple color schemes
-- Revese and mirror mods
-- 8 Vizualizer Effects
 
 
 # Effects and mods
@@ -82,6 +81,7 @@ It takes multiple audio and midi inputs, use them to make awesome visualizations
 
 # Install
 
+## Python program
 Code is compatible with Python 3.7. Install dependencies using pip and the conda package manager.
 
 ```
@@ -89,21 +89,41 @@ pip install -r requirements.txt
 conda install --file requirements.txt
 ```
 
-# Arduino part
+## Arduino part
 
-[Electronic part](arduino/README.md)
+### Electronic scheme
+
+![electronic-scheme](../images/electronic-scheme.png)
+
+### Component list
+
+- 1x [Alim 5V 10A](https://www.amazon.fr/gp/product/B06XCMQ212/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
+- 1x Arduino nano or other
+- 1x 1000mu Capacitor
+- 1x [Led strip connector](https://www.amazon.fr/BTF-LIGHTING-Connectors-WS2812B-WS2811-20pairs/dp/B01DC0KIT2/ref=sr_1_19?__mk_fr_FR=ÅMÅŽÕÑ&keywords=led+strip+connector&qid=1569857203&s=lighting&sr=1-19)
+- 1x Led strip WS2812B
+
+### 3d printed case
+
+![arduino-case](../images/arduino-case.png)
+
+### Led number limitation
+
+It depends on two factors :
+  - Your board maximum baud rate
+  - Your led alimentation
+
+In this case i prefer to not use more than 255 leds for each arduino
 
 
-# Configuration
+## Configuration file
 
-## Ableton live
-
-### Midi channel configuration
-
-The config file called ports MUST match the created and open ports.
-
-![abletonmidisettings](images/ableton-midi-settings-conf.png)
-![osxmidisettings](images/osx-midi-settings-conf.png)
+### Audio channels
+...
+### Strips
+...
+#### Midi channels
+...
 
 # TO-DO
 
