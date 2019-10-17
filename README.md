@@ -28,14 +28,19 @@ It takes multiple audio and midi inputs, use them to make awesome visualizations
     + [Generic](#generic)
   * [Mods](#mods)
 - [Install](#install)
-- [Arduino part](#arduino-part)
-- [Configuration](#configuration)
-  * [Ableton live](#ableton-live)
-    + [Midi channel configuration](#midi-channel-configuration)
-- [TO-DO](#TO-DO)
+  * [Python program](#python-program)
+  * [Arduino part](#arduino-part)
+    + [Electronic scheme](#electronic-scheme)
+    + [Component list](#component-list)
+    + [3d printed case](#3d-printed-case)
+    + [Led number limitation](#led-number-limitation)
+  * [Configuration file](#configuration-file)
+    + [Audio channels](#audio-channels)
+    + [Strips](#strips)
+      - [Midi channels](#midi-channels)
+- [TO-DO](#to-do)
 - [Links](#links)
 - [License](#license)
-
 
 # Effects and mods
 
@@ -93,7 +98,7 @@ conda install --file requirements.txt
 
 ### Electronic scheme
 
-![electronic-scheme](../images/electronic-scheme.png)
+![electronic-scheme](images/electronic-scheme.png)
 
 ### Component list
 
@@ -105,7 +110,7 @@ conda install --file requirements.txt
 
 ### 3d printed case
 
-![arduino-case](../images/arduino-case.png)
+![arduino-case](images/arduino-case.png)
 
 ### Led number limitation
 
