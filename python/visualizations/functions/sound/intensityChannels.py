@@ -7,6 +7,13 @@ import time
 
 class IntensityChannels():
 
+    def initIntensityChannels(self):
+        self.oldStripItensities = []
+        self.oldMaxStripItensities = []
+        self.intervalForDecrease = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.bpm)
+        self.intervalForMaxDecrease = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.bpm) // 2
+
+
     def visualizeIntensityChannels(self):
         """ Effect that expands with increasing sound energy """
 
@@ -21,14 +28,33 @@ class IntensityChannels():
         scale = 0.9
 
         stripItensities = []
+        maxStripItensities = []
+
         chunk_size = len(self.audio_data) // self.pixelReshaper.number_of_strips
-        # print(chunk_size)
+
         for i in range(self.pixelReshaper.number_of_strips) :
             x = chunk_size * i
             y = chunk_size * (i + 1)
             stripItensities.append(int(np.mean(self.audio_data[x:y]**scale)))
+            maxStripItensities.append(int(np.mean(self.audio_data[x:y]**scale)))
+
+            if(self.oldStripItensities != [] and stripItensities[i] < self.oldStripItensities[i]) :
+                stripItensities[i] = self.oldStripItensities[i] - 2
+
+            if(self.oldMaxStripItensities != [] and maxStripItensities[i] < self.oldMaxStripItensities[i]) :
+                maxStripItensities[i] = self.oldMaxStripItensities[i] - 1
+            # else:
+            #     maxStripItensities[i] = -1
+
+        # if(self.timeSinceStart.getMs() >= 300):
+        #     self.timeSinceStart.restart()
 
         # print(stripItensities)
+        # print(maxStripItensities)
+
+        self.oldStripItensities = stripItensities
+        self.oldMaxStripItensities = maxStripItensities
+
         self.pixelReshaper.initActiveShape()
 
         for x, strip in enumerate(self.pixelReshaper.strips):
@@ -38,6 +64,10 @@ class IntensityChannels():
                     strip[0][i] = color_scheme[0][0]
                     strip[1][i] = color_scheme[0][1]
                     strip[2][i] = color_scheme[0][2]
+                if(i == maxStripItensities[x]):
+                    strip[0][i] = color_scheme[1][0]
+                    strip[1][i] = color_scheme[1][1]
+                    strip[2][i] = color_scheme[1][2]
 
             p_filt = ExpFilter(
                 np.tile(1, (3, max_length)),

@@ -20,12 +20,11 @@ def logger(name, information):
 
 class ModSwitcher:
 
-    def __init__(self, visualizer, serialToArduinoLedStrip, config, index):
+    def __init__(self, visualizer, config, index):
 
         self.config = config
         self.strip_config = config.strips[index]
         self.visualizer = visualizer
-        self.serialToArduinoLedStrip = serialToArduinoLedStrip
 
     def changeMod(self):
         if(self.midi_datas):
@@ -57,6 +56,13 @@ class ModSwitcher:
 
                         # BPM BASED
                         elif(mode == 9):
+                            self.visualizer.alternate_colors_size = valueUpdater(
+                                self.visualizer.alternate_colors_size,
+                                velocity,
+                                50,
+                                2
+                            )
+                            self.visualizer.drawAlternateColors()
                             self.strip_config.active_visualizer_effect = "alternate_colors"
                         elif(mode == 10):
                             self.strip_config.active_visualizer_effect = "alternate_colors_full"
@@ -113,7 +119,7 @@ class ModSwitcher:
                             )
                             number_of_pixels = self.strip_config.shapes[self.strip_config.active_shape_index].number_of_pixels
                             pixels = np.tile(.0, (3, number_of_pixels))
-                            self.serialToArduinoLedStrip.update(pixels)
+                            # self.serialOutput.update(pixels)
                             self.visualizer.initVizualiser()
                             self.visualizer.resetFrame()
                             self.visualizer.pixelReshaper.initActiveShape()

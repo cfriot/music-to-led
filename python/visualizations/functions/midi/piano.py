@@ -24,6 +24,9 @@ def putPixel(strip, ledIndex, r, g, b, velocity):
 
 class Piano():
 
+    def initPiano():
+        notes_on = []
+
     def visualizePiano(self):
         """Piano midi visualizer"""
 
@@ -32,8 +35,10 @@ class Piano():
         which_color = 0
         number_of_notes = len(self.midi_datas)
         for midi_note in self.midi_datas:
-            real_note = midi_note["note"]
             if(midi_note["type"] == "note_on"):
+
+                real_note = midi_note["note"]
+
                 which_color = number_of_notes
 
                 if(which_color >= len(color_scheme)):

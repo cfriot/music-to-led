@@ -1,3 +1,102 @@
+
+# ---  # document start
+#
+# ################
+# # CONFIG FILE  #
+# ################
+#
+# # -
+# #   - 20
+# #   - 18
+# #   - 18
+# #   - 18
+#
+# # -
+# #   - 34
+# #   - 52
+# #   - 50
+#
+# fps: 60
+#
+# display_shell_interface: false
+# display_audio_interface: false
+#
+# n_rolling_history: 4
+# number_of_audio_samples: 24
+#
+# audio_ports:
+#   -
+#     name: Built-in Microphone
+#     min_frequency: 200
+#     max_frequency: 12000
+#     sampling_rate: 44000
+#     number_of_audio_samples: 24
+#     min_volume_threshold: 1e-7
+#
+# strips:
+#   -
+#     name: Test
+#     serial_port_name: /dev/tty.usbserial-1420
+#     max_brightness: 120
+#     associated_midi_channels:
+#       - Ableton-virtual-midi-ouput RightSynth
+#       - Ableton-virtual-midi-ouput LeftSynth
+#     midi_ports_for_changing_mode:
+#       - Ableton-virtual-midi-ouput ChangeModStripOne
+#       - Ableton-virtual-midi-ouput ChangeMod
+#     real_shape:
+#       - 20
+#       - 18
+#       - 18
+#       - 18
+#     shapes:
+#       -
+#         - 20
+#         - 18
+#         - 18
+#         - 18
+#       -
+#         - 74
+#     active_audio_channel_index: 0
+#     active_color_index: 0
+#     active_shape_index: 0
+#     is_reverse: false
+#     bpm: 120
+#     is_mirror: true
+#     active_color_scheme_index: 0
+#     color_schemes:
+#       - # pink blue
+#         - "#FF00C8"
+#         - "#00EDFF"
+#       - # orange blue
+#         - "#FFA200"
+#         - "#00C6FF"
+#       - # red green
+#         - "#FF002E"
+#         - "#00FFA4"
+#       - # purple green
+#         - "#F900FF"
+#         - "#22FF00"
+#       - # blue yellow
+#         - "#0024FF"
+#         - "#FFE500"
+#       -
+#         - red
+#         - green
+#         - blue
+#     active_visualizer_effect: scroll
+#
+#
+# ...  # document end
+
+
+
+
+
+
+
+
+
 ---  # document start
 
 ################
@@ -32,7 +131,7 @@ audio_ports:
     number_of_audio_samples: 24
     min_volume_threshold: 1e-7
   # -
-  #   name: Loopback Audio 2
+  #   name: AudioDevice
   #   min_frequency: 200
   #   max_frequency: 12000
   #   sampling_rate: 44000
@@ -41,7 +140,7 @@ audio_ports:
 
 strips:
   -
-    name: infinite_mirror
+    name: Infinite mirror
     serial_port_name: /dev/tty.usbserial-14210
     max_brightness: 120
     associated_midi_channels:
@@ -51,6 +150,11 @@ strips:
       - Ableton-virtual-midi-ouput ChangeModStripOne
       - Ableton-virtual-midi-ouput ChangeMod
       - LPK25
+    real_shape:
+      - 20
+      - 18
+      - 18
+      - 18
     shapes:
       -
         - 20
@@ -58,10 +162,7 @@ strips:
         - 18
         - 18
       -
-        - 30
-        - 12
-        - 30
-        - 12
+        - 74
     active_audio_channel_index: 0
     active_color_index: 0
     active_shape_index: 0
@@ -92,7 +193,7 @@ strips:
     active_visualizer_effect: scroll
 
   -
-    name: office_corner
+    name: Office corner
     serial_port_name: /dev/tty.usbserial-14220
     max_brightness: 120
     associated_midi_channels:
@@ -101,20 +202,22 @@ strips:
       - Ableton-virtual-midi-ouput ChangeModStripTwo
       - Ableton-virtual-midi-ouput ChangeMod
       - LPK25
+    real_shape:
+      - 252
     shapes:
       -
         - 148
         - 104
       -
-        - 64
-        - 64
+        - 74
+        - 74
         - 52
         - 52
       -
-        - 32
-        - 32
-        - 32
-        - 32
+        - 37
+        - 37
+        - 37
+        - 37
         - 26
         - 26
         - 26
@@ -150,7 +253,7 @@ strips:
     active_visualizer_effect: scroll
 
   -
-    name: undefined
+    name: Lantern
     serial_port_name: /dev/tty.usbserial-14230
     max_brightness: 120
     associated_midi_channels:
@@ -158,29 +261,18 @@ strips:
     midi_ports_for_changing_mode:
       - Ableton-virtual-midi-ouput ChangeMod
       - LPK25
+    real_shape:
+      - 26
     shapes:
       -
-        - 252
-      -
-        - 64
-        - 64
-        - 64
-        - 64
-      -
-        - 32
-        - 32
-        - 32
-        - 32
-        - 32
-        - 32
-        - 32
+        - 26
 
     active_audio_channel_index: 0
     active_color_index: 0
     active_shape_index: 0
-    is_reverse: false
     bpm: 120
-    is_mirror: true
+    is_reverse: true
+    is_mirror: false
     active_color_scheme_index: 0
     color_schemes:
       - # pink blue
@@ -205,7 +297,7 @@ strips:
     active_visualizer_effect: scroll
 
   -
-    name: office_front
+    name: Office front
     serial_port_name: /dev/tty.usbserial-14240
     max_brightness: 120
     associated_midi_channels:
@@ -213,28 +305,23 @@ strips:
     midi_ports_for_changing_mode:
       - Ableton-virtual-midi-ouput ChangeMod
       - LPK25
+    real_shape:
+      - 252
     shapes:
       -
-        - 148
-        - 104
+        - 252
       -
-        - 64
-        - 64
+        - 126
+        - 126
+      -
+        - 74
+        - 74
         - 52
         - 52
-      -
-        - 32
-        - 32
-        - 32
-        - 32
-        - 26
-        - 26
-        - 26
-        - 26
 
     active_audio_channel_index: 0
     active_color_index: 0
-    active_shape_index: 0
+    active_shape_index: 1
     is_reverse: false
     bpm: 120
     is_mirror: true

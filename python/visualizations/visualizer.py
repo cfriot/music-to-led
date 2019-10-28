@@ -13,20 +13,24 @@ from visualizations.functions.sound.intensityBounce import IntensityBounce
 from visualizations.functions.sound.intensityChannels import IntensityChannels
 
 from visualizations.functions.midi.piano import Piano
+from visualizations.functions.midi.envelope import Envelope
 
 from visualizations.functions.bpm.alternateColors import AlternateColors
 from visualizations.functions.bpm.neonFadeIn import NeonFadeIn
 
 from visualizations.functions.generic.full import Full
+from visualizations.functions.generic.fire import Fire
 
 
-class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChannels, Energy, Spectrum, Piano, NeonFadeIn):
+class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChannels, Energy, Spectrum, Piano, Fire, Envelope, NeonFadeIn):
 
     def __init__(self, config, index):
         """ The main class that contain all viz functions """
 
         self.strip_config = config.strips[index]
         self.N_FFT_BINS = config.number_of_audio_samples
+        self.timeSinceStart = config.timeSinceStart
+        self.bpm_ms_interval = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.bpm)
         self.initVizualiser()
         self.resetFrame()
 
@@ -34,8 +38,6 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
         self.audio_data = []
         self.midi_datas = []
 
-        self.timeSinceStart = config.timeSinceStart
-        self.bpm_ms_interval = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.bpm)
         self.pixelReshaper = PixelReshaper(config.strips[index])
 
         # print(interval)
@@ -63,6 +65,8 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
         )
         self.initSpectrum()
         self.initFull()
+        self.initFire()
+        self.initIntensityChannels()
         self.initAlternateColors()
 
 
@@ -88,6 +92,10 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
         # MIDI BASED
         if(self.strip_config.active_visualizer_effect == "piano"):
             return self.visualizePiano()
+        if(self.strip_config.active_visualizer_effect == "piano2"):
+            return self.visualizeFire()
+        if(self.strip_config.active_visualizer_effect == "envelope"):
+            return self.visualizeEnvelope()
 
         # BPM BASED
         if(self.strip_config.active_visualizer_effect == "alternate_colors"):

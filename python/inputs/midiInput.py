@@ -31,9 +31,9 @@ class MidiInput:
         self.notes = []
         for msg in self.port.iter_pending():
             if(hasattr(msg, 'type') and (msg.type == "pitchwheel") and msg.pitch):
-                print(msg.pitch)
+                self.notes.append({"port": self.port_name, "type": msg.type, "pitch": msg.pitch})
             if(hasattr(msg, 'type') and (msg.type == "control_change") and msg.control):
-                print(msg.control)
+                self.notes.append({"port": self.port_name, "type": msg.type, "control": msg.control})
             if(hasattr(msg, 'note') and hasattr(msg, 'type') and (msg.type == "note_on" or msg.type == "note_off") and msg.velocity):
                 self.notes.append(
                     {"port": self.port_name, "type": msg.type, "note": msg.note, "velocity": msg.velocity})
@@ -48,6 +48,7 @@ if __name__ == "__main__":
 
     print('Starting MidiInput test on ports :')
     ports = MidiInput.listAvailablePortsName()
+    ports = ['Ableton-virtual-midi-ouput LeftSynth']
     midiClasses = []
     print(ports)
     for port in ports :

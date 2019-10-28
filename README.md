@@ -39,6 +39,7 @@ It takes multiple audio and midi inputs, use them to make awesome visualizations
     + [Strips](#strips)
       - [Midi channels](#midi-channels)
 - [TO-DO](#to-do)
+- [DONE](#done)
 - [Links](#links)
 - [License](#license)
 
@@ -105,7 +106,7 @@ conda install --file requirements.txt
 - 1x [Alim 5V 10A](https://www.amazon.fr/gp/product/B06XCMQ212/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
 - 1x Arduino nano or other
 - 1x 1000mu Capacitor
-- 1x [Led strip connector](https://www.amazon.fr/BTF-LIGHTING-Connectors-WS2812B-WS2811-20pairs/dp/B01DC0KIT2/ref=sr_1_19?__mk_fr_FR=ÅMÅŽÕÑ&keywords=led+strip+connector&qid=1569857203&s=lighting&sr=1-19)
+- 1x [Led strip female connector](https://www.amazon.fr/BTF-LIGHTING-Connectors-WS2812B-WS2811-20pairs/dp/B01DC0KIT2/ref=sr_1_19?__mk_fr_FR=ÅMÅŽÕÑ&keywords=led+strip+connector&qid=1569857203&s=lighting&sr=1-19)
 - 1x Led strip WS2812B
 
 ### 3d printed case
@@ -134,7 +135,14 @@ In this case i prefer to not use more than 255 leds for each arduino
 
 - Electron package with a web interface
 - Remote control for changing modes ( via DMX ? )
-- Ability to mix effects
+- Ability to mix Effects
+- Color palette implementation
+
+# DONE
+
+- Fire effect
+- Itensity
+
 
 # Links
 

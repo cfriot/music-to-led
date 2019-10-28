@@ -101,12 +101,12 @@ class PixelReshaper:
 
 if __name__ == "__main__":
     import time
-    from outputs.serialToArduinoLedStrip import SerialToArduinoLedStrip
+    from outputs.serialOutput import SerialOutput
     from settings.settingsLoader import StripSettings
 
     print('Starting PixelReshaper test on ports :')
-    print(SerialToArduinoLedStrip.listAvailableUsbSerialPorts())
-    ports = SerialToArduinoLedStrip.listAvailableUsbSerialPorts()
+    print(SerialOutput.listAvailableUsbSerialPorts())
+    ports = SerialOutput.listAvailableUsbSerialPorts()
 
     settings = StripSettings()
 
@@ -124,13 +124,12 @@ if __name__ == "__main__":
     pixels[1, number_of_pixels - 2] = 255
 
     tmp = pixelReshaper.reshapeFromPixels(pixels)
-    serialToArduinoLedStrip = SerialToArduinoLedStrip(
-        number_of_pixels, ports)
-    serialToArduinoLedStrip.setup()
+    serialOutput = SerialOutput(number_of_pixels, ports)
+    serialOutput.setup()
 
     while True:
         pixels = np.roll(pixels, 1, axis=1)
-        serialToArduinoLedStrip.update(
+        serialOutput.update(
             pixelReshaper.reshapeFromPixels(pixels)
         )
         time.sleep(.2)

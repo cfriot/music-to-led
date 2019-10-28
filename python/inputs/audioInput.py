@@ -4,7 +4,7 @@ import pyaudio
 import rtmidi
 
 class AudioInput:
-    def __init__(self, port_name):
+    def __init__(self, port_name, min_frequency, max_frequency):
         """ Create a data stream from audio input """
         self.audio = pyaudio.PyAudio()
         self.rate = 44100
@@ -104,7 +104,7 @@ if __name__ == "__main__":
     # print(AudioInput.listAvailablePortsName())
 
     print('Starting Audio tests test on ports :')
-    port_name = "Built-in Microphone"
+    port_name = "AudioDevice"
     print(AudioInput.getPortIndexFromName(port_name))
     audioInput = AudioInput(port_name)
 

@@ -12,7 +12,7 @@ class AudioDispatcher():
         self.audio_input_classes = []
         self.audio_processors = []
         for audio_port in self.audio_ports:
-            self.audio_input_classes.append(AudioInput(audio_port.name))
+            self.audio_input_classes.append(AudioInput(audio_port.name, audio_port.min_frequency, audio_port.max_frequency))
             self.audio_processors.append(AudioProcessing())
 
     def dispatch(self):

@@ -2,7 +2,7 @@ import sys, struct, serial, time, glob
 import numpy as np
 
 
-class SerialToArduinoLedStrip:
+class SerialOutput:
     """ Send pixels data to arduino via serial port """
     def __init__(self, number_of_pixels=30, port="", baud_rate=1000000):
         self.serial_port = port
@@ -26,7 +26,7 @@ class SerialToArduinoLedStrip:
             s.close()
         except (OSError, serial.SerialException):
             print("Serial port not found or busy, please check your config file -> ", port_name)
-            print("Here's the audio ports available ->", SerialToArduinoLedStrip.listAvailableUsbSerialPorts())
+            print("Here's the audio ports available ->", SerialOutput.listAvailableUsbSerialPorts())
             quit()
 
     @staticmethod
@@ -58,6 +58,9 @@ class SerialToArduinoLedStrip:
             except (OSError, serial.SerialException):
                 pass
         return result
+
+    def isOnline(self):
+        return not self.trying_to_connect
 
     def setup(self):
 
@@ -110,6 +113,7 @@ class SerialToArduinoLedStrip:
 
     def update(self, pixels):
         """ Send frame to the arduino """
+        # if(self.number_of_pixels != len(pixels[0])):
         self.pixels = np.tile(.0, (3, len(pixels[0])))
         self.number_of_pixels = len(pixels[0])
         self.pixels = pixels
@@ -130,13 +134,13 @@ class SerialToArduinoLedStrip:
 
 if __name__ == "__main__":
 
-    print('Starting SerialToArduinoLedStrip test on ports :')
-    ports = SerialToArduinoLedStrip.listAvailableUsbSerialPorts()
-    print(SerialToArduinoLedStrip.listAvailableUsbSerialPorts())
+    print('Starting SerialOutput test on ports :')
+    ports = SerialOutput.listAvailableUsbSerialPorts()
+    print(SerialOutput.listAvailableUsbSerialPorts())
     # ports = ['/dev/tty.usbserial-14240', '/dev/tty.usbserial-14210']
     # 148
     number_of_pixels = 200
-    serialToArduinoLedStrips = []
+    serialOutputs = []
 
     pixels = np.tile(1, (3, number_of_pixels))
     pixels *= 0
@@ -148,11 +152,11 @@ if __name__ == "__main__":
     pixels[2, 5] = 255  # Set 3rd pixel blue
 
     for port in ports:
-        serialToArduinoLedStrips.append(SerialToArduinoLedStrip(
+        serialOutputs.append(SerialOutput(
             number_of_pixels, port))
 
     while True:
         pixels = np.roll(pixels, 1, axis=1)
-        for serialToArduinoLedStrip in serialToArduinoLedStrips:
-            serialToArduinoLedStrip.update(pixels)
+        for serialOutput in serialOutputs:
+            serialOutput.update(pixels)
         time.sleep(.016)

@@ -34,42 +34,12 @@ void setup()
   Serial.begin(115200);
   Serial.println();
 
-  pinMode(ledFeedback1, OUTPUT);
-  pinMode(ledFeedback2, OUTPUT);
-  pinMode(ledFeedback3, OUTPUT);
-
   Serial.print("Setting soft-AP ... ");
-  boolean result = WiFi.softAP("gingerlednetwork", "lesledscestbienetlesponeysaussi");
-  if(result == true)
-  {
-    Serial.println("Ready");
-    setLedState(HIGH);
-  }
-  else
-  {
-    ledBlink();
-    Serial.println("Failed!");
-  }
-  delay(2500);
-  setLedState(LOW);
+  boolean result = WiFi.softAP("dodocwifi", "password");
 }
 
 void loop()
 {
-  setLedState(LOW);
   Serial.printf("Stations connected = %d\n", WiFi.softAPgetStationNum());
-  if(WiFi.softAPgetStationNum() == 1) {
-    digitalWrite(ledFeedback1, HIGH);
-  }
-  else if(WiFi.softAPgetStationNum() == 2) {
-    digitalWrite(ledFeedback1, HIGH);
-    digitalWrite(ledFeedback2, HIGH);
-  }
-  else if(WiFi.softAPgetStationNum() == 3) {
-    digitalWrite(ledFeedback1, HIGH);
-    digitalWrite(ledFeedback2, HIGH);
-    digitalWrite(ledFeedback3, HIGH);
-  }
-  
   delay(3000);
 }

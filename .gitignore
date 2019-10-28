@@ -22,7 +22,7 @@ $RECYCLE.BIN/
 /python-tests
 /midi-test-files
 singleStripMain.py
-
+/python-electron-app
 # Images
 images/sources
 *.afdesign
