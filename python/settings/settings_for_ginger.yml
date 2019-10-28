@@ -1,9 +1,9 @@
-
 ---  # document start
 
 fps: 60
 
-display_web_interface: false
+display_shell_interface: false
+display_audio_interface: false
 
 n_rolling_history: 4
 number_of_audio_samples: 24
@@ -53,6 +53,7 @@ strips:
     is_mirror: true
     active_color_scheme_index: 0
     color_schemes:
+      -
         - "#FF00C8"
         - "#00EDFF"
         - "#FFA200"
@@ -68,57 +69,5 @@ strips:
         - green
         - blue
     active_visualizer_effect: scroll
-
-  -
-    name: RightPart
-    serial_port_name: /dev/tty.usbserial-1420
-    max_brightness: 120
-    associated_midi_channels:
-      - Ableton-virtual-midi-ouput RightSynth
-    midi_ports_for_changing_mode:
-      - Ableton-virtual-midi-ouput ChangeModStripRight
-      - Ableton-virtual-midi-ouput ChangeMod
-    real_shape:
-      -
-        - 34
-        - 52
-        - 50
-    shapes:
-      -
-        - 34
-        - 52
-        - 50
-      -
-        - 17
-        - 17
-        - 26
-        - 26
-        - 25
-        - 25
-
-    active_audio_channel_index: 0
-    active_color_index: 0
-    active_shape_index: 0
-    is_reverse: false
-    bpm: 120
-    is_mirror: true
-    active_color_scheme_index: 0
-    color_schemes:
-        - "#FF00C8"
-        - "#00EDFF"
-        - "#FFA200"
-        - "#00C6FF"
-        - "#FF002E"
-        - "#00FFA4"
-        - "#F900FF"
-        - "#22FF00"
-        - "#0024FF"
-        - "#FFE500"
-      -
-        - red
-        - green
-        - blue
-    active_visualizer_effect: scroll
-
 
 ...  # document end
