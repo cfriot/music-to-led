@@ -30,7 +30,6 @@ strips:
       - Ableton-virtual-midi-ouput RightSynth
       - Ableton-virtual-midi-ouput LeftSynth
     midi_ports_for_changing_mode:
-      - Ableton-virtual-midi-ouput ChangeModStripOne
       - Ableton-virtual-midi-ouput ChangeMod
     real_shape:
       - 34
