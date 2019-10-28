@@ -15,8 +15,6 @@ from outputs.serialOutput import SerialOutput
 from visualizations.visualizer import Visualizer
 from visualizations.modSwitcher import ModSwitcher
 
-from debug.audioInterface import AudioInterface
-
 if __name__ == "__main__":
 
 
