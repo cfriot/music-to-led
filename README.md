@@ -7,20 +7,19 @@ Real-time LED strip music and midi visualization using Python and Arduino via se
 
 It takes multiple audio and midi inputs, use them to make awesome visualizations effects and output the result in multiple led strips via a serial protocol.
 
-![software-architecture](images/archi.png)
-
-<!--
-# Features
+**Features**
 
 - Multiple audio inputs
 - Multiple midi inputs
 - Multiple led strips
-- Live config changer using dedicated MIDI channel
+- Live config changer using dedicated MIDI channels
 - Multiple "virtual" strip shapes
 - Multiple color schemes
 - Revese and mirror mods
-- 8 Vizualizer Effects -->
+- 8 Vizualizer Effects
 
+
+![software-architecture](images/archi.png)
 
 - [Features](#features)
   * [Effects](#effects)
@@ -29,7 +28,10 @@ It takes multiple audio and midi inputs, use them to make awesome visualizations
     + [BPM based](#bpm-based)
     + [Generic](#generic)
   * [Mods](#mods)
-- [Configuration file](#configuration-file)
+- [Configuration](#configuration)
+  * [Audio channels](#audio-channels)
+  * [Midi channels](#midi-channels)
+  * [CONFIG.yml](#configyml)
 - [Install](#install)
   * [Python program](#python-program)
   * [Arduino part](#arduino-part)
@@ -96,9 +98,23 @@ Add gif to explain
 | 27 | D#-0 | - | -
 
 
-# Configuration file
+# Configuration
 
-**CONFIG.yml**
+## Audio channels
+
+...
+
+## Midi channels
+
+![osx-midi-settings](images/osx-midi-settings.png)
+
+### Ableton live
+
+![ableton-midi-settings](images/ableton-midi-settings.png)
+
+...
+
+## CONFIG.yml
 
     ---  # document start
 
