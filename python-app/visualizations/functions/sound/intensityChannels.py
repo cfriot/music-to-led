@@ -65,9 +65,9 @@ class IntensityChannels():
                     strip[1][i] = color_scheme[0][1]
                     strip[2][i] = color_scheme[0][2]
                 if(i == maxStripItensities[x]):
-                    strip[0][i] = color_scheme[1][0] if color_scheme[1][0] else color_scheme[0][0]
-                    strip[1][i] = color_scheme[1][1] if color_scheme[1][1] else color_scheme[0][1]
-                    strip[2][i] = color_scheme[1][2] if color_scheme[1][2] else color_scheme[0][2]
+                    strip[0][i] = color_scheme[1][0] if len(color_scheme) >= 2 else color_scheme[0][0]
+                    strip[1][i] = color_scheme[1][1] if len(color_scheme) >= 2 else color_scheme[0][1]
+                    strip[2][i] = color_scheme[1][2] if len(color_scheme) >= 2 else color_scheme[0][2]
 
             p_filt = ExpFilter(
                 np.tile(1, (3, max_length)),

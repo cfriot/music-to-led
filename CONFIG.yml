@@ -27,15 +27,14 @@ strips:
     serial_port_name: /dev/tty.usbserial-14210
     max_brightness: 120
     associated_midi_channels:
-      - Audio2Led RightSynth
-      - Audio2Led LeftSynth
+      - Audio2Led Synth
     midi_ports_for_changing_mode:
       - Audio2Led ChangeMod
     real_shape:
       - 252
     shapes:
       -
-        - 148
+        - 147
         - 104
       -
         - 74
@@ -87,8 +86,7 @@ strips:
     serial_port_name: /dev/tty.usbserial-14220
     max_brightness: 120
     associated_midi_channels:
-      - Audio2Led RightSynth
-      - Audio2Led LeftSynth
+      - Audio2Led Synth
     midi_ports_for_changing_mode:
       - Audio2Led ChangeMod
     real_shape:
@@ -152,8 +150,7 @@ strips:
     serial_port_name: /dev/tty.usbserial-14230
     max_brightness: 120
     associated_midi_channels:
-      - Audio2Led RightSynth
-      - Audio2Led LeftSynth
+      - Audio2Led Synth
     midi_ports_for_changing_mode:
       - Audio2Led ChangeMod
     real_shape:
@@ -174,7 +171,6 @@ strips:
     color_schemes:
       - # pink blue
         - "#FF00C8"
-        - "#00EDFF"
       - # orange blue
         - "#FFA200"
         - "#00C6FF"

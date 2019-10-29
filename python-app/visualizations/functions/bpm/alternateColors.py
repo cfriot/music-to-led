@@ -32,7 +32,6 @@ class AlternateColors():
             self.alternate_colors_index += 1
             self.timeSinceStart.restart()
 
-        print(int(1 * (self.strip_config.bpm / 100)) + 1)
         self.pixels = np.roll(
             self.pixels, int(1 * (self.strip_config.bpm / 100)) + 1, axis=1)
         return self.pixelReshaper.reshapeFromPixels(self.pixels)

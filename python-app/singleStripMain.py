@@ -18,7 +18,7 @@ from visualizations.modSwitcher import ModSwitcher
 if __name__ == "__main__":
 
 
-    settingsLoader = SettingsLoader("settings/settings_file.yml")
+    settingsLoader = SettingsLoader("../CONFIG.yml")
 
     parser = argparse.ArgumentParser()
     parser.add_argument("name", help="strip name",

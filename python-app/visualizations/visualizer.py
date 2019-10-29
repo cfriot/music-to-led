@@ -92,10 +92,10 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
         # MIDI BASED
         if(self.strip_config.active_visualizer_effect == "piano"):
             return self.visualizePiano()
-        if(self.strip_config.active_visualizer_effect == "piano2"):
-            return self.visualizeFire()
         if(self.strip_config.active_visualizer_effect == "envelope"):
             return self.visualizeEnvelope()
+
+
 
         # BPM BASED
         if(self.strip_config.active_visualizer_effect == "alternate_colors"):
@@ -104,9 +104,15 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
             return self.visualizeAlternateColorsFull()
         if(self.strip_config.active_visualizer_effect == "alternate_colors_for_shapes"):
             return self.visualizeAlternateColorsForShapes()
+
+
+        # GENERIC
         if(self.strip_config.active_visualizer_effect == "full"):
             return self.visualizeFull()
         if(self.strip_config.active_visualizer_effect == "nothing"):
             return self.visualizeNothing()
+        if(self.strip_config.active_visualizer_effect == "fire"):
+            return self.visualizeFire()
+
 
         return self.pixels

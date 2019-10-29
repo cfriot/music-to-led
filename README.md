@@ -1,27 +1,24 @@
 
-# Real-time Audio and Midi based LED Strip animations
+![Logo](electron-app/src/img/logo.svg)
+
+# Audio 2 LED
 
 Real-time LED strip music and midi visualization using Python and Arduino via serial communication.
 
 # How it works ?
 
 It takes multiple audio and midi inputs, use them to make awesome visualizations effects and output the result in multiple led strips via a serial protocol.
+You can use a MIDI port to send visualization mod change instruction.
 
-**Features**
-
-- Multiple audio inputs
-- Multiple midi inputs
-- Multiple led strips
-- Live config changer using dedicated MIDI channels
-- Multiple "virtual" strip shapes
 - Multiple color schemes
+- Multiple virtual strip shapes
 - Revese and mirror mods
-- 8 Vizualizer Effects
-
+- 8 Vizualization effects
+- Live mods change using dedicated MIDI channels
 
 ![software-architecture](images/archi.png)
 
-- [Features](#features)
+- [Effects & Mods](#features)
   * [Effects](#effects)
     + [Sound based](#sound-based)
     + [Midi based](#midi-based)
@@ -35,14 +32,14 @@ It takes multiple audio and midi inputs, use them to make awesome visualizations
 - [Install](#install)
   * [Python program](#python-program)
   * [Arduino part](#arduino-part)
-    + [Electronic scheme](#electronic-scheme)
     + [Component list](#component-list)
+    + [Electronic scheme](#electronic-scheme)
     + [3d printed case](#3d-printed-case)
     + [Led number limitation](#led-number-limitation)
 - [Links](#links)
 - [License](#license)
 
-# Features
+# Effects & Mods
 
 ## Effects
 
@@ -215,7 +212,7 @@ conda install --file requirements.txt
 
 ## Arduino part
 
-You can find 3d models of the cases [there](/arduino/) and the arduino code for each protocol is [there](/arduino/)
+You can find 3d models of the cases, the arduino code and all the instructions you need to setup the project. [Arduino part](/arduino/).
 
 ### Electronic scheme
 
@@ -241,9 +238,9 @@ It depends on two factors :
 
 For now, consider not using more than 254 leds.
 
-# Links
+<!-- # Links
 
-- [Wikipedia DMX](https://fr.wikipedia.org/wiki/DMX_(%C3%A9clairage)
+- [Wikipedia DMX](https://fr.wikipedia.org/wiki/DMX_(%C3%A9clairage) -->
 
 # License
 This project was developed by Thibaud FRERE and is released
