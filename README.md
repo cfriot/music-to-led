@@ -45,6 +45,12 @@ You can use a MIDI port to send visualization mod change instruction.
 
 ### Sound based
 
+- ![scroll](images/scroll.gif)
+- ![energy](images/energy.gif)
+- ![intensity](images/intensity.gif)
+- ![spectrum](images/spectrum.gif)
+
+
 | *Number* | *Midi Note* | *Effect name* | *Params*
 |:--|:--|:--|:--
 | 0 | C-0 | **Scroll** | -
@@ -59,7 +65,7 @@ Add gif to explain
 | *Number* | *Midi Note* | *Effect name* | *Params*
 |:--|:--|:--|:--
 | 5 | F-2   | **Piano** | -
-| 6 | F#-2  | **Envelope** | Based on pitch bend
+| 6 | F#-2  | **Envelope** | Color intensity based on pitch bend
 | 7 | G-2   | - | -
 | 8 | G#-2  | - | -
 
@@ -67,7 +73,7 @@ Add gif to explain
 
 | *Number* | *Midi Note* | *Effect name* | *Params*
 |:--|:--|:--|:--
-| 10 | A#-2   | **AlternateColors** | Size based on velocity
+| 10 | A#-2   | **AlternateColors** | Chunk size based on velocity
 | 11 | B-2    | **AlternateColorsFull** | -
 | 12 | C-1    | **AlternateColorsForStrips** | -
 | 13 | C#-1   | - | -
@@ -87,10 +93,10 @@ Add gif to explain
 |:--|:--|:--|:--
 | 20 | G#-1  | **Reverse mode** | -
 | 21 | A-1  | **Mirror mode** | -
-| 22 | A#-1 | **Shapes** | based on velocity
-| 23 | B-1 | **Color schemes** | based on velocity
-| 24 | C-0  | **Bpm** | based on velocity
-| 25 | C#-0  | **Audio channel** | based on velocity
+| 22 | A#-1 | **Shapes** | Size based on velocity
+| 23 | B-1 | **Color schemes** | Size based on velocity
+| 24 | C-0  | **Bpm** | Size based on velocity
+| 25 | C#-0  | **Audio channel** | Size based on velocity
 | 26 | D-0 | **Reset Frame** | -
 | 27 | D#-0 | - | -
 
@@ -144,6 +150,10 @@ Add gif to explain
         is_reverse: false
         is_mirror: true
         bpm: 120
+
+        # Be sure that real_shape and shapes only contains even numbers
+        # It may cause crash if it's not the case
+
         real_shape:
           - 252
         shapes:
@@ -239,7 +249,6 @@ It depends on two factors :
 For now, consider not using more than 254 leds.
 
 <!-- # Links
-
 - [Wikipedia DMX](https://fr.wikipedia.org/wiki/DMX_(%C3%A9clairage) -->
 
 # License

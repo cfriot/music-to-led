@@ -12,6 +12,12 @@ from inputs.audioInput import AudioInput
 
 from outputs.serialOutput import SerialOutput
 
+def isAnEvenArray(arr):
+    for item in arr:
+        if(item % 2 == 1):
+            return False
+    return True
+
 class AudioPortSettings() :
 
     def __init__(

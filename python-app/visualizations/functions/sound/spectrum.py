@@ -52,27 +52,31 @@ def interpolate(y, new_length):
 class Spectrum():
 
     def initSpectrum(self):
-        self.prev_spectrum = np.tile(0.01, self.number_of_pixels // 2)
+        self.prev_spectrum = np.tile(0.01, self.number_of_pixels)
         self.r_filt = ExpFilter(
-            np.tile(0.01, self.number_of_pixels // 2),
+            np.tile(0.01, self.number_of_pixels),
             alpha_decay = 0.2,
             alpha_rise=0.99
         )
         self.g_filt = ExpFilter(
-            np.tile(0.01, self.number_of_pixels // 2),
+            np.tile(0.01, self.number_of_pixels),
             alpha_decay = 0.05,
             alpha_rise=0.3
         )
         self.b_filt = ExpFilter(
-            np.tile(0.01, self.number_of_pixels // 2),
+            np.tile(0.01, self.number_of_pixels),
             alpha_decay = 0.1,
             alpha_rise=0.5
         )
-
+        self.common_mode = ExpFilter(
+            np.tile(0.01, self.number_of_pixels),
+            alpha_decay = 0.99,
+            alpha_rise=0.01
+        )
     def visualizeSpectrum(self):
         """Effect that maps the Mel filterbank frequencies onto the LED strip"""
         self.audio_data = np.copy(interpolate(
-            self.audio_data, self.number_of_pixels // 2))
+            self.audio_data, self.number_of_pixels))
         self.common_mode.update(self.audio_data)
         diff = self.audio_data - self.prev_spectrum
         self.prev_spectrum = np.copy(self.audio_data)
@@ -82,10 +86,11 @@ class Spectrum():
             np.copy(self.audio_data - self.common_mode.value))
         b = self.b_filt.update(
             np.copy(self.audio_data - self.common_mode.value))
-        # Mirror the color channels for symmetric output
-        r = np.concatenate((r[::-1], r))
-        g = np.concatenate((g[::-1], g))
-        b = np.concatenate((b[::-1], b))
+
+        # # Mirror the color channels for symmetric output
+        # r = np.concatenate((r[::-1], r))
+        # g = np.concatenate((g[::-1], g))
+        # b = np.concatenate((b[::-1], b))
 
         self.pixels = np.array([r, g, b]) * 255
 

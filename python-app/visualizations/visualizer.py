@@ -58,11 +58,6 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
             alpha_decay = 0.1,
             alpha_rise=0.99
         )
-        self.common_mode = ExpFilter(
-            np.tile(0.01, self.number_of_pixels // 2),
-            alpha_decay = 0.99,
-            alpha_rise=0.01
-        )
         self.initSpectrum()
         self.initFull()
         self.initFire()
