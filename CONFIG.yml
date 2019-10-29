@@ -90,10 +90,10 @@ strips:
     midi_ports_for_changing_mode:
       - Audio2Led ChangeMod
     real_shape:
-      - 252
+      - 50
     shapes:
       -
-        - 252
+        - 50
       -
         - 126
         - 126
