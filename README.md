@@ -243,7 +243,7 @@ For now, consider not using more than 254 leds.
 
 # Links
 
-- https://fr.wikipedia.org/wiki/DMX_(%C3%A9clairage)
+- [Wikipedia DMX](https://fr.wikipedia.org/wiki/DMX_(%C3%A9clairage)
 
 # License
 This project was developed by Thibaud FRERE and is released
