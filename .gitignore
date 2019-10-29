@@ -19,9 +19,8 @@ $RECYCLE.BIN/
 
 
 # Tests
-/python-tests
+python/python-tests
 /midi-test-files
-/python-electron-app
 # Images
 images/sources
 *.afdesign
@@ -37,6 +36,9 @@ __pycache__/
 .DS_Store
 .AppleDouble
 .LSOverride
+
+#node modules
+node_modules/
 
 # py2app
 /dist

@@ -1,4 +1,8 @@
 /***************************************************
+   Audio 2 Led project
+
+   Arduino Nano with HC-05 Led controller firmware v0.1
+
    COMMANDS
    -----------------------------------------------
    00

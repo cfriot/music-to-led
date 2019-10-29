@@ -1,5 +1,5 @@
 /****************************************
- Ginger Led Network
+ Audio 2 Led project
 
  ESP8266 Hotspot wifi v0.1
 ****************************************/

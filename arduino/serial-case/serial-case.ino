@@ -1,4 +1,8 @@
 /***************************************************
+   Audio 2 Led project
+
+   Arduino Nano Led controller firmware v0.1
+
    COMMANDS
    -----------------------------------------------
    00
@@ -32,7 +36,7 @@
   #include <SoftwareSerial.h>
   SoftwareSerial Bluetooth(11, 10); // (RX, TX) (pin Rx BT, pin Tx BT)
 #endif
-    
+
 #define PIXELS 500
 
 byte pixelBuffer[3];
@@ -67,7 +71,7 @@ void loop()
   // Read a command
   while (Serial.available() == 0);
   byte command = Serial.read();
-  
+
   switch (command)
   {
     // Show frame
@@ -86,10 +90,10 @@ void loop()
 
       // Read number of pixels
       while (Serial.available() == 0);
-      
+
       Serial.readBytes(countBuffer, 2);
       count = bytesToInt(countBuffer[0], countBuffer[1]);
-      
+
       // Read and update pixels
       for (int i = 0; i < count; i++)
       {

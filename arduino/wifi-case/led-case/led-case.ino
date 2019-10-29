@@ -1,5 +1,5 @@
 /****************************************
- Ginger Led Network
+ Audio 2 Led project
 
  ESP8266 Led controller firmware v0.1
 ****************************************/
@@ -21,7 +21,7 @@
 
   const char* ssid     = "gingerlednetwork2";
   const char* password = "lesledscestbienetinternetaussi";
-  // IP LEFT 13 RIGHT 10 at home 
+  // IP LEFT 13 RIGHT 10 at home
   IPAddress ip(192, 168, 31, IP); // IP must match the IP in config.py
   IPAddress gateway(192, 168, 31, 1); // Set gateway to your router's gateway 192.168.1.234
   IPAddress subnet(255, 255, 255, 0);
@@ -77,7 +77,7 @@ static void sendMicroThroughUdp(unsigned long now) {
     Serial.println(analogRead(0));
   #endif
   port.endPacket();
-  
+
 }
 
 void setup() {
@@ -95,7 +95,7 @@ void setup() {
         Serial.print(".");
         digitalWrite(ledFeedback, !digitalRead(ledFeedback));
     }
-    
+
     digitalWrite(ledFeedback, HIGH);
 
     //#if DEV_MODE
@@ -105,19 +105,19 @@ void setup() {
       Serial.print("IP address: ");
       Serial.println(WiFi.localIP());
     //#endif DEV_MODE
-    
+
     port.begin(localPort);
     ledstrip.Begin(); // Begin output
     ledstrip.Show(); // Clear the strip for use
 }
 
 void loop() {
-  
+
      unsigned long now = millis();
     // Read data over socket
     int packetSize = port.parsePacket();
     // If packets have been received, interpret the command
-  
+
     if (packetSize) {
         if(!hasAlreadyRecieveAnything) { hasAlreadyRecieveAnything = true; }
         digitalWrite(ledFeedback, HIGH);
@@ -137,9 +137,9 @@ void loop() {
     else if (hasAlreadyRecieveAnything) {
       digitalWrite(ledFeedback, LOW);
     }
-  
+
     sendMicroThroughUdp(now);
-    
+
     #if DEV_MODE
       printFps();
     #endif

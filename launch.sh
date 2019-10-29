@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd python
+cd python-app
 python main.py

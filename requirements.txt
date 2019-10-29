@@ -1,9 +1,0 @@
-numpy
-scipy
-pyqtgraph
-qt
-colour
-psutil
-python-rtmidi
-zerorpc
-python-socketio

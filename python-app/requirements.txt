@@ -1,0 +1,8 @@
+numpy
+scipy
+colour
+psutil
+python-rtmidi
+zerorpc
+python-socketio
+pyserial

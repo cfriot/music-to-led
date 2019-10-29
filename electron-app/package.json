@@ -1,0 +1,28 @@
+{
+  "name": "Audio2Led",
+  "version": "1.0.0",
+  "description": "A minimal Electron and Python audio led animator ",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/fyears/electron-python-example",
+  "keywords": [
+    "Electron",
+    "Python",
+    "zerorpc",
+    "demo"
+  ],
+  "author": "fyears",
+  "license": "MIT",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "zerorpc": "git+https://github.com/fyears/zerorpc-node.git"
+  },
+  "devDependencies": {
+    "electron": "^1.7.6",
+    "electron-packager": "^9.0.1"
+  }
+}
