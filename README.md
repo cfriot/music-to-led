@@ -60,7 +60,7 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 
 | *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
 |:--|:--|:--|:--|:--
-| 0 | C-0 | **Scroll** | - | ![scroll](images/scroll.gif)
+| 0 | C-2 | **Scroll** | - | ![scroll](images/scroll.gif)
 | 1 | C#-2 | **Energy** | - | ![energy](images/energy.gif)
 | 2 | D-2 | **Intensity** | - | ![intensity](images/intensity.gif)
 | 3 | D#-2 | **Spectrum** | - | ![spectrum](images/spectrum.gif)
