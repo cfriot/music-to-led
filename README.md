@@ -16,13 +16,13 @@ Midi channels are used as a source for effect AND as a mod changer. -->
 
 # Table of contents
 
-- [Effects & Mods](#features)
+- [Effects & Modes](#features)
   * [Effects](#effects)
     + [Sound based](#sound-based)
     + [Midi based](#midi-based)
     + [BPM based](#bpm-based)
     + [Generic](#generic)
-  * [Mods](#mods)
+  * [Modes](#modes)
 - [Configuration](#configuration)
   * [Audio channels](#audio-channels)
   * [Midi channels](#midi-channels)
