@@ -1,10 +1,7 @@
 
-<img src="images/logo.svg" width="148">
-
-# Audio 2 LED
+<img src="images/logo.svg" width="248">
 
 A professionnal live light setup for less than 100 $.
-
 Real-time LED strip music and midi visualization using Python and Arduino via serial communication.
 
 # How it works ?
