@@ -1,6 +1,8 @@
 
 <img src="images/logo.svg" width="300">
 
+![code-covergage](https://img.shields.io/badge/Code%20coverage-0%20%25-red)
+
 Real-time music and midi visualizations on led strips using Python, Electron and Arduino.
 
 # How it works ?
@@ -17,7 +19,8 @@ Midi channels are used as a source for effect AND as a mod changer. -->
 # What do i need to make one ?
 
 1. Install the program
-2. Create an arduino box 
+2. Create an arduino box
+...
 
 # Table of contents
 
