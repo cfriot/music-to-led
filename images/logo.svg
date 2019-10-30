@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 212 49" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-773.887,-939.482)">
+        <g transform="matrix(2.55389,0,0,2.55389,-2871.95,-871.945)">
+            <text x="1450.7px" y="722.747px" style="font-family:'RobotoCondensed-BoldItalic', 'Roboto Condensed';font-weight:700;font-style:italic;font-size:12px;fill:url(#_Linear1);">AUDIO 2 LED</text>
+        </g>
+        <g transform="matrix(1,0,0,1,-83.1095,469.136)">
+            <path d="M881.194,470.346C894.549,470.346 905.392,481.189 905.392,494.544C905.392,507.899 894.549,518.741 881.194,518.741C867.839,518.741 856.997,507.899 856.997,494.544C856.997,481.189 867.839,470.346 881.194,470.346ZM881.194,473.323C892.907,473.323 902.415,482.832 902.415,494.544C902.415,506.256 892.907,515.765 881.194,515.765C869.482,515.765 859.973,506.256 859.973,494.544C859.973,482.832 869.482,473.323 881.194,473.323Z" style="fill:url(#_Linear2);"/>
+        </g>
+        <g transform="matrix(1,0,0,1,-85.0941,395.127)">
+            <clipPath id="_clip3">
+                <path d="M881.613,570.704C882.205,570.704 882.685,571.184 882.685,571.775L882.685,578.235C882.685,578.827 882.205,579.307 881.613,579.307L879.47,579.307C878.878,579.307 878.398,578.827 878.398,578.235L878.398,571.775C878.398,571.184 878.878,570.704 879.47,570.704L881.613,570.704ZM888.699,559.752C889.291,559.752 889.771,560.232 889.771,560.824L889.771,578.235C889.771,578.827 889.291,579.307 888.699,579.307L886.556,579.307C885.964,579.307 885.484,578.827 885.484,578.235L885.484,560.824C885.484,560.232 885.964,559.752 886.556,559.752L888.699,559.752ZM895.581,566.185C896.173,566.185 896.653,566.665 896.653,567.256L896.653,578.235C896.653,578.827 896.173,579.307 895.581,579.307L893.438,579.307C892.846,579.307 892.366,578.827 892.366,578.235L892.366,567.256C892.366,566.665 892.846,566.185 893.438,566.185L895.581,566.185ZM874.732,557.099C875.323,557.099 875.803,557.58 875.803,558.171L875.803,578.235C875.803,578.827 875.323,579.307 874.732,579.307L872.588,579.307C871.997,579.307 871.517,578.827 871.517,578.235L871.517,558.171C871.517,557.58 871.997,557.099 872.588,557.099L874.732,557.099Z"/>
+            </clipPath>
+            <g clip-path="url(#_clip3)">
+                <circle cx="883.19" cy="568.549" r="21.734" style="fill:url(#_Linear4);"/>
+            </g>
+        </g>
+    </g>
+    <defs>
+        <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(103.769,0,0,27.5252,1426.69,718.864)"><stop offset="0" style="stop-color:rgb(131,211,230);stop-opacity:1"/><stop offset="0.01" style="stop-color:rgb(119,100,172);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(168,73,155);stop-opacity:1"/></linearGradient>
+        <linearGradient id="_Linear2" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(43.4685,0,0,43.4685,861.456,568.549)"><stop offset="0" style="stop-color:rgb(131,211,230);stop-opacity:1"/><stop offset="0.51" style="stop-color:rgb(119,100,172);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(168,73,155);stop-opacity:1"/></linearGradient>
+        <linearGradient id="_Linear4" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(43.4685,0,0,43.4685,861.456,568.549)"><stop offset="0" style="stop-color:rgb(131,211,230);stop-opacity:1"/><stop offset="0.51" style="stop-color:rgb(119,100,172);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(168,73,155);stop-opacity:1"/></linearGradient>
+    </defs>
+</svg>

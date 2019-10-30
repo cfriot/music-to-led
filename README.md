@@ -1,9 +1,10 @@
 
-<img src="electron-app/src/img/logo.svg" width="48">
+<img src="images/logo.svg" width="148">
 
 # Audio 2 LED
 
-A real live light setup for less than 100 $.
+A professionnal live light setup for less than 100 $.
+
 Real-time LED strip music and midi visualization using Python and Arduino via serial communication.
 
 # How it works ?
@@ -225,11 +226,11 @@ You can find 3d models of the cases, the arduino code and all the instructions y
 
 ### Component list
 
-- 1x [Alim 5V 10A](https://www.amazon.fr/gp/product/B06XCMQ212/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
-- 1x Arduino nano or other
-- 1x 1000mu Capacitor
-- 1x [Led strip female connector](https://www.amazon.fr/BTF-LIGHTING-Connectors-WS2812B-WS2811-20pairs/dp/B01DC0KIT2/ref=sr_1_19?__mk_fr_FR=ÅMÅŽÕÑ&keywords=led+strip+connector&qid=1569857203&s=lighting&sr=1-19)
-- 1x Led strip WS2812B
+- 1x [Alim 5V 10A  -  ~25$](https://www.amazon.fr/gp/product/B06XCMQ212/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
+- 1x Arduino nano or other   -  ~5$
+- 1x 1000mu Capacitor   -  ~1$
+- 1x [Led strip female connector  -  ~5$](https://www.amazon.fr/BTF-LIGHTING-Connectors-WS2812B-WS2811-20pairs/dp/B01DC0KIT2/ref=sr_1_19?__mk_fr_FR=ÅMÅŽÕÑ&keywords=led+strip+connector&qid=1569857203&s=lighting&sr=1-19)
+- 1x Led strip WS2812B -  ~35$
 
 Estimated cost : ~100$
 
@@ -247,6 +248,16 @@ For now, consider not using more than 254 leds.
 
 <!-- # Links
 - [Wikipedia DMX](https://fr.wikipedia.org/wiki/DMX_(%C3%A9clairage) -->
+
+<!--
+
+  TO DO BEFORE RELEASE
+
+  - Package app electron and python
+  -
+
+ -->
+
 
 # License
 This project was developed by Thibaud FRERE and is released
