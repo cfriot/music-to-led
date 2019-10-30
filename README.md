@@ -1,13 +1,13 @@
 
 <img src="images/logo.svg" width="300">
 
-Real-time music and midi visualization on led strips using Python and Arduino.
+Real-time music and midi visualizations on led strips using Python, Electron and Arduino.
 
 # How it works ?
 
-1. It takes multiple audio and midi as inputs,
+1. Takes multiple audio and midi as inputs
 2. Use them to make awesome visualizations effects
-3. Output the result on a led strip via an arduino part.
+3. Output the result on multiple led strips via Arduino based controllers
 
 <!-- Audio channels are used as a source for some effects.
 Midi channels are used as a source for effect AND as a mod changer. -->
