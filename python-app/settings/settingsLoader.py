@@ -303,7 +303,7 @@ if __name__ == "__main__":
 
     print('Starting SettingsLoader test on ports :')
 
-    config = SettingsLoader("settings/settings_file.yml", debug=True)
+    config = SettingsLoader("../CONFIG.yml", debug=True)
     config.data.print()
 
     # print(config.findStripIndexByStripName("lantern"))

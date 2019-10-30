@@ -1,11 +1,13 @@
 
 <img src="images/logo.svg" width="300">
 
+**/!\ WIP /!\**
+
 Real-time music and midi visualizations on led strips using Python, Electron and Arduino.
 
 # How it works ?
 
-1. Takes multiple audio and midi as inputs
+1. Handle multiple audio and midi inputs
 2. Use them to make awesome visualizations effects
 3. Output the result on multiple led strips via Arduino based controllers
 
@@ -41,7 +43,7 @@ Midi channels are used as a source for effect AND as a mod changer. -->
 
 ## Effects
 
-There is four kind of effects.
+There is four kind of effects. All the examples are based on a ["red", "green", "blue"] color scheme
 
 ### Sound based
 
@@ -222,13 +224,13 @@ You can find 3d models of the cases, the arduino code and all the instructions y
 
 ### Component list
 
-- 1x [Alim 5V 10A  -  ~25$](https://www.amazon.fr/gp/product/B06XCMQ212/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
-- 1x Arduino nano or other   -  ~5$
-- 1x 1000mu Capacitor   -  ~1$
-- 1x [Led strip female connector  -  ~5$](https://www.amazon.fr/BTF-LIGHTING-Connectors-WS2812B-WS2811-20pairs/dp/B01DC0KIT2/ref=sr_1_19?__mk_fr_FR=ÅMÅŽÕÑ&keywords=led+strip+connector&qid=1569857203&s=lighting&sr=1-19)
-- 1x Led strip WS2812B -  ~35$
+- 1x [**Alim 5V 10A**](https://www.amazon.fr/gp/product/B06XCMQ212/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)  *~25$*
+- 1x **Arduino nano or other**  *~5$*
+- 1x **1000mu Capacitor**  *~1$*
+- 1x [**Led strip female connector**](https://www.amazon.fr/BTF-LIGHTING-Connectors-WS2812B-WS2811-20pairs/dp/B01DC0KIT2)  *~5$*
+- 1x **Led strip WS2812B**  *~35$*
 
-Estimated cost : ~100$
+**Estimated cost** *~100$*
 
 ### 3d printed case
 
