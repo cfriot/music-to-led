@@ -86,8 +86,8 @@ Add gif to explain
 |:--|:--|:--|:--|:--
 | 20 | G#-1  | **Reverse mode** | - | ![scroll](images/reverse.gif)
 | 21 | A-1  | **Mirror mode** | - | ![scroll](images/mirror.gif)
-| 22 | A#-1 | **Shapes** | Size based on velocity
-| 23 | B-1 | **Color schemes** | Size based on velocity
+| 22 | A#-1 | **Shapes** | Size based on velocity | ![scroll](images/shape.gif)
+| 23 | B-1 | **Color schemes** | Size based on velocity | ![scroll](images/color.gif)
 | 24 | C-0  | **Bpm** | Size based on velocity
 | 25 | C#-0  | **Audio channel** | Size based on velocity
 | 26 | D-0 | **Reset Frame** | -

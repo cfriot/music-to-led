@@ -105,16 +105,6 @@ class ModSwitcher:
                             logger(self.strip_config.name, message)
 
                         elif(mode == 22):
-                            self.strip_config.active_color_scheme_index = valueUpdater(
-                                self.strip_config.active_color_scheme_index,
-                                velocity,
-                                self.strip_config.number_of_color_schemes,
-                                1
-                            )
-                            message = "is changing color scheme to -> " + str(self.strip_config.color_schemes[self.strip_config.active_color_scheme_index])
-                            logger(self.strip_config.name, message)
-
-                        elif(mode == 23):
                             self.strip_config.active_shape_index = valueUpdater(
                                 self.strip_config.active_shape_index,
                                 velocity,
@@ -129,6 +119,17 @@ class ModSwitcher:
 
                             message = "is changing shape to -> " + str(self.strip_config.shapes[self.strip_config.active_shape_index].shape)
                             logger(self.strip_config.name, message)
+
+                        elif(mode == 23):
+                            self.strip_config.active_color_scheme_index = valueUpdater(
+                                self.strip_config.active_color_scheme_index,
+                                velocity,
+                                self.strip_config.number_of_color_schemes,
+                                1
+                            )
+                            message = "is changing color scheme to -> " + str(self.strip_config.color_schemes[self.strip_config.active_color_scheme_index])
+                            logger(self.strip_config.name, message)
+
 
                         elif(mode == 24):
 

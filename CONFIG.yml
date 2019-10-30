@@ -97,14 +97,14 @@ strips:
       -
         - 25
         - 25
-      -
-        - 126
-        - 126
-      -
-        - 62
-        - 62
-        - 62
-        - 62
+      # -
+      #   - 126
+      #   - 126
+      # -
+      #   - 62
+      #   - 62
+      #   - 62
+      #   - 62
 
     active_audio_channel_index: 0
     active_color_index: 0
