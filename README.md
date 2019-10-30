@@ -84,8 +84,8 @@ Add gif to explain
 
 | *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
 |:--|:--|:--|:--|:--
-| 20 | G#-1  | **Reverse mode** | -
-| 21 | A-1  | **Mirror mode** | -
+| 20 | G#-1  | **Reverse mode** | - | ![scroll](images/reverse.gif)
+| 21 | A-1  | **Mirror mode** | - | ![scroll](images/mirror.gif)
 | 22 | A#-1 | **Shapes** | Size based on velocity
 | 23 | B-1 | **Color schemes** | Size based on velocity
 | 24 | C-0  | **Bpm** | Size based on velocity
