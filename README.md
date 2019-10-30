@@ -1,8 +1,6 @@
 
 <img src="images/logo.svg" width="300">
 
-**/!\ WIP /!\\**
-
 Real-time music and midi visualizations on led strips using Python, Electron and Arduino.
 
 # How it works ?
@@ -16,9 +14,14 @@ Midi channels are used as a source for effect AND as a mod changer. -->
 
 ![software-architecture](images/archi.png)
 
+# What do i need to make one ?
+
+1. Install the program
+2. Create an arduino box 
+
 # Table of contents
 
-- [Effects & Modes](#features)
+- [Effects & Modes](#effects---modes)
   * [Effects](#effects)
     + [Sound based](#sound-based)
     + [Midi based](#midi-based)
@@ -27,16 +30,21 @@ Midi channels are used as a source for effect AND as a mod changer. -->
   * [Modes](#modes)
 - [Configuration](#configuration)
   * [Audio channels](#audio-channels)
+  * [Virtual Audio Source](#virtual-audio-source)
+    + [Linux](#linux)
+    + [OSX](#osx)
   * [Midi channels](#midi-channels)
+    + [OSX](#osx-1)
+    + [Ableton live](#ableton-live)
   * [CONFIG.yml](#configyml)
 - [Install](#install)
   * [Python program](#python-program)
   * [Arduino part](#arduino-part)
-    + [Component list](#component-list)
     + [Electronic scheme](#electronic-scheme)
+    + [Component list](#component-list)
     + [3d printed case](#3d-printed-case)
     + [Led number limitation](#led-number-limitation)
-- [Links](#links)
+- [Contribute](#contribute)
 - [License](#license)
 
 # Effects & Modes
@@ -99,9 +107,24 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 
 ## Audio channels
 
-...
+The program streams audio from the default audio input device (set by the operating system).
+
+Examples of typical audio sources:
+- Audio cable connected to the audio input jack (requires USB sound card on Raspberry Pi)
+- Webcam microphone, headset, studio recording microphone, etc
+
+## Virtual Audio Source
+You can use a "virtual audio device" to transfer audio playback from one application to another. This means that you can play music on your computer and connect the playback directly into the program.
+
+### Linux
+Linux users can use [Jack Audio](http://jackaudio.org/) to create a virtual audio device.
+
+### OSX
+On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a virtual audio device.
 
 ## Midi channels
+
+### OSX
 
 ![osx-midi-settings](images/osx-midi-settings.png)
 
@@ -206,6 +229,8 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 
 # Install
 
+If you encounter any problems running program, please open a new issue. Also, please consider opening an issue if you have any questions or suggestions for improving the installation process.
+
 ## Python program
 Code is compatible with Python 3.7. Install dependencies using pip and the conda package manager.
 
@@ -258,6 +283,8 @@ For now, consider not using more than 254 leds.
 
  -->
 
+# Contribute
+Feel free to send me an e-mail or submit a pull request.
 
 # License
 This project was developed by Thibaud FRERE and is released
