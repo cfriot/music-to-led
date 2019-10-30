@@ -1,7 +1,7 @@
 
 <img src="images/logo.svg" width="300">
 
-**/!\ WIP /!\**
+**/!\ WIP /!\\**
 
 Real-time music and midi visualizations on led strips using Python, Electron and Arduino.
 
