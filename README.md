@@ -1,8 +1,9 @@
 
-![Logo](electron-app/src/img/logo.svg)
+<img src="electron-app/src/img/logo.svg" width="48">
 
 # Audio 2 LED
 
+A real live light setup for less than 100 $.
 Real-time LED strip music and midi visualization using Python and Arduino via serial communication.
 
 # How it works ?
@@ -229,6 +230,8 @@ You can find 3d models of the cases, the arduino code and all the instructions y
 - 1x 1000mu Capacitor
 - 1x [Led strip female connector](https://www.amazon.fr/BTF-LIGHTING-Connectors-WS2812B-WS2811-20pairs/dp/B01DC0KIT2/ref=sr_1_19?__mk_fr_FR=ÅMÅŽÕÑ&keywords=led+strip+connector&qid=1569857203&s=lighting&sr=1-19)
 - 1x Led strip WS2812B
+
+Estimated cost : ~100$
 
 ### 3d printed case
 
