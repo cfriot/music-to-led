@@ -1,5 +1,5 @@
 
-<img src="images/logo.svg" width="248">
+<img src="images/logo.svg" width="300">
 
 A professionnal live light setup for less than 100 $.
 Real-time LED strip music and midi visualization using Python and Arduino via serial communication.
@@ -55,26 +55,26 @@ Add gif to explain
 
 ### Midi based
 
-| *Number* | *Midi Note* | *Effect name* | *Params*
-|:--|:--|:--|:--
-| 5 | F-2   | **Piano** | -
-| 6 | F#-2  | **Envelope** | Color intensity based on pitch bend
+| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
+|:--|:--|:--|:--|:--
+| 5 | F-2   | **Piano** | - | ![scroll](images/piano.gif)
+| 6 | F#-2  | **Envelope** | Color intensity based on pitch bend | ![scroll](images/envelope.gif)
 | 7 | G-2   | - | -
 | 8 | G#-2  | - | -
 
 ### BPM based
 
-| *Number* | *Midi Note* | *Effect name* | *Params*
-|:--|:--|:--|:--
-| 10 | A#-2   | **AlternateColors** | Chunk size based on velocity
-| 11 | B-2    | **AlternateColorsFull** | -
-| 12 | C-1    | **AlternateColorsForStrips** | -
+| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
+|:--|:--|:--|:--|:--
+| 10 | A#-2   | **AlternateColors** | Chunk size based on velocity | ![scroll](images/alternate-chunk.gif)
+| 11 | B-2    | **AlternateColorsFull** | - | ![scroll](images/alternate-colors.gif)
+| 12 | C-1    | **AlternateColorsForStrips** | - | ![scroll](images/scroll.gif)
 | 13 | C#-1   | - | -
 
 ### Generic
 
-|Number | Midi Note | Effect name | Params
-|:--|:--|:--|:--
+| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
+|:--|:--|:--|:--|:--
 | 15 | D#-1  | **Full** | -
 | 16 | E-1   | **Nothing** | -
 | 17 | F-1  | **Fire** | -
@@ -82,8 +82,8 @@ Add gif to explain
 
 ## Mods
 
-| *Number* | *Midi Note* | *Mod name* | *Params*
-|:--|:--|:--|:--
+| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
+|:--|:--|:--|:--|:--
 | 20 | G#-1  | **Reverse mode** | -
 | 21 | A-1  | **Mirror mode** | -
 | 22 | A#-1 | **Shapes** | Size based on velocity

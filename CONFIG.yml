@@ -126,7 +126,7 @@ strips:
       -
         - "#FF00C8"
 
-    active_visualizer_effect: scroll
+    active_visualizer_effect: piano
   #
   # -
   #   name: Lantern

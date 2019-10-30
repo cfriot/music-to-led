@@ -58,11 +58,15 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
             alpha_decay = 0.1,
             alpha_rise=0.99
         )
+        self.initIntensityChannels()
         self.initSpectrum()
+
+        self.initPiano()
+
+        self.initAlternateColors()
+
         self.initFull()
         self.initFire()
-        self.initIntensityChannels()
-        self.initAlternateColors()
 
 
     def resetFrame(self):
