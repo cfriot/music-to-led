@@ -1,19 +1,17 @@
 
 <img src="images/logo.svg" width="300">
 
-A professionnal live light setup for less than 100 $.
-Real-time LED strip music and midi visualization using Python and Arduino via serial communication.
+Real-time music and midi visualization on led strips using Python and Arduino.
 
 # How it works ?
 
-It takes multiple audio and midi inputs, use them to make awesome visualizations effects and output the result in multiple led strips via a serial protocol.
-You can use a MIDI port to send visualization mod change instruction.
+It takes multiple audio and midi as inputs,
+use them to make awesome visualizations effects
+and output the result on a led strip via an arduino part.
 
-- Multiple color schemes
-- Multiple virtual strip shapes
-- Revese and mirror mods
-- 8 Vizualization effects
-- Live mods change using dedicated MIDI channels
+Audio channels are used as a source for some effects.
+Midi channels are used as a source for effect AND as a mod changer.
+
 
 ![software-architecture](images/archi.png)
 
@@ -38,9 +36,11 @@ You can use a MIDI port to send visualization mod change instruction.
 - [Links](#links)
 - [License](#license)
 
-# Effects & Mods
+# Effects & Modes
 
 ## Effects
+
+There is four kind of effects.
 
 ### Sound based
 
@@ -78,16 +78,16 @@ You can use a MIDI port to send visualization mod change instruction.
 | 17 | F-1  | **Fire** | - | ![scroll](images/fire.gif)
 | 18 | F#-1  | - | - | ![scroll](images/nothing.gif)
 
-## Mods
+## Modes
 
-| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
+| *Number* | *Midi Note* | *Mode name* | *Params* | *Example*
 |:--|:--|:--|:--|:--
-| 20 | G#-1  | **Reverse mode** | - | ![scroll](images/reverse.gif)
-| 21 | A-1  | **Mirror mode** | - | ![scroll](images/mirror.gif)
-| 22 | A#-1 | **Shapes** | Size based on velocity | ![scroll](images/shape.gif)
-| 23 | B-1 | **Color schemes** | Size based on velocity | ![scroll](images/color.gif)
-| 24 | C-0  | **Bpm** | Size based on velocity | ![scroll](images/nothing.gif)
-| 25 | C#-0  | **Audio channel** | Size based on velocity | ![scroll](images/nothing.gif)
+| 20 | G#-1  | **Toggle reverse mode** | - | ![scroll](images/reverse.gif)
+| 21 | A-1  | **Toggle mirror mode** | - | ![scroll](images/mirror.gif)
+| 22 | A#-1 | **Change shape** | Size based on velocity | ![scroll](images/shape.gif)
+| 23 | B-1 | **Change color scheme** | Size based on velocity | ![scroll](images/color.gif)
+| 24 | C-0  | **Change bpm** | Size based on velocity | ![scroll](images/nothing.gif)
+| 25 | C#-0  | **Change Audio channel** | Size based on velocity | ![scroll](images/nothing.gif)
 | 26 | D-0 | **Reset Frame** | - | ![scroll](images/nothing.gif)
 | 27 | D#-0 | - | - | ![scroll](images/nothing.gif)
 
@@ -131,15 +131,15 @@ You can use a MIDI port to send visualization mod change instruction.
 
     strips:
       -
-        name: Led Strip
+        name: Led strip name
         serial_port_name: /dev/tty.usbserial-14210
-        max_brightness: 120
+        max_brightness: 255
         associated_midi_channels:
           - Audio2Led Synth
         midi_ports_for_changing_mode:
           - Audio2Led ChangeMod
         is_reverse: false
-        is_mirror: true
+        is_mirror: false
         bpm: 120
 
         # Be sure that real_shape and shapes only contains even numbers
@@ -249,6 +249,8 @@ For now, consider not using more than 254 leds.
   TO DO BEFORE RELEASE
 
   - Package app electron and python
+  - Make a good readme
+  - Toggle interface
   -
 
  -->

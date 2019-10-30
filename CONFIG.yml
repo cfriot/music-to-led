@@ -90,21 +90,18 @@ strips:
     midi_ports_for_changing_mode:
       - Audio2Led ChangeMod
     real_shape:
-      - 50
+      - 254
     shapes:
       -
-        - 50
+        - 254
       -
-        - 25
-        - 25
-      # -
-      #   - 126
-      #   - 126
-      # -
-      #   - 62
-      #   - 62
-      #   - 62
-      #   - 62
+        - 126
+        - 126
+      -
+        - 62
+        - 62
+        - 62
+        - 62
 
     active_audio_channel_index: 0
     active_color_index: 0
