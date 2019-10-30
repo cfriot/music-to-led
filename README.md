@@ -45,18 +45,12 @@ You can use a MIDI port to send visualization mod change instruction.
 
 ### Sound based
 
-![scroll](images/scroll.gif)
-![energy](images/energy.gif)
-![intensity](images/intensity.gif)
-![spectrum](images/spectrum.gif)
-
-
-| *Number* | *Midi Note* | *Effect name* | *Params* | * Gif
+| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
 |:--|:--|:--|:--|:--
 | 0 | C-0 | **Scroll** | - | ![scroll](images/scroll.gif)
-| 1 | C#-2 | **Energy** | - | -
-| 2 | D-2 | **Intensity** | - | -
-| 3 | D#-2 | **Spectrum** | - | -
+| 1 | C#-2 | **Energy** | - | ![energy](images/energy.gif)
+| 2 | D-2 | **Intensity** | - | ![intensity](images/intensity.gif)
+| 3 | D#-2 | **Spectrum** | - | ![spectrum](images/spectrum.gif)
 
 Add gif to explain
 
