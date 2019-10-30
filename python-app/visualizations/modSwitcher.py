@@ -34,7 +34,7 @@ class ModSwitcher:
                     velocity = midi_data["velocity"]
                     old_vizualizer_effect = self.strip_config.active_visualizer_effect
                     # VISUALIZATIONS EFFECTS
-                    if(mode >= 0 and mode <= 15) :
+                    if(mode >= 0 and mode < 20) :
 
                         # SOUND BASED
                         if(mode == 0):
@@ -92,7 +92,7 @@ class ModSwitcher:
                             logger(self.strip_config.name, message)
 
                     # MODIFIERS
-                    if(mode > 16 and mode <= 26) :
+                    if(mode >= 20 and mode <= 26) :
 
                         if(mode == 20):
                             self.strip_config.is_reverse = not self.strip_config.is_reverse

@@ -66,18 +66,18 @@ Add gif to explain
 
 | *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
 |:--|:--|:--|:--|:--
-| 10 | A#-2   | **AlternateColors** | Chunk size based on velocity | ![scroll](images/alternate-chunk.gif)
+| 10 | A#-2   | **AlternateColors** | Chunk size based on velocity | ![scroll](images/alternate-chunks.gif)
 | 11 | B-2    | **AlternateColorsFull** | - | ![scroll](images/alternate-colors.gif)
-| 12 | C-1    | **AlternateColorsForStrips** | - | ![scroll](images/scroll.gif)
+| 12 | C-1    | **AlternateColorsForStrips** | - | ![scroll](images/alternate-strips.gif)
 | 13 | C#-1   | - | -
 
 ### Generic
 
 | *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
 |:--|:--|:--|:--|:--
-| 15 | D#-1  | **Full** | -
-| 16 | E-1   | **Nothing** | -
-| 17 | F-1  | **Fire** | -
+| 15 | D#-1  | **Full** | - | ![scroll](images/full.gif)
+| 16 | E-1   | **Nothing** | - | ![scroll](images/nothing.gif)
+| 17 | F-1  | **Fire** | - | ![scroll](images/fire.gif)
 | 18 | F#-1  | - | -
 
 ## Mods
