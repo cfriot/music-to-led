@@ -59,8 +59,8 @@ Add gif to explain
 |:--|:--|:--|:--|:--
 | 5 | F-2   | **Piano** | - | ![scroll](images/piano.gif)
 | 6 | F#-2  | **Envelope** | Color intensity based on pitch bend | ![scroll](images/envelope.gif)
-| 7 | G-2   | - | -
-| 8 | G#-2  | - | -
+| 7 | G-2   | - | - | -
+| 8 | G#-2  | - | - | -
 
 ### BPM based
 
@@ -69,7 +69,7 @@ Add gif to explain
 | 10 | A#-2   | **AlternateColors** | Chunk size based on velocity | ![scroll](images/alternate-chunks.gif)
 | 11 | B-2    | **AlternateColorsFull** | - | ![scroll](images/alternate-colors.gif)
 | 12 | C-1    | **AlternateColorsForStrips** | - | ![scroll](images/alternate-strips.gif)
-| 13 | C#-1   | - | -
+| 13 | C#-1   | - | - | -
 
 ### Generic
 
@@ -78,7 +78,7 @@ Add gif to explain
 | 15 | D#-1  | **Full** | - | ![scroll](images/full.gif)
 | 16 | E-1   | **Nothing** | - | ![scroll](images/nothing.gif)
 | 17 | F-1  | **Fire** | - | ![scroll](images/fire.gif)
-| 18 | F#-1  | - | -
+| 18 | F#-1  | - | - | -
 
 ## Mods
 
@@ -88,10 +88,10 @@ Add gif to explain
 | 21 | A-1  | **Mirror mode** | - | ![scroll](images/mirror.gif)
 | 22 | A#-1 | **Shapes** | Size based on velocity | ![scroll](images/shape.gif)
 | 23 | B-1 | **Color schemes** | Size based on velocity | ![scroll](images/color.gif)
-| 24 | C-0  | **Bpm** | Size based on velocity
-| 25 | C#-0  | **Audio channel** | Size based on velocity
-| 26 | D-0 | **Reset Frame** | -
-| 27 | D#-0 | - | -
+| 24 | C-0  | **Bpm** | Size based on velocity | ![scroll](images/nothing.gif)
+| 25 | C#-0  | **Audio channel** | Size based on velocity | ![scroll](images/nothing.gif)
+| 26 | D-0 | **Reset Frame** | - | ![scroll](images/nothing.gif)
+| 27 | D#-0 | - | - | -
 
 
 # Configuration
