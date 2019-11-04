@@ -1,7 +1,5 @@
-import time
+import time, pyaudio, rtmidi, argparse
 import numpy as np
-import pyaudio
-import rtmidi
 
 class AudioInput:
     def __init__(self, port_name, min_frequency, max_frequency):
@@ -100,8 +98,16 @@ class AudioInput:
 
 if __name__ == "__main__":
 
-    # print('Audio ports available :')
-    # print(AudioInput.listAvailablePortsName())
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("mode", help="list or test",
+                        type=str)
+    args = parser.parse_args()
+
+    print("Launching -> ", args.name)
+
+    print('Audio ports available :')
+    print(AudioInput.listAvailablePortsName())
 
     print('Starting Audio tests test on ports :')
     port_name = "AudioDevice"

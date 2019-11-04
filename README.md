@@ -16,10 +16,13 @@ Midi channels are used as a source for effect AND as a mod changer. -->
 
 ![software-architecture](images/archi.png)
 
-# What do i need to make one ?
+# What do i need to use it ?
 
-1. Install the program
-2. Create an arduino box
+1. [Install the program](#python-program)
+2. [Build an arduino case](#arduino-part)
+3. [Update the CONFIG.yml](#configuration)
+4. Enjoy !
+
 ...
 
 # Table of contents
@@ -138,6 +141,9 @@ On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a
 ...
 
 ## CONFIG.yml
+
+You can validate the config file with
+  sh testConfigFile.sh
 
 ```yml
 
