@@ -142,13 +142,24 @@ On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a
 ```yml
     ---  # document start
 
+    # Desired framerate
+
     fps: 60
 
-    display_shell_interface: false
-    display_audio_interface: false
+    # Tell to electron to display the GUI or not
+
+    display_interface: false
+
+    # Old variables
+    # Has to be removed from here
 
     n_rolling_history: 4
     number_of_audio_samples: 24
+
+    # Audio ports
+    # List of used audio ports
+    # Can be listed with listAvailableDevices.sh
+    # Can be changed with "Change audio channel"
 
     audio_ports:
       -
@@ -159,19 +170,48 @@ On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a
         number_of_audio_samples: 24
         min_volume_threshold: 1e-7
 
+    # Strips
+    # They represents independant Arduino cases )
+
     strips:
       -
+
+        # Name of the strip
+        # Only used in the GUI
+
         name: Led strip name
+
+        # Name of the associated serial port
+        # Can be listed with listAvailableDevices.sh
+
         serial_port_name: /dev/tty.usbserial-14210
+
+        # Maximum allowed brightness
+
         max_brightness: 255
+
+        # Midi channels
+        # Can be listed with listAvailableDevices.sh
+        # associated_midi_channels : used for midi based visualizers
+        # midi_ports_for_changing_mode : used for live changing modes
+
         associated_midi_channels:
           - Audio2Led Synth
         midi_ports_for_changing_mode:
           - Audio2Led ChangeMod
+
+        # Reverse and mirror mods
+
         is_reverse: false
         is_mirror: false
+
+        # BPM value that is used in BPM based visualizers
+
         bpm: 120
 
+        # Shapes
+        # Real shape : represents the physical shape of the strip
+        # Shapes : represents virtual shapes
         # Be sure that real_shape and shapes only contains even numbers
         # It may cause crash if it's not the case
 
@@ -186,6 +226,9 @@ On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a
             - 62
             - 62
             - 62
+
+        # Available color schemes
+        # Can be changed via "Change color scheme"
 
         color_schemes:
           # pink blue
@@ -220,6 +263,10 @@ On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a
             - blue
           -
             - white
+
+        # Default parameters for various stuff
+        # Be sure that you are not attempting to access to an index that not
+        # exists, it may cause crash
 
         active_audio_channel_index: 0
         active_shape_index: 0
