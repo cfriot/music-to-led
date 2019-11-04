@@ -135,7 +135,7 @@ On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a
 
 ![ableton-midi-settings](images/ableton-midi-settings.png)
 
-...
+...yml
 
 ## CONFIG.yml
 
@@ -283,6 +283,30 @@ For now, consider not using more than 254 leds.
   - Make a good readme
   - Toggle interface
   -
+
+
+
+
+  # MAVEN besoins
+
+  # Grosse saturation de ouf
+  # Utiliser le mouvement de l'onde de la batterie pour les leds
+  # entre 50 et 110 Decibels
+  # Variations sur les gros applats de notes
+  # Gestion des modulateurs pour piano ?
+  # Gestion de la vélocité pour Piano
+
+  # Mode piano post rock
+
+
+  # Windows compatibility
+
+  # General needs
+
+  # Make a more resilient midi code
+
+  # 27 novembre
+
 
  -->
 
