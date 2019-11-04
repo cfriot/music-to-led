@@ -128,6 +128,9 @@ Linux users can use [Jack Audio](http://jackaudio.org/) to create a virtual audi
 ### OSX
 On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a virtual audio device.
 
+### Windows
+...
+
 ## Midi channels
 
 ### OSX
@@ -143,7 +146,10 @@ On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a
 ## CONFIG.yml
 
 You can validate the config file with
-  sh testConfigFile.sh
+
+```
+sh testConfigFile.sh
+```
 
 ```yml
 
