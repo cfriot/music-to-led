@@ -43,6 +43,7 @@ Midi channels are used as a source for effect AND as a mod changer. -->
     + [OSX](#osx-1)
     + [Ableton live](#ableton-live)
   * [CONFIG.yml](#configyml)
+    + [Sample config file](#sample-config-file)
 - [Install](#install)
   * [Python program](#python-program)
   * [Arduino part](#arduino-part)
@@ -151,8 +152,7 @@ You can validate the config file with
 sh testConfigFile.sh
 ```
 
-Here is the sample config file with the explanation for each variable.
-
+### Sample config file
 ```yml
 
 ---  # document start
@@ -383,5 +383,5 @@ Feel free to send me an e-mail or submit a pull request.
 This project was developed by Thibaud FRERE and is released
 under the MIT License.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc1NTg1MDY4XX0=
+eyJoaXN0b3J5IjpbLTUyODYwMDI4MV19
 -->
