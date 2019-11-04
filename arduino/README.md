@@ -14,10 +14,11 @@
 
 ## Led number limitation
 
-It depends on the board you will use
+It depends on two factors :
 
-A nano is limited to 255 leds
-An esp8266 is limited to 300 ( or more )
+Your board maximum baud rate
+Your led alimentation
+For now, consider not using more than 254 leds.
 
 ## Calculating led power consumtion
 Each individual NeoPixel draws up to 60 milliamps at maximum brightness white (red + green + blue).

@@ -140,141 +140,144 @@ On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a
 ## CONFIG.yml
 
 ```yml
-    ---  # document start
 
-    # Desired framerate
+---  # document start
 
-    fps: 60
+# Desired framerate
 
-    # Tell to electron to display the GUI or not
+fps: 60
 
-    display_interface: false
+# Tell to electron to display the GUI or not
 
-    # Old variables
-    # Has to be removed from here
+display_interface: false
 
-    n_rolling_history: 4
+# Old variables
+# Has to be removed from here
+
+n_rolling_history: 4
+number_of_audio_samples: 24
+
+# Audio ports
+# List of used audio ports
+# Can be listed with listAvailableDevices.sh
+# Can be changed with "Change audio channel"
+
+audio_ports:
+  -
+    name: Built-in Microphone
+    min_frequency: 200
+    max_frequency: 12000
+    sampling_rate: 44000
     number_of_audio_samples: 24
+    min_volume_threshold: 1e-7
 
-    # Audio ports
-    # List of used audio ports
+# Strips
+# They represents independant Arduino cases
+
+strips:
+  -
+
+    # Name of the strip
+    # Only used in the GUI
+
+    name: Led strip name
+
+    # Name of the associated serial port
     # Can be listed with listAvailableDevices.sh
-    # Can be changed with "Change audio channel"
 
-    audio_ports:
+    serial_port_name: /dev/tty.usbserial-14210
+
+    # Maximum allowed brightness
+    # Can be used to limit the power consumption
+    # Check the Arduino part readme for more informations about it
+
+    max_brightness: 255
+
+    # Midi channels
+    # Can be listed with listAvailableDevices.sh
+    # associated_midi_channels : used for midi based visualizers
+    # midi_ports_for_changing_mode : used for live changing modes
+
+    associated_midi_channels:
+      - Audio2Led Synth
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod
+
+    # Reverse and mirror mods
+
+    is_reverse: false
+    is_mirror: false
+
+    # BPM value that is used in BPM based visualizers
+
+    bpm: 120
+
+    # Shapes
+    # Real shape : represents the physical shape of the strip
+    # Shapes : represents virtual shapes
+    # Be sure that both of them not contains odd numbers,
+    # it may cause crash
+
+    real_shape:
+      - 252
+    shapes:
       -
-        name: Built-in Microphone
-        min_frequency: 200
-        max_frequency: 12000
-        sampling_rate: 44000
-        number_of_audio_samples: 24
-        min_volume_threshold: 1e-7
-
-    # Strips
-    # They represents independant Arduino cases )
-
-    strips:
+        - 126
+        - 126
       -
+        - 62
+        - 62
+        - 62
+        - 62
 
-        # Name of the strip
-        # Only used in the GUI
+    # Available color schemes
+    # Can be changed via "Change color scheme"
 
-        name: Led strip name
+    color_schemes:
+      # pink blue
+      -
+        - "#FF00C8"
+        - "#00EDFF"
+      # orange blue
+      -
+        - "#FFA200"
+        - "#00C6FF"
+      # red green
+      -
+        - "#FF002E"
+        - "#00FFA4"
+      # purple green
+      -
+        - "#F900FF"
+        - "#22FF00"
+      # blue yellow
+      -
+        - "#0024FF"
+        - "#FFE500"
+      -
+        - red
+        - green
+        - blue
+      -
+        - red
+      -
+        - green
+      -
+        - blue
+      -
+        - white
 
-        # Name of the associated serial port
-        # Can be listed with listAvailableDevices.sh
+    # Default parameters for various stuff
+    # Be sure that you are not attempting to access to an index that not
+    # exists, it may cause crash
 
-        serial_port_name: /dev/tty.usbserial-14210
+    active_audio_channel_index: 0
+    active_shape_index: 0
+    active_color_index: 0
+    active_color_scheme_index: 0
+    active_visualizer_effect: scroll
 
-        # Maximum allowed brightness
-
-        max_brightness: 255
-
-        # Midi channels
-        # Can be listed with listAvailableDevices.sh
-        # associated_midi_channels : used for midi based visualizers
-        # midi_ports_for_changing_mode : used for live changing modes
-
-        associated_midi_channels:
-          - Audio2Led Synth
-        midi_ports_for_changing_mode:
-          - Audio2Led ChangeMod
-
-        # Reverse and mirror mods
-
-        is_reverse: false
-        is_mirror: false
-
-        # BPM value that is used in BPM based visualizers
-
-        bpm: 120
-
-        # Shapes
-        # Real shape : represents the physical shape of the strip
-        # Shapes : represents virtual shapes
-        # Be sure that real_shape and shapes only contains even numbers
-        # It may cause crash if it's not the case
-
-        real_shape:
-          - 252
-        shapes:
-          -
-            - 126
-            - 126
-          -
-            - 62
-            - 62
-            - 62
-            - 62
-
-        # Available color schemes
-        # Can be changed via "Change color scheme"
-
-        color_schemes:
-          # pink blue
-          -
-            - "#FF00C8"
-            - "#00EDFF"
-          # orange blue
-          -
-            - "#FFA200"
-            - "#00C6FF"
-          # red green
-          -
-            - "#FF002E"
-            - "#00FFA4"
-          # purple green
-          -
-            - "#F900FF"
-            - "#22FF00"
-          # blue yellow
-          -
-            - "#0024FF"
-            - "#FFE500"
-          -
-            - red
-            - green
-            - blue
-          -
-            - red
-          -
-            - green
-          -
-            - blue
-          -
-            - white
-
-        # Default parameters for various stuff
-        # Be sure that you are not attempting to access to an index that not
-        # exists, it may cause crash
-
-        active_audio_channel_index: 0
-        active_shape_index: 0
-        active_color_index: 0
-        active_color_scheme_index: 0
-        active_visualizer_effect: scroll
-
-    ...  # document end
+...  # document end
 
 ```
 
