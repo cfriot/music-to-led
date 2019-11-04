@@ -151,6 +151,8 @@ You can validate the config file with
 sh testConfigFile.sh
 ```
 
+Here is the sample config file with the explanation for each variable.
+
 ```yml
 
 ---  # document start
@@ -380,3 +382,6 @@ Feel free to send me an e-mail or submit a pull request.
 # License
 This project was developed by Thibaud FRERE and is released
 under the MIT License.
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbLTc1NTg1MDY4XX0=
+-->
