@@ -1,8 +1,8 @@
 import numpy as np
 
-def clampToNewRange(OldValue, OldMin, OldMax, NewMin, NewMax):
-    NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) // (OldMax - OldMin)) + NewMin
-    return NewValue
+def clampToNewRange(value, old_min, old_max, new_min, new_max):
+    new_value = (((value - old_min) * (new_max - new_min)) // (old_max - old_min)) + new_min
+    return new_value
 
 def getValueFromPercentage(value, percentage):
     return value / 100 * percentage

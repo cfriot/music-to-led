@@ -18,7 +18,7 @@ class MidiInput:
             port = mido.open_input(port_name)
             port.close()
         except IOError:
-            print("Midi port not found, please check your config file -> ", port_name)
+            print("Midi port not available -> ", port_name)
             quit()
 
     @staticmethod
@@ -44,21 +44,36 @@ class MidiInput:
             self.port.close()
 
 
+
+
 if __name__ == "__main__":
 
-    print('Starting MidiInput test on ports :')
-    ports = MidiInput.listAvailablePortsName()
-    ports = ['Ableton-virtual-midi-ouput LeftSynth']
-    midiClasses = []
-    print(ports)
-    for port in ports :
-        midiClasses.append(MidiInput(port))
+    import argparse
 
-    while 1:
-        notes = []
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-l", "--list", help="list available midi devices", action="store_true")
+    parser.add_argument("-t", "--test", help="test a given midi port", type=str)
 
-        for midiClass in midiClasses :
-            notes += midiClass.getRawData()
+    args = parser.parse_args()
 
-        if(notes != []):
-            print(notes)
+    if(args.list):
+        print('Midi ports available :')
+        ports = MidiInput.listAvailablePortsName()
+        for port in ports:
+            print("- " + port)
+
+    if(args.test):
+
+        MidiInput.tryPort(args.test)
+        print('Midi tests test on port :')
+        print(args.test)
+
+        midiClass = MidiInput(args.test)
+
+        while 1:
+            notes = []
+
+            notes = midiClass.getRawData()
+
+            if(notes != []):
+                print(notes)

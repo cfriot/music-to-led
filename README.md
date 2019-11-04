@@ -105,11 +105,18 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 | 23 | B-1 | **Change color scheme** | Size based on velocity | ![scroll](images/color.gif)
 | 24 | C-0  | **Change bpm** | Size based on velocity | ![scroll](images/nothing.gif)
 | 25 | C#-0  | **Change Audio channel** | Size based on velocity | ![scroll](images/nothing.gif)
-| 26 | D-0 | **Reset Frame** | - | ![scroll](images/nothing.gif)
-| 27 | D#-0 | - | - | ![scroll](images/nothing.gif)
-
+| 26 | D-0 | **Change Max Brightness** | Size based on velocity | ![scroll](images/nothing.gif)
+| 27 | D#-0 | **Reset Frame** | - | ![scroll](images/nothing.gif)
 
 # Configuration
+
+This program will interact with Audio ports, Midi ports and Serial ports.
+To help you to configure your CONFIG.yml correctly, there is a little helper that
+will list all available ports for each of them.
+
+```
+sh listAvailablePorts.sh
+```
 
 ## Audio channels
 
@@ -344,12 +351,7 @@ For now, consider not using more than 254 leds.
   TO DO BEFORE RELEASE
 
   - Package app electron and python
-  - Make a good readme
   - Toggle interface
-  -
-
-
-
 
   # MAVEN besoins
 

@@ -1,5 +1,9 @@
 import numpy as np
 
+def clampToNewRange(value, old_min, old_max, new_min, new_max):
+    new_value = (((value - old_min) * (new_max - new_min)) // (old_max - old_min)) + new_min
+    return new_value
+
 def valueUpdater(old_value, value, max, increment):
     """ Wahou """
     new_value = old_value
@@ -153,7 +157,19 @@ class ModSwitcher:
                             message = "is changing audio mod to -> " + str(self.config.audio_ports[self.strip_config.active_audio_channel_index].name)
                             logger(self.strip_config.name, message)
 
+
                         elif(mode == 26):
+                            self.strip_config.max_brightness = valueUpdater(
+                                self.strip_config.max_brightness,
+                                velocity,
+                                255,
+                                1
+                            )
+
+                            message = "is changing max_brightness to -> " + str(self.strip_config.max_brightness)
+                            logger(self.strip_config.name, message)
+
+                        elif(mode == 27):
                             self.visualizer.resetFrame()
                             self.visualizer.pixelReshaper.resetStrips()
                             logger(self.strip_config.name, "is reseting his frame")

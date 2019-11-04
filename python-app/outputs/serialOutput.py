@@ -126,6 +126,7 @@ class SerialOutput:
                 message = self.send_data_command[:1] + number_of_pixel_command[:2] + bytes(self.raw_data)
                 self.serial_class.write(message)
             except IOError:
+                # TO DO : Remove display and find a way to display if it's ONLINE or not 
                 print("Hey it seem's that your cable has been unpluged on port ", self.serial_port)
                 self.trying_to_connect = True
                 self.setup()
@@ -134,29 +135,41 @@ class SerialOutput:
 
 if __name__ == "__main__":
 
-    print('Starting SerialOutput test on ports :')
-    ports = SerialOutput.listAvailableUsbSerialPorts()
-    print(SerialOutput.listAvailableUsbSerialPorts())
-    # ports = ['/dev/tty.usbserial-14240', '/dev/tty.usbserial-14210']
-    # 148
-    number_of_pixels = 200
-    serialOutputs = []
+    import argparse
 
-    pixels = np.tile(1, (3, number_of_pixels))
-    pixels *= 0
-    pixels[0, 0] = 125  # Set 1st pixel red
-    pixels[1, 1] = 125  # Set 2nd pixel green
-    pixels[2, 2] = 125  # Set 3rd pixel blue
-    pixels[0, 3] = 255  # Set 1st pixel red
-    pixels[1, 4] = 255  # Set 2nd pixel green
-    pixels[2, 5] = 255  # Set 3rd pixel blue
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-l", "--list", help="list available serial devices", action="store_true")
+    parser.add_argument("-t", "--test", help="test a given serial port", type=str)
 
-    for port in ports:
-        serialOutputs.append(SerialOutput(
-            number_of_pixels, port))
+    args = parser.parse_args()
 
-    while True:
-        pixels = np.roll(pixels, 1, axis=1)
-        for serialOutput in serialOutputs:
-            serialOutput.update(pixels)
-        time.sleep(.016)
+    if(args.list):
+        print('Serial ports available :')
+
+        ports = SerialOutput.listAvailableUsbSerialPorts()
+
+        for port in ports:
+            print("- " + port["name"])
+
+    if(args.test):
+
+        SerialOutput.tryPort(args.test)
+
+        number_of_pixels = 30
+        serialOutputs = []
+
+        pixels = np.tile(1, (3, number_of_pixels))
+        pixels *= 0
+        pixels[0, 0] = 125  # Set 1st pixel red
+        pixels[1, 1] = 125  # Set 2nd pixel green
+        pixels[2, 2] = 125  # Set 3rd pixel blue
+        pixels[0, 3] = 255  # Set 1st pixel red
+        pixels[1, 4] = 255  # Set 2nd pixel green
+        pixels[2, 5] = 255  # Set 3rd pixel blue
+
+        serialClass = SerialOutput(number_of_pixels, args.test)
+
+        while True:
+            pixels = np.roll(pixels, 1, axis=1)
+            serialClass.update(pixels)
+            time.sleep(.016)

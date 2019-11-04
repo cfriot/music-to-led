@@ -1,8 +1,8 @@
-import time, pyaudio, rtmidi, argparse
+import time, pyaudio, rtmidi
 import numpy as np
 
 class AudioInput:
-    def __init__(self, port_name, min_frequency, max_frequency):
+    def __init__(self, port_name, min_frequency=200, max_frequency=12000):
         """ Create a data stream from audio input """
         self.audio = pyaudio.PyAudio()
         self.rate = 44100
@@ -98,21 +98,27 @@ class AudioInput:
 
 if __name__ == "__main__":
 
+    import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("mode", help="list or test",
-                        type=str)
+    parser.add_argument("-l", "--list", help="list available audio devices", action="store_true")
+    parser.add_argument("-t", "--test", help="test a given audio port", type=str)
+
     args = parser.parse_args()
 
-    print("Launching -> ", args.name)
+    if(args.list):
+        print('Audio ports available :')
+        for port in AudioInput.listAvailablePortsName():
+            print("- " + port["name"])
 
-    print('Audio ports available :')
-    print(AudioInput.listAvailablePortsName())
+    if(args.test):
+        if(AudioInput.getPortIndexFromName(args.test) != -1):
+            print('Audio tests test on port :')
+            print(args.test)
+            audioInput = AudioInput(args.test)
 
-    print('Starting Audio tests test on ports :')
-    port_name = "AudioDevice"
-    print(AudioInput.getPortIndexFromName(port_name))
-    audioInput = AudioInput(port_name)
+            while 1:
+                print(audioInput.getRawData())
 
-    while 1:
-        print(audioInput.getRawData())
+        else:
+            print('This port is not available ->' + args.test)
