@@ -135,10 +135,11 @@ On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a
 
 ![ableton-midi-settings](images/ableton-midi-settings.png)
 
-...yml
+...
 
 ## CONFIG.yml
 
+```yml
     ---  # document start
 
     fps: 60
@@ -228,6 +229,7 @@ On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a
 
     ...  # document end
 
+```
 
 
 # Install
