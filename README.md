@@ -385,5 +385,5 @@ Feel free to send me an e-mail or submit a pull request.
 This project was developed by Thibaud FRERE and is released
 under the MIT License.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTUyODYwMDI4MV19
+eyJoaXN0b3J5IjpbMTY4MjMxMDc5NCwtNTI4NjAwMjgxXX0=
 -->
