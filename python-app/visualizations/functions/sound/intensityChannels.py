@@ -35,22 +35,25 @@ class IntensityChannels():
         for i in range(self.pixelReshaper.number_of_strips) :
             x = chunk_size * i
             y = chunk_size * (i + 1)
-            stripItensities.append(int(np.mean(self.audio_data[x:y]**scale)))
-            maxStripItensities.append(int(np.mean(self.audio_data[x:y]**scale)))
+
+            intensity = int(np.mean(self.audio_data[x:y]**scale))
+
+            max_intensity = len(self.pixelReshaper.strips[i][0])
+            if(self.strip_config.is_mirror):
+                max_intensity = len(self.pixelReshaper.strips[i][0]) / 2
+
+            if(intensity > max_intensity):
+                intensity = max_intensity - 1
+
+            stripItensities.append(intensity)
+            maxStripItensities.append(intensity)
 
             if(self.oldStripItensities != [] and stripItensities[i] < self.oldStripItensities[i]) :
                 stripItensities[i] = self.oldStripItensities[i] - 2
 
             if(self.oldMaxStripItensities != [] and maxStripItensities[i] < self.oldMaxStripItensities[i]) :
                 maxStripItensities[i] = self.oldMaxStripItensities[i] - 1
-            # else:
-            #     maxStripItensities[i] = -1
 
-        # if(self.timeSinceStart.getMs() >= 300):
-        #     self.timeSinceStart.restart()
-
-        # print(stripItensities)
-        # print(maxStripItensities)
 
         self.oldStripItensities = stripItensities
         self.oldMaxStripItensities = maxStripItensities
