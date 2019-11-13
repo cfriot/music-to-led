@@ -7,23 +7,14 @@ Real-time music and midi visualizations on led strips using Python, Electron and
 
 # How it works ?
 
-1. Handle multiple audio and midi inputs
-2. Use them to make awesome visualizations effects
-3. Output the result on multiple led strips via Arduino based controllers
-
-<!-- Audio channels are used as a source for some effects.
-Midi channels are used as a source for effect AND as a mod changer. -->
-
 ![software-architecture](images/archi.png)
 
-# What do i need to use it ?
+# What do i need to make one ?
 
 1. [Install the program](#python-program)
 2. [Build an arduino case](#arduino-part)
 3. [Update the CONFIG.yml](#configuration)
 4. Enjoy !
-
-...
 
 # Table of contents
 
@@ -339,7 +330,7 @@ It depends on two factors :
  - Your board maximum baud rate
  - Your led alimentation
 
-For now, consider not using more than 254 leds.
+For now and using the nano case, please consider not using more than 254 leds.
 
 <!-- # Links
 - [Wikipedia DMX](https://fr.wikipedia.org/wiki/DMX_(%C3%A9clairage) -->
@@ -353,7 +344,8 @@ For now, consider not using more than 254 leds.
   OK - Max brightness value sur pitchbend
 
   - Update README avec un bel exemple réel en gif
-  - 4 step graphic
+  OK - Credit the audio reactive led strip author
+  OK - 4 step graphic
   - Finaliser et update la charte graphique
   - Faire une branch dev et master
   - Utiliser le semantic versionning MAJOR.MINOR.PATCH
@@ -376,9 +368,7 @@ For now, consider not using more than 254 leds.
  -->
 
 # Credits
-
-This project is initially based on the great [audio-reactive-led-strip](https://github.com/scottlawsonbc/audio-reactive-led-strip). A lot of code has been rewritten since the beginning.
-But it still remain their great visualizers and audio processing code.
+This project is initially based on the great [audio-reactive-led-strip](https://github.com/scottlawsonbc/audio-reactive-led-strip). A lot of code has been rewritten since the beginning but it still remains some of the visualizers and audio processing code.
 
 # Contribute
 Feel free to send me an e-mail or submit a pull request.
