@@ -1,7 +1,13 @@
 
-<img src="images/logo.svg" width="300">
+<p align="center">
+  <a href="https://github.com/tfrere/music-2-led" title="haxe.org"><img src="images/logo.svg" width="400"></a>
+</p>
 
-![code-covergage](https://img.shields.io/badge/Code%20coverage-0%20%25-red)
+<p align="center">
+	<a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/badge/Code%20coverage-0%20%25-red" alt="Code coverage status"></a>
+</p>
+
+#
 
 Real-time music and midi visualizations on led strips using Python, Electron and Arduino.
 
