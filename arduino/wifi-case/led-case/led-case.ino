@@ -11,36 +11,15 @@
 
 #define NUM_LEDS 135 // Set to the number of LEDs in your LED strip
 #define BUFFER_LEN 1024 // Maximum number of packets to hold in the buffer. Don't change this.
-#define DEV_MODE 1 // Print debug to serial
 
+const char* ssid     = "SFR-c3f8";
+const char* password = "DRDKV4NNDM1J";
+// IP LEFT 13 RIGHT 10 at home
+IPAddress ip(109, 12, 208, 144); // IP must match the IP in config.py
+IPAddress gateway(109, 12, 208, 1); // Set gateway to your router's gateway
+IPAddress subnet(255, 255, 254, 0);
+unsigned int localPort = 7777;
 
-#if DEV_MODE
-
-  #define IP 36 // LEFT
-  //#define IP 240 // RIGHT
-
-  const char* ssid     = "gingerlednetwork2";
-  const char* password = "lesledscestbienetinternetaussi";
-  // IP LEFT 13 RIGHT 10 at home
-  IPAddress ip(192, 168, 31, IP); // IP must match the IP in config.py
-  IPAddress gateway(192, 168, 31, 1); // Set gateway to your router's gateway 192.168.1.234
-  IPAddress subnet(255, 255, 255, 0);
-  unsigned int localPort = 7777;
-
-#endif
-
-#if !DEV_MODE
-
-  #define IP 23 // LEFT 4 RIGHT 5
-
-  const char* ssid     = "boiteainternet"; // "Livebox-FF8E";
-  const char* password = "internetcestbienetlesponeysaussi"; // "Berli0zz";
-  IPAddress ip(10, 0, 0, IP); // IP must match the IP in config.py
-  IPAddress gateway(10, 0, 0, 1); // Set gateway to your router's gateway 192.168.43.1
-  IPAddress subnet(255, 255, 255, 0);
-  unsigned int localPort = 7777;
-
-#endif
 
 const uint8_t PixelPin = 3;  // make sure to set this to the correct pin, ignored for Esp8266(set to 3 by default for DMA)
 NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> ledstrip(NUM_LEDS, PixelPin);
@@ -51,9 +30,8 @@ bool hasAlreadyRecieveAnything = false;
 
 uint8_t ledFeedback = D5;
 
-#if DEV_MODE
-  uint16_t fpsCounter = 0;
-  uint32_t secondTimer = 0;
+uint16_t fpsCounter = 0;
+uint32_t secondTimer = 0;
 
 static void printFps() {
   if (millis() - secondTimer >= 1000U) {
@@ -62,7 +40,6 @@ static void printFps() {
     fpsCounter = 0;
   }
 }
-#endif
 
 static void sendMicroThroughUdp(unsigned long now) {
   static unsigned long next;
@@ -72,10 +49,8 @@ static void sendMicroThroughUdp(unsigned long now) {
 
   port.beginPacket(ip, localPort);
   port.print(analogRead(0));
-  #if DEV_MODE
-    Serial.print("MICRO : ");
-    Serial.println(analogRead(0));
-  #endif
+  Serial.print("MICRO : ");
+  Serial.println(analogRead(0));
   port.endPacket();
 
 }
@@ -98,13 +73,11 @@ void setup() {
 
     digitalWrite(ledFeedback, HIGH);
 
-    //#if DEV_MODE
-      Serial.println("");
-      Serial.print("Connected to ");
-      Serial.println(ssid);
-      Serial.print("IP address: ");
-      Serial.println(WiFi.localIP());
-    //#endif DEV_MODE
+    Serial.println("");
+    Serial.print("Connected to ");
+    Serial.println(ssid);
+    Serial.print("IP address: ");
+    Serial.println(WiFi.localIP());
 
     port.begin(localPort);
     ledstrip.Begin(); // Begin output
@@ -129,10 +102,8 @@ void loop() {
             ledstrip.SetPixelColor(N, pixel);
         }
         ledstrip.Show();
-        #if DEV_MODE
-            fpsCounter++;
-            Serial.print("."); // Monitors connection(shows jumps/jitters in packets)
-        #endif
+          fpsCounter++;
+          Serial.print("."); // Monitors connection(shows jumps/jitters in packets)
     }
     else if (hasAlreadyRecieveAnything) {
       digitalWrite(ledFeedback, LOW);
@@ -140,7 +111,5 @@ void loop() {
 
     sendMicroThroughUdp(now);
 
-    #if DEV_MODE
-      printFps();
-    #endif
+    printFps();
 }
