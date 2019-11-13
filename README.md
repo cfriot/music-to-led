@@ -51,6 +51,7 @@ Midi channels are used as a source for effect AND as a mod changer. -->
     + [Component list](#component-list)
     + [3d printed case](#3d-printed-case)
     + [Led number limitation](#led-number-limitation)
+- [Credits](#credits)
 - [Contribute](#contribute)
 - [License](#license)
 
@@ -342,7 +343,6 @@ For now, consider not using more than 254 leds.
 
 <!-- # Links
 - [Wikipedia DMX](https://fr.wikipedia.org/wiki/DMX_(%C3%A9clairage) -->
-
 <!--
 
   TO DO BEFORE RELEASE
@@ -350,13 +350,18 @@ For now, consider not using more than 254 leds.
   - Package app electron and python ( windows priority )
   - Toggle interface
   - Réparer la carte son de ginger et faire des tests avec ( test d'intensité )
-  - Finaliser et update la charte graphique
   OK - Max brightness value sur pitchbend
+
+  - Update README avec un bel exemple réel en gif
+  - 4 step graphic
+  - Finaliser et update la charte graphique
+  - Faire une branch dev et master
+  - Utiliser le semantic versionning MAJOR.MINOR.PATCH
+  - Gh page ?
 
   # VIZ
   - Piano : ajouter la prise en compte de la velocité et pitch
   OK - Mettre un max a intensity_channels ( ajouter du gradient ? )
-
 
 
   # MAVEN besoins
@@ -364,14 +369,16 @@ For now, consider not using more than 254 leds.
   # Grosse saturation de ouf
   # Utiliser le mouvement de l'onde de la batterie pour les leds
   # entre 50 et 110 Decibels
-  # Variations sur les gros applats de notes
-  # Gestion des modulateurs pour piano ?
-  # Gestion de la vélocité pour Piano
 
   # 27 novembre
 
 
  -->
+
+# Credits
+
+This project is initially based on the great [audio-reactive-led-strip](https://github.com/scottlawsonbc/audio-reactive-led-strip). A lot of code has been rewritten since the beginning.
+But it still remain their great visualizers and audio processing code.
 
 # Contribute
 Feel free to send me an e-mail or submit a pull request.
