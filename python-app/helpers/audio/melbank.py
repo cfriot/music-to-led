@@ -7,7 +7,22 @@ An example ist shown in the following figure:
 
 from numpy import abs, append, arange, insert, linspace, log10, round, zeros
 
-class Melbank:
+class MelBank:
+
+    def __init__(self, fps, min_frequency, max_frequency, sampling_rate, number_of_samples, min_volume_threshold):
+        self.samples = None
+        self.mel_y = None
+        self.mel_x = None
+        self.samples = int(sampling_rate *
+                      4 / (2.0 * fps))
+        self.mel_y, (_, self.mel_x) = self.compute_melmat(
+            num_mel_bands = number_of_samples,
+            freq_min = min_frequency,
+            freq_max = max_frequency,
+            num_fft_bands = self.samples,
+            sample_rate = sampling_rate
+        )
+
     @staticmethod
     def hertz_to_mel(freq):
         """Returns mel-frequency from linear frequency input.
@@ -56,8 +71,8 @@ class Melbank:
         upper_edges_mel : ndarray
         """
 
-        mel_max = Melbank.hertz_to_mel(freq_max)
-        mel_min = Melbank.hertz_to_mel(freq_min)
+        mel_max = MelBank.hertz_to_mel(freq_max)
+        mel_min = MelBank.hertz_to_mel(freq_min)
         delta_mel = abs(mel_max - mel_min) / (num_bands + 1.0)
         frequencies_mel = mel_min + delta_mel * arange(0, num_bands + 2)
         lower_edges_mel = frequencies_mel[:-2]
@@ -104,16 +119,16 @@ class Melbank:
             Center frequencies of the mel bands, center frequencies of fft spectrum.
         """
         center_frequencies_mel, lower_edges_mel, upper_edges_mel =  \
-            Melbank.melfrequencies_mel_filterbank(
+            MelBank.melfrequencies_mel_filterbank(
                 num_mel_bands,
                 freq_min,
                 freq_max,
                 num_fft_bands
             )
 
-        center_frequencies_hz = Melbank.mel_to_hertz(center_frequencies_mel)
-        lower_edges_hz = Melbank.mel_to_hertz(lower_edges_mel)
-        upper_edges_hz = Melbank.mel_to_hertz(upper_edges_mel)
+        center_frequencies_hz = MelBank.mel_to_hertz(center_frequencies_mel)
+        lower_edges_hz = MelBank.mel_to_hertz(lower_edges_mel)
+        upper_edges_hz = MelBank.mel_to_hertz(upper_edges_mel)
         freqs = linspace(0.0, sample_rate / 2.0, num_fft_bands)
         melmat = zeros((num_mel_bands, num_fft_bands))
 

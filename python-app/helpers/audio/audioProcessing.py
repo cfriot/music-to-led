@@ -3,79 +3,62 @@ import numpy as np
 from scipy.ndimage.filters import gaussian_filter1d
 
 from helpers.audio.expFilter import ExpFilter
-from helpers.audio.melbank import Melbank
+from helpers.audio.melbank import MelBank
 
-N_FFT_BINS = 24
-N_ROLLING_HISTORY = 4
-FPS = 60
-MIC_RATE = 44100
-MIN_FREQUENCY = 200
-MAX_FREQUENCY = 12000
-MIN_VOLUME_THRESHOLD = 1e-7
-
-def create_mel_bank():
-    global samples, mel_y, mel_x
-    samples = int(MIC_RATE *
-                  N_ROLLING_HISTORY / (2.0 * FPS))
-    mel_y, (_, mel_x) = Melbank.compute_melmat(
-        num_mel_bands = N_FFT_BINS,
-        freq_min = MIN_FREQUENCY,
-        freq_max = MAX_FREQUENCY,
-        num_fft_bands = samples,
-        sample_rate = MIC_RATE
-    )
-
-
-samples = None
-mel_y = None
-mel_x = None
-create_mel_bank()
 
 class AudioProcessing():
-    def __init__(self):
+    def __init__(
+        self,
+        fps = 60,
+        min_frequency=200,
+        max_frequency=12000,
+        sampling_rate=44100,
+        number_of_audio_samples = 24,
+        min_volume_threshold=1e-7,
+        n_rolling_history=4
+    ):
 
-        self.samples_per_frame = int(MIC_RATE / FPS)
-        self.y_roll = np.random.rand(
-            N_ROLLING_HISTORY, self.samples_per_frame) / 1e16
+        self.samples_per_frame = int(sampling_rate / fps)
+        self.y_roll = np.random.rand(n_rolling_history, self.samples_per_frame) / 1e16
+        self.min_volume_threshold = min_volume_threshold
+        self.melBank = MelBank(60, 200, 12000, 44100, 24, 1e-7)
 
         self.fft_plot_filter = ExpFilter(
-            np.tile(1e-1, N_FFT_BINS),
+            np.tile(1e-1, number_of_audio_samples),
             alpha_decay = 0.5,
             alpha_rise = 0.99
         )
 
         self.mel_gain = ExpFilter(
-            np.tile(1e-1, N_FFT_BINS),
+            np.tile(1e-1, number_of_audio_samples),
             alpha_decay = 0.01,
             alpha_rise = 0.99
         )
 
         self.mel_smoothing = ExpFilter(
-            np.tile(1e-1, N_FFT_BINS),
+            np.tile(1e-1, number_of_audio_samples),
             alpha_decay = 0.5,
             alpha_rise = 0.99
         )
 
         self.fft_window = np.hamming(
-            int(MIC_RATE / FPS) * N_ROLLING_HISTORY
+            self.samples_per_frame * n_rolling_history
         )
 
 
-    @staticmethod
-    def rfft(data, window = None):
+    def rfft(self, data, window = None):
         """Real-Valued Fast Fourier Transform"""
         window = 1.0 if window is None else window(len(data))
         ys = np.abs(np.fft.rfft(data * window))
-        xs = np.fft.rfftfreq(len(data), 1.0 / MIC_RATE)
+        xs = np.fft.rfftfreq(len(data), 1.0 / self.sampling_rate)
         return xs, ys
 
 
-    @staticmethod
-    def fft(data, window = None):
+    def fft(self, data, window = None):
         """Fast Fourier Transform"""
         window = 1.0 if window is None else window(len(data))
         ys = np.fft.fft(data * window)
-        xs = np.fft.fftfreq(len(data), 1.0 / MIC_RATE)
+        xs = np.fft.fftfreq(len(data), 1.0 / self.sampling_rate)
         return xs, ys
 
 
@@ -89,9 +72,9 @@ class AudioProcessing():
         y_data = np.concatenate(self.y_roll, axis=0).astype(np.float32)
         vol = np.max(np.abs(y_data))
 
-        if vol < MIN_VOLUME_THRESHOLD:
+        if vol < self.min_volume_threshold:
             # print('No audio input. Volume below threshold. Volume:', vol)
-            return np.tile(0., N_FFT_BINS)
+            return np.tile(0., self.number_of_audio_samples)
         else:
             # Transform audio input into the frequency domain
             N = len(y_data)
@@ -101,7 +84,7 @@ class AudioProcessing():
             y_padded = np.pad(y_data, (0, N_zeros), mode='constant')
             YS = np.abs(np.fft.rfft(y_padded)[:N // 2])
             # Construct a Mel filterbank from the FFT data
-            mel = np.atleast_2d(YS).T * mel_y.T
+            mel = np.atleast_2d(YS).T * self.melBank.mel_y.T
             # Scale data to values more suitable for visualization
             mel = np.sum(mel, axis=0)
             mel = mel**2.0

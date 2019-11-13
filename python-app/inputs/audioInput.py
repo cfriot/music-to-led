@@ -63,8 +63,9 @@ class AudioInput:
         audio = pyaudio.PyAudio()
         ports = []
         for i in range(audio.get_device_count()):
-            ports.append({"name": audio.get_device_info_by_index(
-                i)["name"], "index": audio.get_device_info_by_index(i)["index"]})
+            if(audio.get_device_info_by_index(i)["maxInputChannels"] == 2):
+                ports.append({"name": audio.get_device_info_by_index(
+                    i)["name"], "index": audio.get_device_info_by_index(i)["index"]})
         return ports
 
     def getRawData(self):
