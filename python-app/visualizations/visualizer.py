@@ -21,6 +21,9 @@ from visualizations.functions.bpm.neonFadeIn import NeonFadeIn
 from visualizations.functions.generic.full import Full
 from visualizations.functions.generic.fire import Fire
 
+def clampToNewRange(value, old_min, old_max, new_min, new_max):
+    new_value = (((value - old_min) * (new_max - new_min)) // (old_max - old_min)) + new_min
+    return new_value
 
 class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChannels, Energy, Spectrum, Piano, Fire, Envelope, NeonFadeIn):
 
@@ -28,7 +31,7 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
         """ The main class that contain all viz functions """
 
         self.strip_config = config.strips[index]
-        self.N_FFT_BINS = config.number_of_audio_samples
+        self.number_of_audio_samples = config.audio_ports[config.strips[index].active_audio_channel_index].number_of_audio_samples
         self.timeSinceStart = config.timeSinceStart
         self.bpm_ms_interval = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.bpm)
         self.initVizualiser()
@@ -49,7 +52,7 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
     def initVizualiser(self):
         self.number_of_pixels = self.strip_config.shapes[self.strip_config.active_shape_index].number_of_pixels
         self.gain = ExpFilter(
-            np.tile(0.01, self.N_FFT_BINS),
+            np.tile(0.01, self.number_of_audio_samples),
             alpha_decay = 0.001,
             alpha_rise=0.99
         )
@@ -78,40 +81,49 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
         """ Draw current pixels """
         self.audio_data = self.audio_datas[self.strip_config.active_audio_channel_index]
 
+        pixels = []
+
         # SOUND BASED
         if(self.strip_config.active_visualizer_effect == "scroll"):
-            return self.visualizeScroll()
+            pixels = self.visualizeScroll()
         if(self.strip_config.active_visualizer_effect == "energy"):
-            return self.visualizeEnergy()
+            pixels = self.visualizeEnergy()
         if(self.strip_config.active_visualizer_effect == "intensity_channels"):
-            return self.visualizeIntensityChannels()
+            pixels = self.visualizeIntensityChannels()
         if(self.strip_config.active_visualizer_effect == "spectrum"):
-            return self.visualizeSpectrum()
+            pixels = self.visualizeSpectrum()
 
         # MIDI BASED
         if(self.strip_config.active_visualizer_effect == "piano"):
-            return self.visualizePiano()
+            pixels = self.visualizePiano()
         if(self.strip_config.active_visualizer_effect == "envelope"):
-            return self.visualizeEnvelope()
-
-
+            pixels = self.visualizeEnvelope()
 
         # BPM BASED
         if(self.strip_config.active_visualizer_effect == "alternate_colors"):
-            return self.visualizeAlternateColors()
+            pixels = self.visualizeAlternateColors()
         if(self.strip_config.active_visualizer_effect == "alternate_colors_full"):
-            return self.visualizeAlternateColorsFull()
+            pixels = self.visualizeAlternateColorsFull()
         if(self.strip_config.active_visualizer_effect == "alternate_colors_for_shapes"):
-            return self.visualizeAlternateColorsForShapes()
-
+            pixels = self.visualizeAlternateColorsForShapes()
 
         # GENERIC
         if(self.strip_config.active_visualizer_effect == "full"):
-            return self.visualizeFull()
+            pixels = self.visualizeFull()
         if(self.strip_config.active_visualizer_effect == "nothing"):
-            return self.visualizeNothing()
+            pixels = self.visualizeNothing()
         if(self.strip_config.active_visualizer_effect == "fire"):
-            return self.visualizeFire()
+            pixels = self.visualizeFire()
 
+        tmp = [[],[],[]]
+        for i in range(3):
+            for y in range(self.number_of_pixels):
+                tmp[i].append(clampToNewRange(pixels[i][y], 0, 255, 0, self.strip_config.max_brightness))
+                print(tmp[i][y])
+            tmp[i] = np.array(tmp[i])
 
-        return self.pixels
+        # print(tmp2)
+        # import time
+        # time.sleep(10)
+
+        return tmp

@@ -163,7 +163,7 @@ class ModSwitcher:
                                 self.strip_config.max_brightness,
                                 velocity,
                                 255,
-                                1
+                                2
                             )
 
                             message = "is changing max_brightness to -> " + str(self.strip_config.max_brightness)

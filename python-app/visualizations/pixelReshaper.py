@@ -74,7 +74,6 @@ class PixelReshaper:
             tmp = np.copy(pixels[:, :number_of_pixels // 2])
             return np.concatenate((tmp[:, ::-1], tmp), axis=1)
 
-
     def reshapeFromStrips(self, strips):
 
         tmp_s = []
