@@ -172,12 +172,6 @@ fps: 60
 
 display_interface: false
 
-# Old variables
-# Has to be removed from here
-
-n_rolling_history: 4
-number_of_audio_samples: 24
-
 # Audio ports
 # List of used audio ports
 # Can be listed with listAvailableDevices.sh
@@ -191,6 +185,7 @@ audio_ports:
     sampling_rate: 44000
     number_of_audio_samples: 24
     min_volume_threshold: 1e-7
+    n_rolling_history: 4
 
 # Strips
 # They represents independant Arduino cases
@@ -352,8 +347,17 @@ For now, consider not using more than 254 leds.
 
   TO DO BEFORE RELEASE
 
-  - Package app electron and python
+  - Package app electron and python ( windows priority )
   - Toggle interface
+  - Réparer la carte son de ginger et faire des tests avec ( test d'intensité )
+  - Finaliser et update la charte graphique
+  OK - Max brightness value sur pitchbend
+
+  # VIZ
+  - Piano : ajouter la prise en compte de la velocité et pitch
+  OK - Mettre un max a intensity_channels ( ajouter du gradient ? )
+
+
 
   # MAVEN besoins
 
@@ -363,15 +367,6 @@ For now, consider not using more than 254 leds.
   # Variations sur les gros applats de notes
   # Gestion des modulateurs pour piano ?
   # Gestion de la vélocité pour Piano
-
-  # Mode piano post rock
-
-
-  # Windows compatibility
-
-  # General needs
-
-  # Make a more resilient midi code
 
   # 27 novembre
 
