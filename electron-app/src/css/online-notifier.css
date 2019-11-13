@@ -1,0 +1,67 @@
+@keyframes ripple {
+  0% {
+    opacity: .75;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+.online-notifier {
+  float: right;
+  display: flex;
+  align-items: center;
+}
+
+.online-notifier__label {
+  text-transform: uppercase;
+  color: green;
+  margin-right: 10px;
+  font-size: 10px;
+  letter-spacing: 0.1rem;
+}
+
+.online-notifier__circle {
+  position: relative;
+  background-color: rgba(43, 178, 76, 0.38);
+  border: 1px solid rgba(43, 178, 76, 0.54);
+  border-radius: 1rem;
+  box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  height: 1rem;
+  transition: border 200ms, background-color 200ms, height 200ms, width 200ms, transform 200ms ease;
+  width: 1rem;
+  transform: scale(1);
+}
+
+.online-notifier__circle:before, .online-notifier__circle:after {
+  background: transparent;
+  border: solid 1px #2bb24c;
+  border-radius: 50%;
+  content: '';
+  height: 100%;
+  left: -1px;
+  position: absolute;
+  top: -1px;
+  transform-origin: center center;
+  width: 100%;
+  animation: ripple 1.4s infinite;
+}
+
+.online-notifier__circle:before {
+  animation-delay: .8s;
+}
+
+.online-notifier__circle:hover {
+  background-color: rgba(43, 178, 76, 0.54);
+  border-color: #2bb24c;
+  height: 2rem;
+  width: 2rem;
+}
+
+.online-notifier__circle:active {
+  transform: scale(1.1);
+}

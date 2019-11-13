@@ -6,7 +6,7 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { config: null, strips: null, audios: null };
+    this.state = { config: null, strips: null, audios: null, midi: [] };
   }
   componentDidMount() {
     this.intervalId = setInterval(() => this.loadData(), 50);
@@ -25,8 +25,6 @@ class App extends React.Component {
       } else {
 
         res = JSON.parse( res );
-
-        console.log(res);
 
         this.setState({
           config: res.config,
@@ -50,19 +48,16 @@ class App extends React.Component {
       audiosElem = this.state.audios.map((audio, index) => {
         return <AudioVisualizer ref={audio + index} name={this.state.config.audio_ports[index].name} audio={this.state.audios[index]} />
       });
+
       stripsElem = this.state.strips.map((strip, index) => {
-        return <Strip ref={strip + index} pixels={this.state.strips[index]} strip={this.state.config.strips[index]}/>
+        return <Strip ref={strip + index} config={this.state.config} index={index} pixels={this.state.strips[index]} strip={this.state.config.strips[index]}/>
       });
 
     }
 
     return <div id="app">
-      <Loading/>
+      {/* <Loading/> */}
       <div style={{display:"flex"}}>
-        {/* <div style={{width:"50%"}}>
-          <h4 className="title">Midi channels #4</h4>
-          <MidiConsole/>
-        </div> */}
         <div style={{width:"50%"}}>
           <h4 className="title"><span>{audiosElem.length}</span> Audio channel{audiosElem.length > 1 ? "s" : "" } </h4>
           {audiosElem}

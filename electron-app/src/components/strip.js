@@ -42,24 +42,32 @@ class Strip extends React.Component {
     let is_mirror = this.props.strip.is_mirror.toString();
     let bpm = this.props.strip.bpm;
 
-    let colorSchemeElem = []
+    let colorSchemeElem = [];
     colorSchemeElem = active_color_scheme.map((color, index) => {
       return <div ref={color+index} className="strip__color" style={{backgroundColor: color}}></div>
     });
 
+    let onlineClassNames = this.props.strip.is_online?" online":" offline"
+
     return <div className='card strip-block'>
 
-        <h4 className="card__title">{this.props.strip.name}</h4>
+        <div className={"online-notifier" + onlineClassNames} >
+          <label className="online-notifier__label">online</label>
+          <div className="online-notifier__circle"></div>
+        </div>
+        <h4 className="card__title">{this.props.strip.name} on <span className="strip__value">{ this.props.strip.active_visualizer_effect }</span></h4>
         <p>
           <span className="strip__label">Color</span> <span className="strip__value">{ colorSchemeElem }</span>
           <span className="strip__label">Bpm</span> <span className="strip__value">{ bpm }</span>
-          <span className="strip__label">Audio channel</span> <span className="strip__value">{ this.props.strip.active_audio_channel_index }</span>
+          <span className="strip__label">Audio channel</span> <span className="strip__value">{ this.props.config.audio_ports[this.props.strip.active_audio_channel_index].name }</span>
           <span className="strip__label" style={{opacity:this.props.strip.is_reverse?0.5:1}}>Reverse</span>
           <span className="strip__label" style={{opacity:this.props.strip.is_mirror?0.5:1}}>Mirror</span>
-          <span className="strip__label" style={{opacity:this.props.strip.is_online?0.5:1}}>Online</span>
         </p>
 
         <StripVisualizer real_shape={this.props.strip.real_shape} active_shape={active_shape} pixels={this.props.pixels} />
+
+        <MidiVisualizer midi_datas={this.props.strip.midi_logs}/>
+
       </div>;
 
   }

@@ -38,12 +38,12 @@ class StripVisualizer extends React.Component {
         let classes = "strip__led";
         shape_offsets.map((offset) => {
           if(index == offset) {
-            classes = "strip__led strip__led--space2"
+            classes = "strip__led strip__led--space"
           }
         });
         real_shape_offsets.map((offset) => {
           if(index == offset) {
-            classes = "strip__led strip__led--breakline2"
+            classes = "strip__led strip__led--breakline"
           }
         });
 
