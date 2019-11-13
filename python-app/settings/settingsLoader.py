@@ -28,6 +28,7 @@ class AudioPortSettings() :
         sampling_rate = 44000,
         number_of_audio_samples = 24,
         min_volume_threshold = 1e-7,
+        n_rolling_history = 4,
         debug = False
     ):
 
@@ -36,7 +37,8 @@ class AudioPortSettings() :
         self.max_frequency = max_frequency
         self.sampling_rate = sampling_rate
         self.number_of_audio_samples = number_of_audio_samples
-        self.min_volume_threshold = min_volume_threshold
+        self.min_volume_threshold = float(min_volume_threshold)
+        self.n_rolling_history = n_rolling_history
 
         if(debug):
             AudioInput.tryPort(name)
@@ -52,6 +54,7 @@ class AudioPortSettings() :
         print("sampling_rate -> ", self.sampling_rate)
         print("number_of_audio_samples -> ", self.number_of_audio_samples)
         print("min_volume_threshold -> ", self.min_volume_threshold)
+        print("n_rolling_history -> ", self.n_rolling_history)
         print("----------------")
         print("--")
 
@@ -178,7 +181,6 @@ class Settings():
         self,
         fps = 60,
         number_of_audio_samples = 24,
-        n_rolling_history = 4,
         debug = False,
         audio_ports = [
             {
@@ -209,7 +211,6 @@ class Settings():
         self.fps = fps
         self.delay_between_frames = 1 / fps
         self.timeSinceStart = TimeSinceStart()
-        self.n_rolling_history = n_rolling_history
         self.number_of_audio_samples = number_of_audio_samples
         self.audio_ports = []
         for audio_port in audio_ports:
@@ -260,7 +261,6 @@ class Settings():
         print("----------------")
         print("fps -> ", self.fps)
         print("delay_between_frames -> ", self.delay_between_frames)
-        print("n_rolling_history -> ", self.n_rolling_history)
         for audio_port in self.audio_ports:
             audio_port.print()
         print("number_of_audio_ports -> ", self.number_of_audio_ports)
@@ -283,7 +283,6 @@ class SettingsLoader():
 
                 self.data = Settings(
                     fps = file["fps"],
-                    n_rolling_history = file["n_rolling_history"],
                     audio_ports = file["audio_ports"],
                     strips = file["strips"],
                     debug = debug
@@ -305,8 +304,6 @@ if __name__ == "__main__":
 
     config = SettingsLoader("../CONFIG.yml", debug=True)
     config.data.print()
-
-    # print(config.findStripIndexByStripName("lantern"))
 
     # method_list = [func for func in dir(Visualizer) if callable(getattr(Visualizer, func)) and not func.startswith("__")]
     # print(method_list)

@@ -126,7 +126,7 @@ class SerialOutput:
                 message = self.send_data_command[:1] + number_of_pixel_command[:2] + bytes(self.raw_data)
                 self.serial_class.write(message)
             except IOError:
-                # TO DO : Remove display and find a way to display if it's ONLINE or not 
+                # TO DO : Remove display and find a way to display if it's ONLINE or not
                 print("Hey it seem's that your cable has been unpluged on port ", self.serial_port)
                 self.trying_to_connect = True
                 self.setup()
@@ -147,9 +147,8 @@ if __name__ == "__main__":
         print('Serial ports available :')
 
         ports = SerialOutput.listAvailableUsbSerialPorts()
-
         for port in ports:
-            print("- " + port["name"])
+            print("- " + port)
 
     if(args.test):
 

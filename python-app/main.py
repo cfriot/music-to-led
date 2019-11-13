@@ -17,7 +17,7 @@ from visualizations.visualizer import Visualizer
 from visualizations.pixelReshaper import PixelReshaper
 from visualizations.modSwitcher import ModSwitcher
 
-from debug.electronApi import ElectronApi, apiProcess
+from outputs.electronApi import ElectronApi, apiProcess
 
 if __name__ == "__main__":
 
@@ -43,7 +43,7 @@ if __name__ == "__main__":
         serial_port_name = strip_config.serial_port_name
         number_of_pixels = strip_config.shapes[strip_config.active_shape_index].number_of_pixels
 
-        print("* Init Serial process --> ", serial_port_name)
+        print("* Init Serial process on port : ", serial_port_name)
 
         serialOutput = SerialOutput(
             number_of_pixels,
@@ -66,6 +66,7 @@ if __name__ == "__main__":
         config = shared_list[0]
         audio_datas = shared_list[1]
         strip_config = config.strips[index]
+        strip_config.midi_logs = []
 
         framerateCalculator = FramerateCalculator(config.fps)
 
@@ -99,6 +100,12 @@ if __name__ == "__main__":
 
             modSwitcher.midi_datas = midiDispatcher.midi_datas_for_changing_mode
             visualizer.midi_datas =  midiDispatcher.midi_datas_for_visualization
+
+            # Updating midi logs
+            strip_config.midi_logs += midiDispatcher.midi_datas_for_changing_mode
+            strip_config.midi_logs += midiDispatcher.midi_datas_for_visualization
+            if(len(strip_config.midi_logs) > 10):
+                strip_config.midi_logs.pop(0)
 
             modSwitcher.changeMod()
 
