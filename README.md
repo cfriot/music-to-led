@@ -12,7 +12,9 @@
 
 #
 
-Real-time audio and midi visualizations on led strips using Python, Electron and Arduino. Music 2 Led is designed for DJ's or music groups that want to add some lighting effect without big budget. ( starting at ~75$ )
+**Music 2 Led** is an open source program that allows you to create **real-time audio and midi visualizations on led strips** using Python, Electron and Arduino. It was designed for **DJ**'s or **music groups** that want to add some **automated lighting effects** to their shows without big budget.
+
+( starting at ~75$ with leds and power alimation )
 
 ### Showcase
 
@@ -29,7 +31,6 @@ Real-time audio and midi visualizations on led strips using Python, Electron and
 3. [Update the CONFIG.yml](#configuration)
 4. Enjoy !
 
-#
 
 # Table of contents
 
@@ -168,6 +169,7 @@ sh testConfigFile.sh
 ```
 
 ### Sample config file
+
 ```yml
 
 ---  # document start
@@ -359,12 +361,13 @@ For now and using the nano case, please consider not using more than 254 leds.
   - Réparer la carte son de ginger et faire des tests avec ( test d'intensité )
   OK - Max brightness value sur pitchbend
 
-  - Update README avec un bel exemple réel en gif
+  OK - Update README avec badges
+  - Bel exemple réel en gif
   OK - Credit the audio reactive led strip author
   OK - 4 step graphic
   - Finaliser et update la charte graphique
   - Faire une branch dev et master
-  - Utiliser le semantic versionning MAJOR.MINOR.PATCH
+  OK - Utiliser le semantic versionning MAJOR.MINOR.PATCH
   - Gh page ?
 
   # VIZ
@@ -384,7 +387,7 @@ For now and using the nano case, please consider not using more than 254 leds.
  -->
 
 # Credits
-This project is initially based on the great [audio-reactive-led-strip](https://github.com/scottlawsonbc/audio-reactive-led-strip). A lot of code has been rewritten since the beginning but it still remains some of the visualizers and audio processing code.
+This project was a fork of the great [audio-reactive-led-strip](https://github.com/scottlawsonbc/audio-reactive-led-strip). A lot of code has been rewritten since the beginning but it still remains some of the visualizers and audio processing code.
 
 # Contribute
 Feel free to send me an e-mail or submit a pull request.
