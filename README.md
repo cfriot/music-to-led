@@ -14,7 +14,7 @@
 
 **Music 2 Led** is an open source program that allows you to create **real-time audio and midi visualizations on led strips** using Python, Electron and Arduino. It was designed for **DJ**'s or **music groups** that want to add some **automated lighting effects** to their shows without big budget.
 
-( starting at ~75$ with leds and power alimation )
+( starting at ~75$ including leds and power source )
 
 ### Showcase
 
@@ -27,7 +27,7 @@
 ### What do i need to make one ?
 
 1. [Install the program](#python-program)
-2. [Build an arduino case](#arduino-part) ( ~75$ )
+2. [Build an arduino case](#arduino-part)
 3. [Update the CONFIG.yml](#configuration)
 4. Enjoy !
 
@@ -54,8 +54,8 @@
 - [Install](#install)
   * [Python program](#python-program)
   * [Arduino part](#arduino-part)
-    + [Electronic scheme](#electronic-scheme)
     + [Component list](#component-list)
+    + [Electronic scheme](#electronic-scheme)
     + [3d printed case](#3d-printed-case)
     + [Led number limitation](#led-number-limitation)
 - [Credits](#credits)
@@ -322,11 +322,7 @@ conda install --file requirements.txt
 
 ## Arduino part
 
-You can find 3d models of the cases, the arduino code and all the instructions you need to setup the project. [Arduino part](/arduino/).
-
-### Electronic scheme
-
-![electronic-scheme](images/electronic-scheme.png)
+You can find 3d models of the cases, the arduino code and all the instructions you need to setup the project in the [Arduino folder](/arduino/).
 
 ### Component list
 
@@ -338,7 +334,17 @@ You can find 3d models of the cases, the arduino code and all the instructions y
 
 **Estimated cost** *~75$*
 
+### Electronic scheme
+
+![electronic-scheme](images/electronic-scheme.png)
+
 ### 3d printed case
+
+Slicer settings
+
+- Supports **No**
+- Resolution **0.2**
+- Infill **30-100%**
 
 ![arduino-case](images/arduino-case.png)
 
