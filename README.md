@@ -7,12 +7,16 @@
 	<a href="https://github.com/tfrere/music-2-led#licence"><img src="https://img.shields.io/badge/licence-MIT-green" alt="Licence"></a>
 	<a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/badge/platform-osx--64%20%7C%20linux--64%20%7C%20win--64-lightgrey" alt="Platform support"></a>
   <a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/github/last-commit/tfrere/music-2-led" alt="Last update"></a>
-<a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/github/v/tfrere/music-2-led" alt="Current version"></a>
+<a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/github/v/tag/tfrere/music-2-led" alt="Current version"></a>
 </p>
 
 #
 
 Real-time audio and midi visualizations on led strips using Python, Electron and Arduino. Music 2 Led is designed for DJ's or music groups that want to add some lighting effect without big budget. ( starting at ~75$ )
+
+### Showcase
+
+...
 
 ### How it works ?
 
@@ -24,6 +28,8 @@ Real-time audio and midi visualizations on led strips using Python, Electron and
 2. [Build an arduino case](#arduino-part) ( ~75$ )
 3. [Update the CONFIG.yml](#configuration)
 4. Enjoy !
+
+#
 
 # Table of contents
 
