@@ -4,21 +4,24 @@
 </p>
 
 <p align="center">
-	<a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/badge/Code%20coverage-0%20%25-red" alt="Code coverage status"></a>
+	<a href="https://github.com/tfrere/music-2-led#licence"><img src="https://img.shields.io/badge/licence-MIT-green" alt="Licence"></a>
+	<a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/badge/platform-osx--64%20%7C%20linux--64%20%7C%20win--64-lightgrey" alt="Platform support"></a>
+  <a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/github/last-commit/tfrere/music-2-led" alt="Last update"></a>
+<a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/github/v/tfrere/music-2-led" alt="Current version"></a>
 </p>
 
 #
 
-Real-time music and midi visualizations on led strips using Python, Electron and Arduino.
+Real-time audio and midi visualizations on led strips using Python, Electron and Arduino. Music 2 Led is designed for DJ's or music groups that want to add some lighting effect without big budget. ( starting at ~75$ )
 
-# How it works ?
+### How it works ?
 
 ![software-architecture](images/archi.png)
 
-# What do i need to make one ?
+### What do i need to make one ?
 
 1. [Install the program](#python-program)
-2. [Build an arduino case](#arduino-part)
+2. [Build an arduino case](#arduino-part) ( ~75$ )
 3. [Update the CONFIG.yml](#configuration)
 4. Enjoy !
 
@@ -109,7 +112,8 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 
 # Configuration
 
-This program will interact with Audio ports, Midi ports and Serial ports.
+This program will use Audio ports, Midi ports and Serial ports.
+
 To help you to configure your CONFIG.yml correctly, there is a little helper that
 will list all available ports for each of them.
 
@@ -119,7 +123,7 @@ sh listAvailablePorts.sh
 
 ## Audio channels
 
-The program streams audio from the default audio input device (set by the operating system).
+This program streams audio from the default audio input device (set by the operating system).
 
 Examples of typical audio sources:
 - Audio cable connected to the audio input jack (requires USB sound card on Raspberry Pi)
@@ -324,7 +328,7 @@ You can find 3d models of the cases, the arduino code and all the instructions y
 - 1x [**Led strip female connector**](https://www.amazon.fr/BTF-LIGHTING-Connectors-WS2812B-WS2811-20pairs/dp/B01DC0KIT2)  *~5$*
 - 1x **Led strip WS2812B**  *~35$*
 
-**Estimated cost** *~100$*
+**Estimated cost** *~75$*
 
 ### 3d printed case
 
