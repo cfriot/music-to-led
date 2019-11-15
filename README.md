@@ -12,7 +12,7 @@
 
 #
 
-**Music 2 Led** is an open source program that allows you to create **real-time audio and midi visualizations on led strips** using Python, Electron and Arduino. It was designed for **DJ**'s or **music groups** that want to add some **automated lighting effects** to their shows without big budget.
+**Music 2 Led** is an open source program that allows you to create **real-time audio and midi visualizations on led strips** using Arduino, Electron and Python. It was designed for **DJ**'s or **music groups** that want to add some **automated lighting effects** to their shows without big budget.
 
 ( starting at ~75$ including leds and power source )
 
@@ -29,18 +29,18 @@
 1. [Install the program](#python-program)
 2. [Build an arduino case](#arduino-part)
 3. [Update the CONFIG.yml](#configuration)
-4. Enjoy !
+4. [Setup your show with the effects and mods documentation](#effects---modes)
+5. Enjoy !
 
 
 # Table of contents
-
-- [Effects & Modes](#effects---modes)
-  * [Effects](#effects)
-    + [Sound based](#sound-based)
-    + [Midi based](#midi-based)
-    + [BPM based](#bpm-based)
-    + [Generic](#generic)
-  * [Modes](#modes)
+- [Install](#install)
+  * [Python program](#python-program)
+  * [Arduino part](#arduino-part)
+    + [Component list](#component-list)
+    + [Electronic scheme](#electronic-scheme)
+    + [3d printed case](#3d-printed-case)
+    + [Led number limitation](#led-number-limitation)
 - [Configuration](#configuration)
   * [Audio channels](#audio-channels)
   * [Virtual Audio Source](#virtual-audio-source)
@@ -51,71 +51,106 @@
     + [Ableton live](#ableton-live)
   * [CONFIG.yml](#configyml)
     + [Sample config file](#sample-config-file)
-- [Install](#install)
-  * [Python program](#python-program)
-  * [Arduino part](#arduino-part)
-    + [Component list](#component-list)
-    + [Electronic scheme](#electronic-scheme)
-    + [3d printed case](#3d-printed-case)
-    + [Led number limitation](#led-number-limitation)
+- [Effects & Modes](#effects---modes)
+  * [Effects](#effects)
+    + [Sound based](#sound-based)
+    + [Midi based](#midi-based)
+    + [BPM based](#bpm-based)
+    + [Generic](#generic)
+  * [Modes](#modes)
 - [Credits](#credits)
 - [Contribute](#contribute)
 - [License](#license)
 
-# Effects & Modes
 
-## Effects
 
-There is four kind of effects. All the examples are based on a ["red", "green", "blue"] color scheme
+# Install
 
-### Sound based
+If you encounter any problems running program, please open a new issue. Also, please consider opening an issue if you have any questions or suggestions for improving the installation process.
 
-| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
-|:--|:--|:--|:--|:--
-| 0 | C-2 | **Scroll** | - | ![scroll](images/scroll.gif)
-| 1 | C#-2 | **Energy** | - | ![energy](images/energy.gif)
-| 2 | D-2 | **Intensity** | - | ![intensity](images/intensity.gif)
-| 3 | D#-2 | **Spectrum** | - | ![spectrum](images/spectrum.gif)
+## Python program
+Code is compatible with Python 3.7. Install dependencies using pip and the conda package manager.
 
-### Midi based
+```
+pip install -r requirements.txt
+conda install --file requirements.txt
+```
 
-| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
-|:--|:--|:--|:--|:--
-| 5 | F-2   | **Piano** | - | ![scroll](images/piano.gif)
-| 6 | F#-2  | **Envelope** | Color intensity based on pitch bend | ![scroll](images/envelope.gif)
-| 7 | G-2   | - | - | ![scroll](images/nothing.gif)
-| 8 | G#-2  | - | - | ![scroll](images/nothing.gif)
+## Arduino part
 
-### BPM based
+You can find 3d models of the cases, the arduino code and all the instructions you need to setup the project in the [Arduino folder](/arduino/).
 
-| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
-|:--|:--|:--|:--|:--
-| 10 | A#-2   | **AlternateColors** | Chunk size based on velocity | ![scroll](images/alternate-chunks.gif)
-| 11 | B-2    | **AlternateColorsFull** | - | ![scroll](images/alternate-colors.gif)
-| 12 | C-1    | **AlternateColorsForStrips** | - | ![scroll](images/alternate-strips.gif)
-| 13 | C#-1   | - | - | ![scroll](images/nothing.gif)
+### Component list
 
-### Generic
+- 1x [**Alim 5V 10A**](https://www.amazon.fr/gp/product/B06XCMQ212/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)  *~25$*
+- 1x **Arduino nano or other**  *~5$*
+- 1x **1000mu Capacitor**  *~1$*
+- 1x [**Led strip female connector**](https://www.amazon.fr/BTF-LIGHTING-Connectors-WS2812B-WS2811-20pairs/dp/B01DC0KIT2)  *~5$*
+- 1x **Led strip WS2812B**  *~35$*
 
-| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
-|:--|:--|:--|:--|:--
-| 15 | D#-1  | **Full** | - | ![scroll](images/full.gif)
-| 16 | E-1   | **Nothing** | - | ![scroll](images/nothing.gif)
-| 17 | F-1  | **Fire** | - | ![scroll](images/fire.gif)
-| 18 | F#-1  | - | - | ![scroll](images/nothing.gif)
+**Estimated cost** *~75$*
 
-## Modes
+### Electronic scheme
 
-| *Number* | *Midi Note* | *Mode name* | *Params* | *Example*
-|:--|:--|:--|:--|:--
-| 20 | G#-1  | **Toggle reverse mode** | - | ![scroll](images/reverse.gif)
-| 21 | A-1  | **Toggle mirror mode** | - | ![scroll](images/mirror.gif)
-| 22 | A#-1 | **Change shape** | Size based on velocity | ![scroll](images/shape.gif)
-| 23 | B-1 | **Change color scheme** | Size based on velocity | ![scroll](images/color.gif)
-| 24 | C-0  | **Change bpm** | Size based on velocity | ![scroll](images/nothing.gif)
-| 25 | C#-0  | **Change Audio channel** | Size based on velocity | ![scroll](images/nothing.gif)
-| 26 | D-0 | **Change Max Brightness** | Size based on velocity | ![scroll](images/nothing.gif)
-| 27 | D#-0 | **Reset Frame** | - | ![scroll](images/nothing.gif)
+![electronic-scheme](images/electronic-scheme.png)
+
+### 3d printed case
+
+Slicer settings
+
+- Supports **No**
+- Resolution **0.2**
+- Infill **30-100%**
+
+![arduino-case](images/arduino-case.png)
+
+### Led number limitation
+
+It depends on two factors :
+ - Your board maximum baud rate
+ - Your led alimentation
+
+For now and using the nano case, please consider not using more than 254 leds.
+
+<!-- # Links
+- [Wikipedia DMX](https://fr.wikipedia.org/wiki/DMX_(%C3%A9clairage) -->
+<!--
+
+  Mon projet est Music 2 led, il s'addresse aux dj et groupes de musiques, se trouvant
+  ..., qui ont besoin d'un setup light automatisé.
+  Il est plutot utilisé quand le groupe n'a pas beaucoup de budget
+
+  TO DO BEFORE RELEASE
+
+  - Package app electron and python ( windows priority )
+  - Toggle interface
+  - Réparer la carte son de ginger et faire des tests avec ( test d'intensité )
+  OK - Max brightness value sur pitchbend
+
+  OK - Update README avec badges
+  - Bel exemple réel en gif
+  OK - Credit the audio reactive led strip author
+  OK - 4 step graphic
+  - Finaliser et update la charte graphique
+  - Faire une branch dev et master
+  OK - Utiliser le semantic versionning MAJOR.MINOR.PATCH
+  - Gh page ?
+
+  # VIZ
+  - Piano : ajouter la prise en compte de la velocité et pitch
+  OK - Mettre un max a intensity_channels ( ajouter du gradient ? )
+
+
+  # MAVEN besoins
+
+  # Grosse saturation de ouf
+  # Utiliser le mouvement de l'onde de la batterie pour les leds
+  # entre 50 et 110 Decibels
+
+  # 27 novembre
+
+
+ -->
 
 # Configuration
 
@@ -308,89 +343,67 @@ strips:
 ```
 
 
-# Install
+# Effects & Modes
 
-If you encounter any problems running program, please open a new issue. Also, please consider opening an issue if you have any questions or suggestions for improving the installation process.
+Music 2 Led has 16 visualization effects and 8 mods.
 
-## Python program
-Code is compatible with Python 3.7. Install dependencies using pip and the conda package manager.
+They can be live changed via dedicated Midi channels. You can choose to use programs like Ableton Live to automate these changes or use a dedicated synthetiser / pad to change them manually during the show.
 
-```
-pip install -r requirements.txt
-conda install --file requirements.txt
-```
+**Principle** You have to send a midi note signal for activating / modifying effects. The table just after will show you the documentation.
 
-## Arduino part
+## Effects
 
-You can find 3d models of the cases, the arduino code and all the instructions you need to setup the project in the [Arduino folder](/arduino/).
+There is four kind of effects. All the examples are based on a ["red", "green", "blue"] color scheme
 
-### Component list
+### Sound based
 
-- 1x [**Alim 5V 10A**](https://www.amazon.fr/gp/product/B06XCMQ212/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)  *~25$*
-- 1x **Arduino nano or other**  *~5$*
-- 1x **1000mu Capacitor**  *~1$*
-- 1x [**Led strip female connector**](https://www.amazon.fr/BTF-LIGHTING-Connectors-WS2812B-WS2811-20pairs/dp/B01DC0KIT2)  *~5$*
-- 1x **Led strip WS2812B**  *~35$*
+| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
+|:--|:--|:--|:--|:--
+| 0 | C-2 | **Scroll** | - | ![scroll](images/scroll.gif)
+| 1 | C#-2 | **Energy** | - | ![energy](images/energy.gif)
+| 2 | D-2 | **Intensity** | - | ![intensity](images/intensity.gif)
+| 3 | D#-2 | **Spectrum** | - | ![spectrum](images/spectrum.gif)
 
-**Estimated cost** *~75$*
+### Midi based
 
-### Electronic scheme
+| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
+|:--|:--|:--|:--|:--
+| 5 | F-2   | **Piano** | - | ![scroll](images/piano.gif)
+| 6 | F#-2  | **Envelope** | Color intensity based on pitch bend | ![scroll](images/envelope.gif)
+| 7 | G-2   | - | - | ![scroll](images/nothing.gif)
+| 8 | G#-2  | - | - | ![scroll](images/nothing.gif)
 
-![electronic-scheme](images/electronic-scheme.png)
+### BPM based
 
-### 3d printed case
+| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
+|:--|:--|:--|:--|:--
+| 10 | A#-2   | **AlternateColors** | Chunk size based on velocity | ![scroll](images/alternate-chunks.gif)
+| 11 | B-2    | **AlternateColorsFull** | - | ![scroll](images/alternate-colors.gif)
+| 12 | C-1    | **AlternateColorsForStrips** | - | ![scroll](images/alternate-strips.gif)
+| 13 | C#-1   | - | - | ![scroll](images/nothing.gif)
 
-Slicer settings
+### Generic
 
-- Supports **No**
-- Resolution **0.2**
-- Infill **30-100%**
+| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
+|:--|:--|:--|:--|:--
+| 15 | D#-1  | **Full** | - | ![scroll](images/full.gif)
+| 16 | E-1   | **Nothing** | - | ![scroll](images/nothing.gif)
+| 17 | F-1  | **Fire** | - | ![scroll](images/fire.gif)
+| 18 | F#-1  | - | - | ![scroll](images/nothing.gif)
 
-![arduino-case](images/arduino-case.png)
+## Modes
 
-### Led number limitation
+| *Number* | *Midi Note* | *Mode name* | *Params* | *Example*
+|:--|:--|:--|:--|:--
+| 20 | G#-1  | **Toggle reverse mode** | - | ![scroll](images/reverse.gif)
+| 21 | A-1  | **Toggle mirror mode** | - | ![scroll](images/mirror.gif)
+| 22 | A#-1 | **Change shape** | Size based on velocity | ![scroll](images/shape.gif)
+| 23 | B-1 | **Change color scheme** | Size based on velocity | ![scroll](images/color.gif)
+| 24 | C-0  | **Change bpm** | Size based on velocity | ![scroll](images/nothing.gif)
+| 25 | C#-0  | **Change Audio channel** | Size based on velocity | ![scroll](images/nothing.gif)
+| 26 | D-0 | **Change Max Brightness** | Size based on velocity | ![scroll](images/nothing.gif)
+| 27 | D#-0 | **Reset Frame** | - | ![scroll](images/nothing.gif)
 
-It depends on two factors :
- - Your board maximum baud rate
- - Your led alimentation
-
-For now and using the nano case, please consider not using more than 254 leds.
-
-<!-- # Links
-- [Wikipedia DMX](https://fr.wikipedia.org/wiki/DMX_(%C3%A9clairage) -->
-<!--
-
-  TO DO BEFORE RELEASE
-
-  - Package app electron and python ( windows priority )
-  - Toggle interface
-  - Réparer la carte son de ginger et faire des tests avec ( test d'intensité )
-  OK - Max brightness value sur pitchbend
-
-  OK - Update README avec badges
-  - Bel exemple réel en gif
-  OK - Credit the audio reactive led strip author
-  OK - 4 step graphic
-  - Finaliser et update la charte graphique
-  - Faire une branch dev et master
-  OK - Utiliser le semantic versionning MAJOR.MINOR.PATCH
-  - Gh page ?
-
-  # VIZ
-  - Piano : ajouter la prise en compte de la velocité et pitch
-  OK - Mettre un max a intensity_channels ( ajouter du gradient ? )
-
-
-  # MAVEN besoins
-
-  # Grosse saturation de ouf
-  # Utiliser le mouvement de l'onde de la batterie pour les leds
-  # entre 50 et 110 Decibels
-
-  # 27 novembre
-
-
- -->
 
 # Credits
 This project was a fork of the great [audio-reactive-led-strip](https://github.com/scottlawsonbc/audio-reactive-led-strip). A lot of code has been rewritten since the beginning but it still remains some of the visualizers and audio processing code.
