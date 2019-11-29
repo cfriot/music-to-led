@@ -1,24 +1,36 @@
-# Arduino
+# Arduino part
 
-![arduino-case](../images/arduino-case.png)
-![electronic-scheme](../images/electronic-scheme.png)
+### Component list
 
-## Electornic parts
+- 1x [**Alim 5V 10A**](https://www.amazon.fr/gp/product/B06XCMQ212/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)  *~25$*
+- 1x **Arduino nano or other**  *~5$*
+- 1x **1000mu Capacitor**  *~1$*
+- 1x [**Led strip female connector**](https://www.amazon.fr/BTF-LIGHTING-Connectors-WS2812B-WS2811-20pairs/dp/B01DC0KIT2)  *~5$*
+- 1x **Led strip WS2812B**  *~35$*
 
-- 1x [Alim](https://www.amazon.fr/gp/product/B06XCMQ212/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)
-- 1x Arduino nano ( not a clone )
-- 1x 1000mu Capacitor
-- 1x [Led strip connector](https://www.amazon.fr/BTF-LIGHTING-Connectors-WS2812B-WS2811-20pairs/dp/B01DC0KIT2/ref=sr_1_19?__mk_fr_FR=ÅMÅŽÕÑ&keywords=led+strip+connector&qid=1569857203&s=lighting&sr=1-19)
-- 1x Led strip WS2812B
+**Estimated cost** *~75$*
 
+### Electronic scheme
 
-## Led number limitation
+![electronic-scheme](images/electronic-scheme.png)
+
+### 3d printed case
+
+Slicer settings
+
+- Supports **No**
+- Resolution **0.2**
+- Infill **30-100%**
+
+![arduino-case](images/arduino-case.png)
+
+### Led number limitation
 
 It depends on two factors :
+ - Your board maximum baud rate
+ - Your led alimentation
 
-Your board maximum baud rate
-Your led alimentation
-For now, consider not using more than 254 leds.
+For now and using the nano case, please consider not using more than 254 leds.
 
 ## Calculating led power consumtion
 Each individual NeoPixel draws up to 60 milliamps at maximum brightness white (red + green + blue).

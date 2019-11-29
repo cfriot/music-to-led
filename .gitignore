@@ -19,7 +19,9 @@ $RECYCLE.BIN/
 
 
 # Tests
-python/python-tests
+python-app/python-tests
+python-app/buid
+python-app/dist
 /midi-test-files
 # Images
 images/sources

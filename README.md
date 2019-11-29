@@ -36,11 +36,7 @@
 # Table of contents
 - [Install](#install)
   * [Python program](#python-program)
-  * [Arduino part](#arduino-part)
-    + [Component list](#component-list)
-    + [Electronic scheme](#electronic-scheme)
-    + [3d printed case](#3d-printed-case)
-    + [Led number limitation](#led-number-limitation)
+  * [Arduino setup](#arduino-setup)
 - [Configuration](#configuration)
   * [Audio channels](#audio-channels)
   * [Virtual Audio Source](#virtual-audio-source)
@@ -76,41 +72,16 @@ pip install -r requirements.txt
 conda install --file requirements.txt
 ```
 
-## Arduino part
+## Arduino setup
 
-You can find 3d models of the cases, the arduino code and all the instructions you need to setup the project in the [Arduino folder](/arduino/).
+As each led project has very specific needs, i kept this part as simple as possible.
 
-### Component list
+In case you need a complete packaged product, there is a more advanced version of this part in the arduino folder. You will find 3d models of the cases, the arduino code and all the instructions you need to setup the project in the [Arduino folder](/arduino/).
 
-- 1x [**Alim 5V 10A**](https://www.amazon.fr/gp/product/B06XCMQ212/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)  *~25$*
-- 1x **Arduino nano or other**  *~5$*
-- 1x **1000mu Capacitor**  *~1$*
-- 1x [**Led strip female connector**](https://www.amazon.fr/BTF-LIGHTING-Connectors-WS2812B-WS2811-20pairs/dp/B01DC0KIT2)  *~5$*
-- 1x **Led strip WS2812B**  *~35$*
+PS : For now, please consider not using more than 254 leds by arduino.
 
-**Estimated cost** *~75$*
+![electronic-scheme](images/simple-electronic-scheme.png)
 
-### Electronic scheme
-
-![electronic-scheme](images/electronic-scheme.png)
-
-### 3d printed case
-
-Slicer settings
-
-- Supports **No**
-- Resolution **0.2**
-- Infill **30-100%**
-
-![arduino-case](images/arduino-case.png)
-
-### Led number limitation
-
-It depends on two factors :
- - Your board maximum baud rate
- - Your led alimentation
-
-For now and using the nano case, please consider not using more than 254 leds.
 
 <!-- # Links
 - [Wikipedia DMX](https://fr.wikipedia.org/wiki/DMX_(%C3%A9clairage) -->
@@ -124,7 +95,7 @@ For now and using the nano case, please consider not using more than 254 leds.
 
   - Package app electron and python ( windows priority )
   - Toggle interface
-  - Réparer la carte son de ginger et faire des tests avec ( test d'intensité )
+  OK - Réparer la carte son de ginger et faire des tests avec ( test d'intensité )
   OK - Max brightness value sur pitchbend
 
   OK - Update README avec badges
