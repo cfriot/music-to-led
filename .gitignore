@@ -2,6 +2,8 @@
 Thumbs.db
 ehthumbs.db
 
+*.json
+
 # Folder config file
 Desktop.ini
 
@@ -43,8 +45,8 @@ __pycache__/
 node_modules/
 
 # py2app
-/dist
-/build
+python-app/dist
+python-app/build
 
 # Thumbnails
 ._*
