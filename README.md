@@ -14,7 +14,7 @@
 
 **Music 2 Led** is an open source program that allows you to create **real-time audio and midi visualizations on led strips** using Arduino, Electron and Python. It was designed for **DJ**'s or **music groups** that want to add some **automated lighting effects** to their shows without big budget.
 
-( starting at ~75$ including leds and power source )
+( starting at ~40$ including arduino and leds )
 
 ### Showcase
 
@@ -76,7 +76,9 @@ conda install --file requirements.txt
 
 As each led project has very specific needs, i kept this part as simple as possible.
 
-In case you need a complete packaged product, there is a more advanced version of this part in the arduino folder. You will find 3d models of the cases, the arduino code and all the instructions you need to setup the project in the [Arduino folder](/arduino/).
+In case you need a complete packaged product, there is a more advanced version of this part in the [Arduino folder](/arduino/). You will find 3d printed arduino cases and a more complete electronic scheme.
+
+The arduino code is [here](arduino/serial-case/serial-case.ino).
 
 PS : For now, please consider not using more than 254 leds by arduino.
 
@@ -93,10 +95,13 @@ PS : For now, please consider not using more than 254 leds by arduino.
 
   TO DO BEFORE RELEASE
 
-  - Package app electron and python ( windows priority )
+  OK - Package python with standalone version
+  - Package electron
   - Toggle interface
   OK - Réparer la carte son de ginger et faire des tests avec ( test d'intensité )
   OK - Max brightness value sur pitchbend
+  - Faire un helper imprimable sur piano
+  - Changer BPM par time based 
 
   OK - Update README avec badges
   - Bel exemple réel en gif
@@ -108,9 +113,9 @@ PS : For now, please consider not using more than 254 leds by arduino.
   - Gh page ?
 
   # VIZ
-  - Piano : ajouter la prise en compte de la velocité et pitch
+  OK - Piano : velocité
+  - Piano : pitch et l'autre
   OK - Mettre un max a intensity_channels ( ajouter du gradient ? )
-
 
   # MAVEN besoins
 
@@ -131,7 +136,7 @@ To help you to configure your CONFIG.yml correctly, there is a little helper tha
 will list all available ports for each of them.
 
 ```
-sh listAvailablePorts.sh
+npm run list-ports
 ```
 
 ## Audio channels
@@ -141,6 +146,9 @@ This program streams audio from the default audio input device (set by the opera
 Examples of typical audio sources:
 - Audio cable connected to the audio input jack (requires USB sound card on Raspberry Pi)
 - Webcam microphone, headset, studio recording microphone, etc
+
+<!-- You can make some tests with a tone generator and the spectrum mode
+https://www.szynalski.com/tone-generator/ -->
 
 ## Virtual Audio Source
 You can use a "virtual audio device" to transfer audio playback from one application to another. This means that you can play music on your computer and connect the playback directly into the program.
@@ -171,7 +179,7 @@ On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a
 You can validate the config file with
 
 ```
-sh testConfigFile.sh
+npm run test-config
 ```
 
 ### Sample config file
@@ -316,7 +324,7 @@ strips:
 
 # Effects & Modes
 
-Music 2 Led has 16 visualization effects and 8 mods.
+Music To Led has 16 visualization effects and 8 mods.
 
 They can be live changed via dedicated Midi channels. You can choose to use programs like Ableton Live to automate these changes or use a dedicated synthetiser / pad to change them manually during the show.
 
