@@ -1,4 +1,4 @@
-import yaml, json
+import yaml, json, sys
 import numpy as np
 
 
@@ -276,6 +276,7 @@ class SettingsLoader():
     def __init__(self, file, debug=False):
         with open(file, 'r') as stream:
             try:
+
                 file = yaml.load(
                     stream,
                     Loader = yaml.FullLoader
@@ -300,12 +301,12 @@ class SettingsLoader():
 
 if __name__ == "__main__":
 
-    print('Starting SettingsLoader test on ports :')
+    print('Starting SettingsLoader test')
 
-    config = SettingsLoader("../CONFIG.yml", debug=True)
+    config = SettingsLoader("CONFIG.yml", debug=True)
     config.data.print()
 
     # method_list = [func for func in dir(Visualizer) if callable(getattr(Visualizer, func)) and not func.startswith("__")]
     # print(method_list)
 
-    print("YAML VALID")
+    print("Config fie is valid")

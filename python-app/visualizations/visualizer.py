@@ -119,7 +119,7 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
         for i in range(3):
             for y in range(self.number_of_pixels):
                 tmp[i].append(clampToNewRange(pixels[i][y], 0, 255, 0, self.strip_config.max_brightness))
-                print(tmp[i][y])
+                #print(tmp[i][y])
             tmp[i] = np.array(tmp[i])
 
         # print(tmp2)

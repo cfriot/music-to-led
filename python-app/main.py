@@ -19,6 +19,7 @@ from visualizations.modSwitcher import ModSwitcher
 
 from outputs.electronApi import ElectronApi, apiProcess
 
+
 if __name__ == "__main__":
 
     def audioProcess(shared_list):
@@ -125,7 +126,10 @@ if __name__ == "__main__":
             # print("FPS from process ", serial_port_name, framerateCalculator.getFps())
 
     print("Parsing config file...")
-    settingsLoader = SettingsLoader("../CONFIG.yml")
+
+    config_file_path = os.path.abspath(os.path.dirname(sys.argv[0])) + '/CONFIG.yml'
+    settingsLoader = SettingsLoader(config_file_path)
+
     config = settingsLoader.data
     number_of_strips = config.number_of_strips
 

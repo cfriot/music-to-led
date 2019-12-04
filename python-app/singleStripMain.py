@@ -15,20 +15,22 @@ from outputs.serialOutput import SerialOutput
 from visualizations.visualizer import Visualizer
 from visualizations.modSwitcher import ModSwitcher
 
+
 if __name__ == "__main__":
 
+    config_file_path = os.path.abspath(os.path.dirname(sys.argv[0])) + '/CONFIG.yml'
 
-    settingsLoader = SettingsLoader("../CONFIG.yml")
+    settingsLoader = SettingsLoader(config_file_path)
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("name", help="strip name",
-                        type=str)
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument("name", help="strip name",
+    #                     type=str)
+    # args = parser.parse_args()
 
-    print("Launching -> ", args.name)
+    # print("Launching -> ", args.name)
 
     config = settingsLoader.data
-    index = settingsLoader.findStripIndexByStripName(args.name)
+    index = settingsLoader.findStripIndexByStripName("Front Desk")
     strip_config = config.strips[index]
 
     audioDispatcher = AudioDispatcher(config.audio_ports)
@@ -47,12 +49,6 @@ if __name__ == "__main__":
         config,
         index
     )
-
-    # audioInterface = AudioInterface(
-    #     visualizer,
-    #     config,
-    #     index
-    # )
 
     serial_port_name = config.strips[index].serial_port_name
     number_of_pixels = strip_config.shapes[strip_config.active_shape_index].number_of_pixels
@@ -86,7 +82,5 @@ if __name__ == "__main__":
         serialOutput.update(
             pixels
         )
-
-        # audioInterface.drawFrame()
 
         # print(framerateCalculator.getFps())

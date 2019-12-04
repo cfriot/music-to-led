@@ -1,7 +1,10 @@
 import time
 import numpy as np
 import pyaudio
+
 import mido
+import mido.backends.rtmidi
+
 from mido.ports import MultiPort
 
 class MidiInput:
@@ -32,9 +35,9 @@ class MidiInput:
         for msg in self.port.iter_pending():
             if(hasattr(msg, 'type') and (msg.type == "pitchwheel") and msg.pitch):
                 self.notes.append({"port": self.port_name, "type": msg.type, "pitch": msg.pitch})
-            if(hasattr(msg, 'type') and (msg.type == "control_change") and msg.control):
-                self.notes.append({"port": self.port_name, "type": msg.type, "control": msg.control})
-            if(hasattr(msg, 'note') and hasattr(msg, 'type') and (msg.type == "note_on" or msg.type == "note_off") and msg.velocity):
+            if(hasattr(msg, 'type') and (msg.type == "control_change") and msg.value and msg.control):
+                self.notes.append({"port": self.port_name, "type": msg.type, "value": msg.value, "control": msg.control})
+            if(hasattr(msg, 'note') and hasattr(msg, 'type') and (msg.type == "note_on" or msg.type == "note_off") and hasattr(msg, 'velocity')):
                 self.notes.append(
                     {"port": self.port_name, "type": msg.type, "note": msg.note, "velocity": msg.velocity})
         return self.notes

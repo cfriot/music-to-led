@@ -4,5 +4,6 @@ colour
 psutil
 python-rtmidi
 zerorpc
+flask
 python-socketio
 pyserial
