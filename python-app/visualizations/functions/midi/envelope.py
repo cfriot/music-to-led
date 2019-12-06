@@ -9,8 +9,11 @@ def getValueFromPercentage(value, percentage):
 
 class Envelope():
 
-    def initEnvelope():
-        notes_on = []
+    def initEnvelope(self):
+
+        self.r = 0
+        self.g = 0
+        self.b = 0
 
     def visualizeEnvelope(self):
         """Envelope midi visualizer"""
@@ -18,23 +21,19 @@ class Envelope():
         color_scheme = self.strip_config.formatted_color_schemes[self.strip_config.active_color_scheme_index]
 
         which_color = 0
-        number_of_notes = len(self.midi_datas)
-        r = 0
-        g = 0
-        b = 0
         for midi_note in self.midi_datas:
-            # print(midi_note)
+
             if(midi_note["type"] == "pitchwheel"):
                 pitch = midi_note["pitch"]
 
-                value = clampToNewRange(pitch, -8192, 8191, 0, 100)
+                value = clampToNewRange(pitch, 500, 8191, 0, 100)
 
-                r = getValueFromPercentage(color_scheme[which_color][0], value)
-                g = getValueFromPercentage(color_scheme[which_color][1], value)
-                b = getValueFromPercentage(color_scheme[which_color][2], value)
+                self.r = getValueFromPercentage(color_scheme[which_color][0], value)
+                self.g = getValueFromPercentage(color_scheme[which_color][1], value)
+                self.b = getValueFromPercentage(color_scheme[which_color][2], value)
 
-        self.pixels[0] = r
-        self.pixels[1] = g
-        self.pixels[2] = b
+        self.pixels[0] = self.r
+        self.pixels[1] = self.g
+        self.pixels[2] = self.b
 
         return self.pixelReshaper.reshapeFromPixels(self.pixels)

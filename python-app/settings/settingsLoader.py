@@ -100,7 +100,7 @@ class StripSettings() :
         active_audio_channel_index = 0,
         active_shape_index = 0,
         is_reverse = False,
-        bpm = 120,
+        time_interval = 120,
         is_mirror = False,
         active_color_scheme_index = 0,
         color_schemes = [["#FF0000", "#00FF00"]],
@@ -134,7 +134,7 @@ class StripSettings() :
 
         self.active_visualizer_effect = active_visualizer_effect
 
-        self.bpm = bpm
+        self.time_interval = time_interval
 
         self.is_reverse = is_reverse
         self.is_mirror = is_mirror
@@ -165,7 +165,7 @@ class StripSettings() :
             shape.print()
         print("number_of_shapes -> ", self.number_of_shapes)
         print("active_visualizer_effect -> ", self.active_visualizer_effect)
-        print("bpm -> ", self.bpm)
+        print("time_interval -> ", self.time_interval)
         print("is_reverse -> ", self.is_reverse)
         print("is_mirror -> ", self.is_mirror)
         print("active_color_scheme_index -> ", self.active_color_scheme_index)
@@ -202,7 +202,7 @@ class Settings():
                 "active_audio_channel_index": 0,
                 "active_shape_index": 0,
                 "is_reverse" : False,
-                "bpm" : 120,
+                "time_interval" : 120,
                 "is_mirror" : False
             }
         ]
@@ -243,7 +243,7 @@ class Settings():
                     active_shape_index = strip["active_shape_index"],
                     active_color_scheme_index = strip["active_color_scheme_index"],
                     color_schemes = strip["color_schemes"],
-                    bpm = strip["bpm"],
+                    time_interval = strip["time_interval"],
                     is_mirror = strip["is_mirror"],
                     is_reverse = strip["is_reverse"],
                     debug = debug

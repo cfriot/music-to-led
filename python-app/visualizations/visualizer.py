@@ -15,8 +15,8 @@ from visualizations.functions.sound.intensityChannels import IntensityChannels
 from visualizations.functions.midi.piano import Piano
 from visualizations.functions.midi.envelope import Envelope
 
-from visualizations.functions.bpm.alternateColors import AlternateColors
-from visualizations.functions.bpm.neonFadeIn import NeonFadeIn
+from visualizations.functions.time.alternateColors import AlternateColors
+from visualizations.functions.time.neonFadeIn import NeonFadeIn
 
 from visualizations.functions.generic.full import Full
 from visualizations.functions.generic.fire import Fire
@@ -33,7 +33,7 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
         self.strip_config = config.strips[index]
         self.number_of_audio_samples = config.audio_ports[config.strips[index].active_audio_channel_index].number_of_audio_samples
         self.timeSinceStart = config.timeSinceStart
-        self.bpm_ms_interval = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.bpm)
+        self.time_interval_ms_interval = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.time_interval)
         self.initVizualiser()
         self.resetFrame()
 
@@ -65,6 +65,7 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
         self.initSpectrum()
 
         self.initPiano()
+        self.initEnvelope()
 
         self.initAlternateColors()
 
@@ -99,7 +100,7 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
         if(self.strip_config.active_visualizer_effect == "envelope"):
             pixels = self.visualizeEnvelope()
 
-        # BPM BASED
+        # TIME BASED
         if(self.strip_config.active_visualizer_effect == "alternate_colors"):
             pixels = self.visualizeAlternateColors()
         if(self.strip_config.active_visualizer_effect == "alternate_colors_full"):

@@ -46,11 +46,11 @@ class App extends React.Component {
     if(this.state.audios && this.state.config && this.state.strips) {
 
       audiosElem = this.state.audios.map((audio, index) => {
-        return <AudioVisualizer ref={audio + index} name={this.state.config.audio_ports[index].name} audio={this.state.audios[index]} />
+        return <AudioVisualizer key={audio + index} ref={audio + index} name={this.state.config.audio_ports[index].name} audio={this.state.audios[index]} />
       });
 
       stripsElem = this.state.strips.map((strip, index) => {
-        return <Strip ref={strip + index} config={this.state.config} index={index} pixels={this.state.strips[index]} strip={this.state.config.strips[index]}/>
+        return <Strip key={strip + index} ref={strip + index} config={this.state.config} index={index} pixels={this.state.strips[index]} strip={this.state.config.strips[index]}/>
       });
 
     }

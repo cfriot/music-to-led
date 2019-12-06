@@ -28,8 +28,6 @@ if __name__ == '__main__':
     print(color)
     print(ColorFormatter.interpolate_to_rgb_255(color))
 
-
-
 # Possible names for Colour instanciation using name constructor
 
 # RGB_TO_COLOR_NAMES = {

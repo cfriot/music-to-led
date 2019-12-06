@@ -11,7 +11,7 @@ class AlternateColors():
         color_scheme = self.strip_config.formatted_color_schemes[self.strip_config.active_color_scheme_index]
 
         which_color = 0
-        self.alternateColorsInterval = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.bpm)
+        self.alternateColorsInterval = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.time_interval)
 
         if(self.alternate_colors_size == 0):
             self.alternate_colors_size = 1
@@ -33,7 +33,7 @@ class AlternateColors():
             self.timeSinceStart.restart()
 
         self.pixels = np.roll(
-            self.pixels, int(1 * (self.strip_config.bpm / 100)) + 1, axis=1)
+            self.pixels, int(1 * (self.strip_config.time_interval / 100)) + 1, axis=1)
         return self.pixelReshaper.reshapeFromPixels(self.pixels)
 
 
@@ -41,7 +41,7 @@ class AlternateColors():
         """Effect that alternate two colors moving forward"""
         color_scheme = self.strip_config.formatted_color_schemes[self.strip_config.active_color_scheme_index]
 
-        interval = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.bpm)
+        interval = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.time_interval)
 
         if(self.timeSinceStart.getMs() >= interval):
             self.alternate_colors_index += 1
@@ -68,7 +68,7 @@ class AlternateColors():
         """Effect that alternate two colors moving forward"""
         color_scheme = self.strip_config.formatted_color_schemes[self.strip_config.active_color_scheme_index]
 
-        interval = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.bpm)
+        interval = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.time_interval)
 
         if(self.timeSinceStart.getMs() >= interval):
             self.alternate_colors_index += 1

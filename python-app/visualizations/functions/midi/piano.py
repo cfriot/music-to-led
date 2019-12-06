@@ -1,6 +1,13 @@
 import numpy as np
 import time
 
+def clampToNewRange(value, old_min, old_max, new_min, new_max):
+    new_value = (((value - old_min) * (new_max - new_min)) // (old_max - old_min)) + new_min
+    return new_value
+
+def getValueFromPercentage(value, percentage):
+    return value / 100 * percentage
+
 def shiftArray(arr, num, decrease_amount):
     value = arr[0] - decrease_amount
     if(value < 0):
@@ -13,14 +20,20 @@ def shiftArray(arr, num, decrease_amount):
     return arr
 
 def applyGradientDecrease(pixels):
-    for colorChannel in pixels:
-        for i, pixel in enumerate(colorChannel):
-            pixel = pixel - i * 10
+    pixels_length = len(pixels[0])
+    for i in range(pixels_length):
+        if(pixels[0][i] > 0): pixels[0][i] = pixels[0][i] - i / pixels_length * 2
+        if(pixels[1][i] > 0): pixels[1][i] = pixels[1][i] - i / pixels_length * 2
+        if(pixels[2][i] > 0): pixels[2][i] = pixels[2][i] - i / pixels_length * 2
+    print(pixels)
 
 def shiftPixels(pixels):
     pixels[0] = np.roll(pixels[0], 1)
     pixels[1] = np.roll(pixels[1], 1)
     pixels[2] = np.roll(pixels[2], 1)
+    pixels[0][0] = pixels[0][1]
+    pixels[1][0] = pixels[1][1]
+    pixels[2][0] = pixels[1][1]
 
 def shiftPixelsSmoothly(pixels):
     pixels[0] = shiftArray(pixels[0], 1, 5)
@@ -38,7 +51,7 @@ class Piano():
 
     def initPiano(self):
         self.notes_on = []
-        self.pitch_bend = 0
+        self.pitch = 0
         self.value = 0
 
     def visualizePiano(self):
@@ -54,6 +67,10 @@ class Piano():
                     if(note_on["note"] == midi_note["note"]):
                         del self.notes_on[i]
 
+            if(midi_note["type"] == "pitchwheel"):
+                self.pitch = midi_note["pitch"]
+
+
         if(len(self.notes_on) > 0):
             which_color = 0
             which_color = len(self.notes_on)
@@ -64,12 +81,16 @@ class Piano():
             r = color_scheme[which_color][0]
             g = color_scheme[which_color][1]
             b = color_scheme[which_color][2]
-            putPixel(self.pixels, 0, r, g, b, self.notes_on[len(self.notes_on) - 1]["velocity"] * 2)
+
+            value = clampToNewRange(self.pitch, -8191, 8191, 0, 127)
+
+            putPixel(self.pixels, 0, r, g, b, self.notes_on[len(self.notes_on) - 1]["velocity"] / 2 + value )
         else:
             putPixel(self.pixels, 0, 0, 0, 0, 100)
 
         shiftPixelsSmoothly(self.pixels)
-        # applyGradientDecrease(self.pixels)
+
+        applyGradientDecrease(self.pixels)
         # print(self.pixels)
         # time.sleep(.028)
         return self.pixelReshaper.reshapeFromPixels(self.pixels)

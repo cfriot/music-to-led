@@ -51,7 +51,7 @@
   * [Effects](#effects)
     + [Sound based](#sound-based)
     + [Midi based](#midi-based)
-    + [BPM based](#bpm-based)
+    + [Time based](#time-based)
     + [Generic](#generic)
   * [Modes](#modes)
 - [Credits](#credits)
@@ -93,37 +93,14 @@ PS : For now, please consider not using more than 254 leds by arduino.
   ..., qui ont besoin d'un setup light automatisé.
   Il est plutot utilisé quand le groupe n'a pas beaucoup de budget
 
-  TO DO BEFORE RELEASE
 
-  OK - Package python with standalone version
   - Package electron
   - Toggle interface
-  OK - Réparer la carte son de ginger et faire des tests avec ( test d'intensité )
-  OK - Max brightness value sur pitchbend
   - Faire un helper imprimable sur piano
-  - Changer BPM par time based 
-
-  OK - Update README avec badges
   - Bel exemple réel en gif
-  OK - Credit the audio reactive led strip author
-  OK - 4 step graphic
-  - Finaliser et update la charte graphique
-  - Faire une branch dev et master
-  OK - Utiliser le semantic versionning MAJOR.MINOR.PATCH
-  - Gh page ?
+  - Faire une branch dev et master // faire un vrai tag release avec le binary
 
-  # VIZ
-  OK - Piano : velocité
-  - Piano : pitch et l'autre
-  OK - Mettre un max a intensity_channels ( ajouter du gradient ? )
-
-  # MAVEN besoins
-
-  # Grosse saturation de ouf
-  # Utiliser le mouvement de l'onde de la batterie pour les leds
   # entre 50 et 110 Decibels
-
-  # 27 novembre
 
 
  -->
@@ -248,9 +225,9 @@ strips:
     is_reverse: false
     is_mirror: false
 
-    # BPM value that is used in BPM based visualizers
+    # Time interval value that is used in time based visualizers
 
-    bpm: 120
+    time_interval: 120
 
     # Shapes
     # Real shape : represents the physical shape of the strip
@@ -272,6 +249,9 @@ strips:
 
     # Available color schemes
     # Can be changed via "Change color scheme"
+    # True colors names are available
+    # check the file python-app/helpers/color/colorSchemeFormatter.py
+    # for the complete list
 
     color_schemes:
       # pink blue
@@ -352,7 +332,7 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 | 7 | G-2   | - | - | ![scroll](images/nothing.gif)
 | 8 | G#-2  | - | - | ![scroll](images/nothing.gif)
 
-### BPM based
+### Time based
 
 | *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
 |:--|:--|:--|:--|:--
@@ -376,12 +356,12 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 |:--|:--|:--|:--|:--
 | 20 | G#-1  | **Toggle reverse mode** | - | ![scroll](images/reverse.gif)
 | 21 | A-1  | **Toggle mirror mode** | - | ![scroll](images/mirror.gif)
-| 22 | A#-1 | **Change shape** | Size based on velocity | ![scroll](images/shape.gif)
-| 23 | B-1 | **Change color scheme** | Size based on velocity | ![scroll](images/color.gif)
-| 24 | C-0  | **Change bpm** | Size based on velocity | ![scroll](images/nothing.gif)
-| 25 | C#-0  | **Change Audio channel** | Size based on velocity | ![scroll](images/nothing.gif)
-| 26 | D-0 | **Change Max Brightness** | Size based on velocity | ![scroll](images/nothing.gif)
-| 27 | D#-0 | **Reset Frame** | - | ![scroll](images/nothing.gif)
+| 22 | A#-1 | **Change shape** | Update based on velocity | ![scroll](images/shape.gif)
+| 23 | B-1 | **Change color scheme** | Update based on velocity | ![scroll](images/color.gif)
+| 24 | C-0  | **Change time interval in ms** | Update based on velocity | ![scroll](images/nothing.gif)
+| 25 | C#-0  | **Change audio channel** | Update based on velocity | ![scroll](images/nothing.gif)
+| 26 | D-0 | **Change max Brightness** | Update based on velocity | ![scroll](images/nothing.gif)
+| 27 | D#-0 | **Reset frame** | - | ![scroll](images/nothing.gif)
 
 
 # Credits

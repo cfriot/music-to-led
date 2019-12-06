@@ -60,7 +60,7 @@ class ModSwitcher:
                         elif(mode == 7):
                             print("Empty slot. This note is not assigned to an effect.")
 
-                        # BPM BASED
+                        # TIME BASED
                         elif(mode == 8):
                             self.visualizer.alternate_colors_size = valueUpdater(
                                 self.visualizer.alternate_colors_size,
@@ -136,13 +136,13 @@ class ModSwitcher:
 
                         elif(mode == 20):
 
-                            self.strip_config.bpm = valueUpdater(
-                                self.strip_config.bpm,
+                            self.strip_config.time_interval = valueUpdater(
+                                self.strip_config.time_interval,
                                 velocity,
                                 420,
                                 5
                             )
-                            message = "is changing bpm to -> " + str(self.strip_config.bpm)
+                            message = "is changing time_interval to -> " + str(self.strip_config.time_interval)
                             logger(self.strip_config.name, message)
 
                         elif(mode == 21):

@@ -5,7 +5,6 @@ import numpy as np
 from settings.settingsLoader import SettingsLoader
 
 from helpers.time.framerateCalculator import FramerateCalculator
-from helpers.time.bpmTicker import BPMTicker
 
 from helpers.midiDispatcher import MidiDispatcher
 from helpers.audioDispatcher import AudioDispatcher

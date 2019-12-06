@@ -10,8 +10,8 @@ class IntensityChannels():
     def initIntensityChannels(self):
         self.oldStripItensities = []
         self.oldMaxStripItensities = []
-        self.intervalForDecrease = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.bpm)
-        self.intervalForMaxDecrease = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.bpm) // 2
+        self.intervalForDecrease = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.time_interval)
+        self.intervalForMaxDecrease = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.time_interval) // 2
 
 
     def visualizeIntensityChannels(self):
