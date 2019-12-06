@@ -1,0 +1,25 @@
+{
+  "name": "MusicToLed",
+  "version": "0.1.0",
+  "description": "Music To Led is an open source program that allows you to create real-time audio and midi visualizations on led strips using Arduino, Electron and Python.",
+  "scripts": {
+
+    "start-python": "cd python-app;python main.py",
+
+    "list-available-ports": "cd python-app; python -m inputs.midiInput --list; python -m inputs.audioInput --list; python -m outputs.serialOutput --list",
+    "test-config-file": "cd python-app; python -m settings.settingsLoader",
+
+    "build-python": "cd python-app; pyinstaller --icon='resources/icon.icns' --onefile --windowed music2led.spec;",
+    "clean-python": "cd python-app; rm -Rf build; rm -Rf dist; find . | grep -E \"(__pycache__|.pyc|.pyo)\"| xargs rm -rf",
+    "start-electron": "cd electron-app;npm run start"
+
+  },
+  "repository": "https://github.com/tfrere/music-to-led",
+  "keywords": [
+    "Electron",
+    "Python",
+    "Led strip"
+  ],
+  "author": "tfrere",
+  "license": "MIT"
+}
