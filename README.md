@@ -362,7 +362,7 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 | 24 | C-0  | **Change time interval in ms** | Update based on velocity | ![scroll](images/nothing.gif)
 | 25 | C#-0  | **Change audio channel** | Update based on velocity | ![scroll](images/nothing.gif)
 | 26 | D-0 | **Change max Brightness** | Update based on velocity | ![scroll](images/nothing.gif)
-| 27 | D#-0 | **Reset frame** | - | ![scroll](images/nothing.gif)
+| 27 | D#-0 | **Change visualizer mode** | - | ![scroll](images/nothing.gif)
 
 
 # Credits
