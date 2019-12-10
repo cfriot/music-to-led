@@ -95,6 +95,7 @@ class StripSettings() :
         midi_ports_for_changing_mode = ["Ableton-virtual-midi-ouput ChangeModLeftSynth"],
         associated_midi_channels = ["Ableton-virtual-midi-ouput LeftSynth"],
         active_visualizer_effect = "scroll",
+        active_visualizer_mode = 0,
         real_shape = [52],
         shapes = [[26,26],[12,12]],
         active_audio_channel_index = 0,
@@ -133,6 +134,7 @@ class StripSettings() :
         self.number_of_shapes = len(self.shapes)
 
         self.active_visualizer_effect = active_visualizer_effect
+        self.active_visualizer_mode = active_visualizer_mode
 
         self.time_interval = time_interval
 
@@ -165,6 +167,7 @@ class StripSettings() :
             shape.print()
         print("number_of_shapes -> ", self.number_of_shapes)
         print("active_visualizer_effect -> ", self.active_visualizer_effect)
+        print("active_visualizer_mode -> ", self.active_visualizer_mode)
         print("time_interval -> ", self.time_interval)
         print("is_reverse -> ", self.is_reverse)
         print("is_mirror -> ", self.is_mirror)
@@ -198,6 +201,7 @@ class Settings():
                 "midi_ports_for_changing_mode": ["Ableton-virtual-midi-ouput ChangeModStripOne"],
                 "associated_midi_channels": ["Ableton-virtual-midi-ouput LeftSynth"],
                 "active_visualizer_effect": "scroll",
+                "active_visualizer_mode": 0,
                 "shapes": [[26,26],[12,12]],
                 "active_audio_channel_index": 0,
                 "active_shape_index": 0,
@@ -237,6 +241,7 @@ class Settings():
                     midi_ports_for_changing_mode = strip["midi_ports_for_changing_mode"],
                     associated_midi_channels = strip["associated_midi_channels"],
                     active_visualizer_effect = strip["active_visualizer_effect"],
+                    active_visualizer_mode = strip["active_visualizer_mode"],
                     real_shape = strip["real_shape"],
                     shapes = strip["shapes"],
                     active_audio_channel_index = strip["active_audio_channel_index"],
