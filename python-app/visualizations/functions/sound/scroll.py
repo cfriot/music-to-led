@@ -1,29 +1,4 @@
 import numpy as np
-from scipy.ndimage.filters import gaussian_filter1d
-
-# def visualize_scroll(y):
-#     """Effect that originates in the center and scrolls outwards"""
-#     global p
-#     y = y**2.0
-#     gain.update(y)
-#     y /= gain.value
-#     y *= 255.0
-#     r = int(np.max(y[:len(y) // 3]))
-#     g = int(np.max(y[len(y) // 3: 2 * len(y) // 3]))
-#     b = int(np.max(y[2 * len(y) // 3:]))
-#     # Scrolling effect window
-#     p[:, 1:] = p[:, :-1]
-#     p *= 0.98
-#     p = gaussian_filter1d(p, sigma=0.2)
-#
-#     # Create new color originating at the center
-#     p[0, 0] = r
-#     p[1, 0] = g
-#     p[2, 0] = b
-#
-#     # Update the LED strip
-#     return np.concatenate((p[:, ::-1], p), axis=1)
-
 
 class Scroll():
 
@@ -55,13 +30,11 @@ class Scroll():
 
         self.pixels[:, 1:] = self.pixels[:, :-1]
         self.pixels *= 0.98
-        self.pixels = gaussian_filter1d(self.pixels, sigma=0.2)
+        self.blurFrame(0.2)
         self.pixels[0, 0] = r
         self.pixels[1, 0] = g
         self.pixels[2, 0] = b
 
         self.pixels = np.clip(self.pixels, 0, 255)
-
-        # print(self.pixels[0][0])
 
         return self.pixelReshaper.reshapeFromPixels(self.pixels)

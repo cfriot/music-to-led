@@ -1,9 +1,8 @@
+import time
 import numpy as np
-from scipy.ndimage.filters import gaussian_filter1d
 
 from helpers.audio.expFilter import ExpFilter
 
-import time
 
 class IntensityChannels():
 
@@ -36,7 +35,12 @@ class IntensityChannels():
             x = chunk_size * i
             y = chunk_size * (i + 1)
 
-            intensity = int(np.mean(self.audio_data[x:y]**scale))
+            if(self.strip_config.active_visualizer_mode == 1):
+                intensity = int(np.max(self.audio_data[x:y]**scale))
+                if(intensity < 0) :
+                    intensity = 0
+            else:
+                intensity = int(np.mean(self.audio_data[x:y]**scale))
 
             max_intensity = len(self.pixelReshaper.strips[i][0])
             if(self.strip_config.is_mirror):
@@ -60,27 +64,24 @@ class IntensityChannels():
 
         self.pixelReshaper.initActiveShape()
 
-        for x, strip in enumerate(self.pixelReshaper.strips):
-            max_length = len(strip[0])
-            for i in range(max_length):
-                if(i < stripItensities[x]):
-                    strip[0][i] = color_scheme[0][0]
-                    strip[1][i] = color_scheme[0][1]
-                    strip[2][i] = color_scheme[0][2]
-                if(i == maxStripItensities[x]):
-                    strip[0][i] = color_scheme[1][0] if len(color_scheme) >= 2 else color_scheme[0][0]
-                    strip[1][i] = color_scheme[1][1] if len(color_scheme) >= 2 else color_scheme[0][1]
-                    strip[2][i] = color_scheme[1][2] if len(color_scheme) >= 2 else color_scheme[0][2]
+        if(self.strip_config.active_visualizer_mode == 1) :
+            for x, strip in enumerate(self.pixelReshaper.strips):
+                colorIndex = x % len(color_scheme)
+                strip[0] = color_scheme[colorIndex][0]
+                strip[1] = color_scheme[colorIndex][1]
+                strip[2] = color_scheme[colorIndex][2]
+                self.pixelReshaper.strips[x] = self.applyMaxBrightness(strip, stripItensities[x] * 10)
+        else :
+            for x, strip in enumerate(self.pixelReshaper.strips):
+                max_length = len(strip[0])
+                for i in range(max_length):
+                    if(i < stripItensities[x]):
+                        strip[0][i] = color_scheme[0][0]
+                        strip[1][i] = color_scheme[0][1]
+                        strip[2][i] = color_scheme[0][2]
+                    if(i == maxStripItensities[x]):
+                        strip[0][i] = color_scheme[1][0] if len(color_scheme) >= 2 else color_scheme[0][0]
+                        strip[1][i] = color_scheme[1][1] if len(color_scheme) >= 2 else color_scheme[0][1]
+                        strip[2][i] = color_scheme[1][2] if len(color_scheme) >= 2 else color_scheme[0][2]
 
-            p_filt = ExpFilter(
-                np.tile(1, (3, max_length)),
-                alpha_decay = 0.1,
-                alpha_rise = 0.99
-            )
-            p_filt.update(strip)
-            strip = np.round(p_filt.value)
-            # Apply substantial blur to smooth the edges
-            strip[0, :] = gaussian_filter1d(strip[0, :], sigma=1.0)
-            strip[1, :] = gaussian_filter1d(strip[1, :], sigma=1.0)
-            strip[2, :] = gaussian_filter1d(strip[2, :], sigma=1.0)
         return self.pixelReshaper.reshapeFromStrips(self.pixelReshaper.strips)

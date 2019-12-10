@@ -87,11 +87,6 @@ class Spectrum():
         b = self.b_filt.update(
             np.copy(self.audio_data - self.common_mode.value))
 
-        # # Mirror the color channels for symmetric output
-        # r = np.concatenate((r[::-1], r))
-        # g = np.concatenate((g[::-1], g))
-        # b = np.concatenate((b[::-1], b))
-
         self.pixels = np.array([r, g, b]) * 255
 
         return self.pixelReshaper.reshapeFromPixels(self.pixels)

@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.ndimage.filters import gaussian_filter1d
 
 class Energy():
 
@@ -16,7 +15,7 @@ class Energy():
         g = 0
         b = 0
         active_color_scheme = self.strip_config.formatted_color_schemes[self.strip_config.active_color_scheme_index]
-        chunk_size = len(self.audio_data) // len(active_color_scheme)
+        chunk_size =  len(self.audio_data) // len(active_color_scheme)
         for i in range(len(active_color_scheme)) :
             x = chunk_size * i
             y = chunk_size * (i + 1)
@@ -31,11 +30,11 @@ class Energy():
         self.pixels[1, g:] = 0.0
         self.pixels[2, :b] = 255.0
         self.pixels[2, b:] = 0.0
-        self.p_filt.update(self.pixels)
-        self.pixels = np.round(self.p_filt.value)
-        # Apply substantial blur to smooth the edges
-        self.pixels[0, :] = gaussian_filter1d(self.pixels[0, :], sigma=1.0)
-        self.pixels[1, :] = gaussian_filter1d(self.pixels[1, :], sigma=1.0)
-        self.pixels[2, :] = gaussian_filter1d(self.pixels[2, :], sigma=1.0)
+
+        if(self.strip_config.active_visualizer_mode == 1):
+            self.p_filt.update(self.pixels)
+            self.pixels = np.round(self.p_filt.value)
+
+        self.blurFrame(0.1)
 
         return self.pixelReshaper.reshapeFromPixels(self.pixels)

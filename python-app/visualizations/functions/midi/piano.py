@@ -1,6 +1,8 @@
 import numpy as np
 import time
 
+from scipy.ndimage.filters import gaussian_filter1d
+
 def clampToNewRange(value, old_min, old_max, new_min, new_max):
     new_value = (((value - old_min) * (new_max - new_min)) // (old_max - old_min)) + new_min
     return new_value
@@ -25,7 +27,7 @@ def applyGradientDecrease(pixels):
         if(pixels[0][i] > 0): pixels[0][i] = pixels[0][i] - i / pixels_length * 2
         if(pixels[1][i] > 0): pixels[1][i] = pixels[1][i] - i / pixels_length * 2
         if(pixels[2][i] > 0): pixels[2][i] = pixels[2][i] - i / pixels_length * 2
-    print(pixels)
+    # print(pixels)
 
 def shiftPixels(pixels):
     pixels[0] = np.roll(pixels[0], 1)
@@ -90,7 +92,11 @@ class Piano():
 
         shiftPixelsSmoothly(self.pixels)
 
-        applyGradientDecrease(self.pixels)
+        # applyGradientDecrease(self.pixels)
+
+        # # Apply substantial blur to smooth the edges
+        self.blurFrame(0.5)
+
         # print(self.pixels)
         # time.sleep(.028)
         return self.pixelReshaper.reshapeFromPixels(self.pixels)

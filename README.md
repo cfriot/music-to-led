@@ -291,6 +291,7 @@ strips:
     # Be sure that you are not attempting to access to an index that not
     # exists, it may cause crash
 
+    active_visualizer_mode: 0
     active_audio_channel_index: 0
     active_shape_index: 0
     active_color_index: 0

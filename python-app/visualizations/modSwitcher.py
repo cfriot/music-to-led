@@ -71,9 +71,9 @@ class ModSwitcher:
                             self.visualizer.drawAlternateColors()
                             self.strip_config.active_visualizer_effect = "alternate_colors"
                         elif(mode == 9):
-                            self.strip_config.active_visualizer_effect = "alternate_colors_full"
-                        elif(mode == 10):
                             self.strip_config.active_visualizer_effect = "alternate_colors_for_shapes"
+                        elif(mode == 10):
+                           print("Empty slot. This note is not assigned to an effect.")
                         elif(mode == 11):
                            print("Empty slot. This note is not assigned to an effect.")
 
@@ -169,6 +169,18 @@ class ModSwitcher:
                             logger(self.strip_config.name, message)
 
                         elif(mode == 23):
-                            self.visualizer.resetFrame()
-                            self.visualizer.pixelReshaper.resetStrips()
-                            logger(self.strip_config.name, "is reseting his frame")
+                            self.strip_config.active_visualizer_mode = valueUpdater(
+                                self.strip_config.active_visualizer_mode,
+                                velocity,
+                                2,
+                                1
+                            )
+                            logger(self.strip_config.name, "is changing active mode to " + str(self.strip_config.active_visualizer_mode))
+
+
+                        # Old reset frame. Not used anymmore
+                        #
+                        # elif(mode == 24):
+                        #     self.visualizer.resetFrame()
+                        #     self.visualizer.pixelReshaper.resetStrips()
+                        #     logger(self.strip_config.name, "is reseting his frame")

@@ -9,7 +9,6 @@ from helpers.audio.expFilter import ExpFilter
 from visualizations.functions.sound.scroll import Scroll
 from visualizations.functions.sound.energy import Energy
 from visualizations.functions.sound.spectrum import Spectrum
-from visualizations.functions.sound.intensityBounce import IntensityBounce
 from visualizations.functions.sound.intensityChannels import IntensityChannels
 
 from visualizations.functions.midi.piano import Piano
@@ -21,11 +20,13 @@ from visualizations.functions.time.neonFadeIn import NeonFadeIn
 from visualizations.functions.generic.full import Full
 from visualizations.functions.generic.fire import Fire
 
+from scipy.ndimage.filters import gaussian_filter1d
+
 def clampToNewRange(value, old_min, old_max, new_min, new_max):
     new_value = (((value - old_min) * (new_max - new_min)) // (old_max - old_min)) + new_min
     return new_value
 
-class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChannels, Energy, Spectrum, Piano, Fire, Envelope, NeonFadeIn):
+class Visualizer(Full, AlternateColors, Scroll, IntensityChannels, Energy, Spectrum, Piano, Fire, Envelope, NeonFadeIn):
 
     def __init__(self, config, index):
         """ The main class that contain all viz functions """
@@ -77,6 +78,18 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
         """ Reset current pixels """
         self.pixels = np.tile(0., (3, self.number_of_pixels))
 
+    def blurFrame(self, value=1.0):
+        self.pixels[0, :] = gaussian_filter1d(self.pixels[0, :], sigma=value)
+        self.pixels[1, :] = gaussian_filter1d(self.pixels[1, :], sigma=value)
+        self.pixels[2, :] = gaussian_filter1d(self.pixels[2, :], sigma=value)
+
+    def applyMaxBrightness(self, pixels, max_brightness):
+        tmp = [[],[],[]]
+        for i in range(3):
+            for y in range(len(pixels[0])):
+                tmp[i].append(clampToNewRange(pixels[i][y], 0, 255, 0, max_brightness))
+            tmp[i] = np.array(tmp[i])
+        return tmp
 
     def drawFrame(self):
         """ Draw current pixels """
@@ -103,8 +116,6 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
         # TIME BASED
         if(self.strip_config.active_visualizer_effect == "alternate_colors"):
             pixels = self.visualizeAlternateColors()
-        if(self.strip_config.active_visualizer_effect == "alternate_colors_full"):
-            pixels = self.visualizeAlternateColorsFull()
         if(self.strip_config.active_visualizer_effect == "alternate_colors_for_shapes"):
             pixels = self.visualizeAlternateColorsForShapes()
 
@@ -116,15 +127,10 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityBounce, IntensityChanne
         if(self.strip_config.active_visualizer_effect == "fire"):
             pixels = self.visualizeFire()
 
-        tmp = [[],[],[]]
-        for i in range(3):
-            for y in range(self.number_of_pixels):
-                tmp[i].append(clampToNewRange(pixels[i][y], 0, 255, 0, self.strip_config.max_brightness))
-                #print(tmp[i][y])
-            tmp[i] = np.array(tmp[i])
 
-        # print(tmp2)
+        pixels = self.applyMaxBrightness(pixels, self.strip_config.max_brightness)
+
         # import time
         # time.sleep(10)
 
-        return tmp
+        return pixels
