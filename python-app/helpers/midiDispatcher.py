@@ -9,10 +9,12 @@ class MidiDispatcher() :
         self.midi_datas_for_visualization = []
         self.midi_datas_for_changing_mode = []
 
-        for midi_port_for_changing_mode in self.midi_ports_for_changing_mode:
-            self.midi_input_classes.append(MidiInput(midi_port_for_changing_mode))
-        for midi_port in self.associated_midi_channels:
-            self.midi_input_classes.append(MidiInput(midi_port))
+        if(self.midi_ports_for_changing_mode):
+            for midi_port_for_changing_mode in self.midi_ports_for_changing_mode:
+                self.midi_input_classes.append(MidiInput(midi_port_for_changing_mode))
+        if(self.associated_midi_channels):
+            for midi_port in self.associated_midi_channels:
+                self.midi_input_classes.append(MidiInput(midi_port))
 
     def dispatch(self):
         self.midi_datas = []
