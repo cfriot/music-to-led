@@ -24,9 +24,11 @@ class MidiDispatcher() :
             self.midi_datas = self.midi_input_classes[i].getRawData()
             if(self.midi_datas):
                 for midi_note in self.midi_datas:
-                    for channel in self.midi_ports_for_changing_mode:
-                        if(midi_note["port"] == channel):
-                            self.midi_datas_for_changing_mode.append(midi_note)
-                    for channel in self.associated_midi_channels:
-                        if(midi_note["port"] == channel):
-                            self.midi_datas_for_visualization.append(midi_note)
+                    if(self.midi_ports_for_changing_mode):
+                        for channel in self.midi_ports_for_changing_mode:
+                            if(midi_note["port"] == channel):
+                                self.midi_datas_for_changing_mode.append(midi_note)
+                    if(self.associated_midi_channels):
+                        for channel in self.associated_midi_channels:
+                            if(midi_note["port"] == channel):
+                                self.midi_datas_for_visualization.append(midi_note)
