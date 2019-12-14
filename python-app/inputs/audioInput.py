@@ -1,4 +1,4 @@
-import time, pyaudio, rtmidi
+import time, pyaudio
 import numpy as np
 
 class AudioInput:
@@ -29,7 +29,7 @@ class AudioInput:
             print("Audio port not found or not acceptable, please check your config file -> ", port_name)
             list = []
             for item in AudioInput.listAvailablePortsInfos():
-                if(item["maxInputChannels"] == 2):
+                if(item["maxInputChannels"] >= 2):
                     list.append(item["name"])
             print("Here's the audio ports available ->", list)
             quit()
@@ -63,7 +63,7 @@ class AudioInput:
         audio = pyaudio.PyAudio()
         ports = []
         for i in range(audio.get_device_count()):
-            if(audio.get_device_info_by_index(i)["maxInputChannels"] == 2):
+            if(audio.get_device_info_by_index(i)["maxInputChannels"] >= 1):
                 ports.append({"name": audio.get_device_info_by_index(
                     i)["name"], "index": audio.get_device_info_by_index(i)["index"]})
         return ports
@@ -117,9 +117,11 @@ if __name__ == "__main__":
             print('Audio tests test on port :')
             print(args.test)
             audioInput = AudioInput(args.test)
-
+            import time
             while 1:
-                print(audioInput.getRawData())
-
+                data = audioInput.getRawData()
+                print(data)
+                print(len(data))
+                time.sleep(1)
         else:
             print('This port is not available ->' + args.test)
