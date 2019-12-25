@@ -42,7 +42,9 @@
 
 **Music 2 Led** is an open source program that allows you to create **real-time audio and midi visualizations on led strips** using Arduino and Python. It was designed for **DJ**'s or **music groups** that want to add some **automated lighting effects** to their shows without big budget.
 
-All you need is a **computer**, an **arduino** and a **led strip**.
+All you need is a **computer***, an **arduino** and a **led strip**.
+
+* Like a RaspberryPi 4
 
 ### Showcase
 
@@ -194,13 +196,13 @@ You can validate the config file with
 
 fps: 60
 
-# Tell to electron to display the GUI or not
+# Display the GUI or not.
 
 display_interface: false
 
 # Audio ports
 # List of used audio ports
-# Can be listed with listAvailableDevices.sh
+# Can be listed with --list-available-devices
 # Can be changed with "Change audio channel"
 
 audio_ports:
@@ -225,7 +227,7 @@ strips:
     name: Led strip name
 
     # Name of the associated serial port
-    # Can be listed with listAvailableDevices.sh
+    # Can be listed with --list-available-devices
 
     serial_port_name: /dev/tty.usbserial-14210
 
@@ -236,7 +238,7 @@ strips:
     max_brightness: 255
 
     # Midi channels
-    # Can be listed with listAvailableDevices.sh
+    # Can be listed with --list-available-devices
     # associated_midi_channels : used for midi based visualizers
     # midi_ports_for_changing_mode : used for live changing modes
 
@@ -338,7 +340,8 @@ Music To Led has 16 visualization effects and 8 mods.
 
 They can be live changed via dedicated Midi channels. You can choose to use programs like Ableton Live to automate these changes or use a dedicated synthetiser / pad to change them manually during the show.
 
-**Principle** You have to send a midi note signal for activating / modifying effects. The table just after will show you the documentation.
+**Principle**
+You have to send a midi note signal for activating / modifying effects. The table just after will show you the documentation.
 
 ## Effects
 
