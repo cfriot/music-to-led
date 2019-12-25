@@ -1,3 +1,31 @@
+<!--
+
+  # COM
+  - Faire un helper imprimable sur piano
+  - Bel exemple réel en gif
+
+  # VISUAL LANGUAGE
+  # - définir chaque entité et stabiliser en fonction
+
+  # PYINSTALLER OSX AND LINUX PACKAGE
+  # - refaire le systeme de propagation de config ?
+  # - Develop l'interface Ncurse
+  # - Permettre l'utilisation sur clavier d'ordi
+
+  # FINIR MAIN
+
+  # --with-config :  lance le programme suivant le config à lemplacement donné
+
+
+# OPTIONAL
+
+    # GENERIC STUFF
+    # Rendre le fire generic à color et speed ?
+    # Faire un meteor ?
+
+ -->
+
+
 
 <p align="center">
   <a href="https://github.com/tfrere/music-2-led" title="haxe.org"><img src="images/logo.svg" width="400"></a>
@@ -5,7 +33,8 @@
 
 <p align="center">
 	<a href="https://github.com/tfrere/music-2-led#licence"><img src="https://img.shields.io/badge/licence-MIT-green" alt="Licence"></a>
-	<a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/badge/platform-osx--64%20%7C%20linux--64%20%7C" alt="Platform support"></a>
+	<a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/badge/platform-osx--64%20%7C%20linux--64%20%7C%20" alt="Platform support"></a>
+
   <a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/github/last-commit/tfrere/music-2-led" alt="Last update"></a>
 <a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/github/v/tag/tfrere/music-2-led" alt="Current version"></a>
 </p>
@@ -34,17 +63,16 @@ All you need is a **computer**, an **arduino** and a **led strip**.
 
 
 # Table of contents
-- [Install](#install)
-  * [Python program](#python-program)
-  * [Arduino setup](#arduino-setup)
+- [Installation](#installation)
+  * [Python part](#python-part)
+  * [Arduino part](#arduino-part)
 - [Configuration](#configuration)
   * [Audio channels](#audio-channels)
-  * [Virtual Audio Source](#virtual-audio-source)
-    + [Linux](#linux)
-    + [OSX](#osx)
+    + [Virtual Audio Source](#virtual-audio-source)
+      - [Linux](#linux)
+      - [OSX](#osx)
   * [Midi channels](#midi-channels)
-    + [OSX](#osx-1)
-    + [Ableton live](#ableton-live)
+    + [Virtual MIDI ports](#virtual-midi-ports)
   * [CONFIG.yml](#configyml)
     + [Sample config file](#sample-config-file)
 - [Effects & Modes](#effects---modes)
@@ -60,12 +88,13 @@ All you need is a **computer**, an **arduino** and a **led strip**.
 
 
 
-# Python part
+# Installation
+
+## Python part
 
 The binary file is [here(DEADLINK)](/toto)
 
 ```
-
 ./music2led --help
 
 -h, --help            show this help message and exit
@@ -75,14 +104,16 @@ The binary file is [here(DEADLINK)](/toto)
 --test-midi-device TEST_MIDI_DEVICE
                       Test a given midi port.
 --test-serial-device TEST_SERIAL_DEVICE
-                      Test a given serial port. This will test your arduino / led installation by displaying three ( red green bue ) pixels and make them roll on the strip.
+                      Test a given serial port. This will test your arduino / led installation by
+                      displaying three ( red green bue ) pixels and make them roll on the strip.
 --test-config-file TEST_CONFIG_FILE
                       Test a given config file.
 --single-strip SINGLE_STRIP
-                      Launch on the first strip.
+                      Launch the first strip without gui and multiprocessing.
+                      It's for testing purpose.
 --with-config-file WITH_CONFIG_FILE
-                      Launch with spectific config file. Default one is CONFIG.yml just near the executable.
-
+                      Launch with spectific config file. Default one is
+                      CONFIG.yml just near the executable.
 ```
 
 ## Arduino part
@@ -96,35 +127,6 @@ The arduino code is [here](arduino/serial-case/serial-case.ino).
 PS : For now, please consider not using more than 254 leds by arduino.
 
 ![electronic-scheme](images/simple-electronic-scheme.png)
-
-
-<!--
-
-  # COM
-  - Faire un helper imprimable sur piano
-  - Bel exemple réel en gif
-
-  # VISUAL LANGUAGE
-  # - définir chaque entité et stabiliser en fonction
-
-  # PYINSTALLER OSX AND LINUX PACKAGE
-  # - refaire le systeme de propagation de config ?
-  # - Develop l'interface Ncurse
-  # - Permettre l'utilisation sur clavier d'ordi
-
-  # FINIR MAIN
-
-  # --with-config :  lance le programme suivant le config à lemplacement donné
-
-
-# OPTIONAL
-
-    # GENERIC STUFF
-    # Rendre le fire generic à color et speed ?
-    # Faire un meteor ?
-
-
- -->
 
 # Configuration
 
@@ -150,13 +152,13 @@ On OSX you have the "Built-In Microphone" as a default choice.
 <!-- You can make some tests with a tone generator and the spectrum mode
 https://www.szynalski.com/tone-generator/ -->
 
-## Virtual Audio Source
+### Virtual Audio Source
 You can use a "virtual audio device" to transfer audio playback from one application to another. This means that you can play music on your computer and connect the playback directly into the program.
 
-### Linux
+#### Linux
 Linux users can use [Jack Audio](http://jackaudio.org/) to create a virtual audio device.
 
-### OSX
+#### OSX
 On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a virtual audio device.
 
 ## Midi channels
@@ -167,24 +169,20 @@ For the MIDI part, it's pretty simple, just plug-in your MIDI devices and run th
 ./music2led --list-available-devices
 ```
 
-## Virtual MIDI ports
+### Virtual MIDI ports
 
-### OSX
+On OSX, it's pretty easy to make some virtual MIDI ports.
+Here is an example for using them with ableton live.
 
 ![osx-midi-settings](images/osx-midi-settings.png)
-
-### Ableton live
-
 ![ableton-midi-settings](images/ableton-midi-settings.png)
-
-...
 
 ## CONFIG.yml
 
 You can validate the config file with
 
 ```
-npm run test-config
+./music2led --text-config-file
 ```
 
 ### Sample config file
@@ -396,15 +394,11 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 | 26 | D-0 | **Change max Brightness** | Update based on velocity | ![scroll](images/nothing.gif)
 | 27 | D#-0 | **Change chunk size** | Update based on velocity | ![scroll](images/nothing.gif)
 
-# Want to add new effects to the library ?
-...
-
 
 # Credits
 This project was a fork of the great [audio-reactive-led-strip](https://github.com/scottlawsonbc/audio-reactive-led-strip). A lot of code has been rewritten since the beginning but it still remains some of the visualizers and audio processing code.
 
 # Contribute
-
 If you have any idea to improve this project or any problem using this, please feel free to upload an [issue](https://github.com/tfrere/music-to-led/issues).
 
 # License
