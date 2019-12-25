@@ -44,10 +44,10 @@ def shiftPixelsSmoothly(pixels):
 
 
 def putPixel(strip, ledIndex, r, g, b, velocity):
-    # print(r / 127 * (velocity + 1))
-    strip[0][ledIndex] = r / 127 * (velocity + 1)
-    strip[1][ledIndex] = g / 127 * (velocity + 1)
-    strip[2][ledIndex] = b / 127 * (velocity + 1)
+    if(ledIndex < len(strip[0]) and ledIndex > -len(strip[0])):
+        strip[0][ledIndex] = r / 127 * (velocity + 1)
+        strip[1][ledIndex] = g / 127 * (velocity + 1)
+        strip[2][ledIndex] = b / 127 * (velocity + 1)
 
 class Piano():
 
@@ -72,6 +72,8 @@ class Piano():
             if(midi_note["type"] == "pitchwheel"):
                 self.pitch = midi_note["pitch"]
 
+        roll_value = int(1 * (self.strip_config.time_interval / 100)) + 1
+        self.pixels = np.roll(self.pixels, roll_value, axis=1)
 
         if(len(self.notes_on) > 0):
             which_color = 0
@@ -86,16 +88,17 @@ class Piano():
 
             value = clampToNewRange(self.pitch, -8191, 8191, 0, 127)
 
-            putPixel(self.pixels, 0, r, g, b, self.notes_on[len(self.notes_on) - 1]["velocity"] / 2 + value )
+            for i in range(roll_value):
+                putPixel(self.pixels, i, r, g, b, self.notes_on[len(self.notes_on) - 1]["velocity"] / 2 + value )
         else:
-            putPixel(self.pixels, 0, 0, 0, 0, 100)
+            for i in range(roll_value):
+                putPixel(self.pixels, i, 0, 0, 0, 100)
 
-        shiftPixelsSmoothly(self.pixels)
 
         # applyGradientDecrease(self.pixels)
 
         # # Apply substantial blur to smooth the edges
-        self.blurFrame(0.5)
+        self.pixels = self.blurFrame(self.pixels, 2.5)
 
         # print(self.pixels)
         # time.sleep(.028)

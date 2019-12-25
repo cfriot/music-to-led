@@ -5,16 +5,17 @@ from visualizations.pixelReshaper import PixelReshaper
 
 from helpers.audio.expFilter import ExpFilter
 
-
 from visualizations.functions.sound.scroll import Scroll
 from visualizations.functions.sound.energy import Energy
 from visualizations.functions.sound.spectrum import Spectrum
 from visualizations.functions.sound.intensityChannels import IntensityChannels
 
 from visualizations.functions.midi.piano import Piano
+from visualizations.functions.midi.piano2 import Piano2
 from visualizations.functions.midi.envelope import Envelope
 
 from visualizations.functions.time.alternateColors import AlternateColors
+from visualizations.functions.time.drawLine import DrawLine
 from visualizations.functions.time.neonFadeIn import NeonFadeIn
 
 from visualizations.functions.generic.full import Full
@@ -26,7 +27,7 @@ def clampToNewRange(value, old_min, old_max, new_min, new_max):
     new_value = (((value - old_min) * (new_max - new_min)) // (old_max - old_min)) + new_min
     return new_value
 
-class Visualizer(Full, AlternateColors, Scroll, IntensityChannels, Energy, Spectrum, Piano, Fire, Envelope, NeonFadeIn):
+class Visualizer(Full, AlternateColors, DrawLine, Scroll, IntensityChannels, Energy, Spectrum, Piano, Piano2, Fire, Envelope, NeonFadeIn):
 
     def __init__(self, config, index):
         """ The main class that contain all viz functions """
@@ -57,15 +58,13 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityChannels, Energy, Spect
             alpha_decay = 0.001,
             alpha_rise=0.99
         )
-        self.p_filt = ExpFilter(
-            np.tile(1, (3, self.number_of_pixels)),
-            alpha_decay = 0.1,
-            alpha_rise=0.99
-        )
+
+        self.initEnergy()
         self.initIntensityChannels()
         self.initSpectrum()
 
         self.initPiano()
+        self.initPiano2()
         self.initEnvelope()
 
         self.initAlternateColors()
@@ -73,15 +72,19 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityChannels, Energy, Spect
         self.initFull()
         self.initFire()
 
+    @staticmethod
+    def lerp(start, end, d):
+        return start * (1 - d) + end * d
 
     def resetFrame(self):
         """ Reset current pixels """
         self.pixels = np.tile(0., (3, self.number_of_pixels))
 
-    def blurFrame(self, value=1.0):
-        self.pixels[0, :] = gaussian_filter1d(self.pixels[0, :], sigma=value)
-        self.pixels[1, :] = gaussian_filter1d(self.pixels[1, :], sigma=value)
-        self.pixels[2, :] = gaussian_filter1d(self.pixels[2, :], sigma=value)
+    def blurFrame(self, pixels, value=1.0):
+        pixels[0, :] = gaussian_filter1d(pixels[0, :], sigma=value)
+        pixels[1, :] = gaussian_filter1d(pixels[1, :], sigma=value)
+        pixels[2, :] = gaussian_filter1d(pixels[2, :], sigma=value)
+        return pixels
 
     def applyMaxBrightness(self, pixels, max_brightness):
         tmp = [[],[],[]]
@@ -102,14 +105,16 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityChannels, Energy, Spect
             pixels = self.visualizeScroll()
         if(self.strip_config.active_visualizer_effect == "energy"):
             pixels = self.visualizeEnergy()
-        if(self.strip_config.active_visualizer_effect == "intensity_channels"):
-            pixels = self.visualizeIntensityChannels()
         if(self.strip_config.active_visualizer_effect == "spectrum"):
             pixels = self.visualizeSpectrum()
+        if(self.strip_config.active_visualizer_effect == "intensity_channels"):
+            pixels = self.visualizeIntensityChannels()
 
         # MIDI BASED
         if(self.strip_config.active_visualizer_effect == "piano"):
             pixels = self.visualizePiano()
+        if(self.strip_config.active_visualizer_effect == "piano2"):
+            pixels = self.visualizePiano2()
         if(self.strip_config.active_visualizer_effect == "envelope"):
             pixels = self.visualizeEnvelope()
 
@@ -118,17 +123,20 @@ class Visualizer(Full, AlternateColors, Scroll, IntensityChannels, Energy, Spect
             pixels = self.visualizeAlternateColors()
         if(self.strip_config.active_visualizer_effect == "alternate_colors_for_shapes"):
             pixels = self.visualizeAlternateColorsForShapes()
+        if(self.strip_config.active_visualizer_effect == "draw_line"):
+            pixels = self.visualizeDrawLine()
 
         # GENERIC
         if(self.strip_config.active_visualizer_effect == "full"):
             pixels = self.visualizeFull()
-        if(self.strip_config.active_visualizer_effect == "nothing"):
-            pixels = self.visualizeNothing()
+        if(self.strip_config.active_visualizer_effect == "fadeToNothing"):
+            pixels = self.visualizeFadeToNothing()
+        if(self.strip_config.active_visualizer_effect == "clear"):
+            pixels = self.visualizeClear()
         if(self.strip_config.active_visualizer_effect == "fire"):
             pixels = self.visualizeFire()
 
 
-        pixels = self.applyMaxBrightness(pixels, self.strip_config.max_brightness)
 
         # import time
         # time.sleep(10)

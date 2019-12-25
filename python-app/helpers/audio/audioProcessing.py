@@ -21,7 +21,7 @@ class AudioProcessing():
         self.samples_per_frame = int(sampling_rate / fps)
         self.y_roll = np.random.rand(n_rolling_history, self.samples_per_frame) / 1e16
         self.min_volume_threshold = min_volume_threshold
-        self.melBank = MelBank(60, 200, 12000, 44100, 24, 1e-7)
+        self.melBank = MelBank(fps, min_frequency, max_frequency, sampling_rate, number_of_audio_samples, min_volume_threshold)
 
         self.fft_plot_filter = ExpFilter(
             np.tile(1e-1, number_of_audio_samples),
@@ -73,7 +73,7 @@ class AudioProcessing():
         vol = np.max(np.abs(y_data))
 
         if vol < self.min_volume_threshold:
-            # print('No audio input. Volume below threshold. Volume:', vol)
+            print('No audio input. Volume below threshold. Volume:', vol)
             return np.tile(0., self.number_of_audio_samples)
         else:
             # Transform audio input into the frequency domain

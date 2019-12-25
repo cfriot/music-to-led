@@ -102,6 +102,7 @@ class StripSettings() :
         active_shape_index = 0,
         is_reverse = False,
         time_interval = 120,
+        chunk_size = 5,
         is_mirror = False,
         active_color_scheme_index = 0,
         color_schemes = [["#FF0000", "#00FF00"]],
@@ -137,6 +138,7 @@ class StripSettings() :
         self.active_visualizer_mode = active_visualizer_mode
 
         self.time_interval = time_interval
+        self.chunk_size = chunk_size
 
         self.is_reverse = is_reverse
         self.is_mirror = is_mirror
@@ -169,6 +171,7 @@ class StripSettings() :
         print("active_visualizer_effect -> ", self.active_visualizer_effect)
         print("active_visualizer_mode -> ", self.active_visualizer_mode)
         print("time_interval -> ", self.time_interval)
+        print("chunk_size -> ", self.chunk_size)
         print("is_reverse -> ", self.is_reverse)
         print("is_mirror -> ", self.is_mirror)
         print("active_color_scheme_index -> ", self.active_color_scheme_index)
@@ -207,6 +210,7 @@ class Settings():
                 "active_shape_index": 0,
                 "is_reverse" : False,
                 "time_interval" : 120,
+                "chunk_size" : 5,
                 "is_mirror" : False
             }
         ]
@@ -249,6 +253,7 @@ class Settings():
                     active_color_scheme_index = strip["active_color_scheme_index"],
                     color_schemes = strip["color_schemes"],
                     time_interval = strip["time_interval"],
+                    chunk_size = strip["chunk_size"],
                     is_mirror = strip["is_mirror"],
                     is_reverse = strip["is_reverse"],
                     debug = debug

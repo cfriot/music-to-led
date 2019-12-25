@@ -46,48 +46,43 @@ class ModSwitcher:
                         elif(mode == 1):
                             self.strip_config.active_visualizer_effect = "energy"
                         elif(mode == 2):
-                            self.strip_config.active_visualizer_effect = "intensity_channels"
-                        elif(mode == 3):
+                            self.visualizer.initVizualiser()
                             self.strip_config.active_visualizer_effect = "spectrum"
+                        elif(mode == 3):
+                            self.strip_config.active_visualizer_effect = "intensity_channels"
 
                         # MIDI BASED
                         elif(mode == 4):
                             self.strip_config.active_visualizer_effect = "piano"
                         elif(mode == 5):
-                            self.strip_config.active_visualizer_effect = "envelope"
+                            self.strip_config.active_visualizer_effect = "piano2"
                         elif(mode == 6):
-                            print("Empty slot. This note is not assigned to an effect.")
+                            self.strip_config.active_visualizer_effect = "envelope"
                         elif(mode == 7):
-                            print("Empty slot. This note is not assigned to an effect.")
+                            print("Empty slot. This note is not assigned to an effect...")
 
                         # TIME BASED
                         elif(mode == 8):
-                            self.visualizer.alternate_colors_size = valueUpdater(
-                                self.visualizer.alternate_colors_size,
-                                velocity,
-                                50,
-                                2
-                            )
                             self.visualizer.drawAlternateColors()
                             self.strip_config.active_visualizer_effect = "alternate_colors"
                         elif(mode == 9):
                             self.strip_config.active_visualizer_effect = "alternate_colors_for_shapes"
                         elif(mode == 10):
-                           print("Empty slot. This note is not assigned to an effect.")
+                            self.strip_config.active_visualizer_effect = "draw_line"
                         elif(mode == 11):
-                           print("Empty slot. This note is not assigned to an effect.")
+                           print("Empty slot. This note is not assigned to an effect...")
 
                         # GENERIC
                         elif(mode == 12):
                             self.strip_config.active_visualizer_effect = "full"
                             self.visualizer.old_full_intensity = 0
                         elif(mode == 13):
-                            self.strip_config.active_visualizer_effect = "nothing"
+                            self.strip_config.active_visualizer_effect = "fadeToNothing"
                             self.visualizer.old_full_intensity = 1
                         elif(mode == 14):
-                            self.strip_config.active_visualizer_effect = "fire"
+                            self.strip_config.active_visualizer_effect = "clear"
                         elif(mode == 15):
-                           print("Empty slot. This note is not assigned to an effect.")
+                            self.strip_config.active_visualizer_effect = "fire"
 
                         # LOGGER
                         if(old_vizualizer_effect != self.strip_config.active_visualizer_effect):
@@ -133,7 +128,6 @@ class ModSwitcher:
                             message = "is changing color scheme to -> " + str(self.strip_config.color_schemes[self.strip_config.active_color_scheme_index])
                             logger(self.strip_config.name, message)
 
-
                         elif(mode == 20):
 
                             self.strip_config.time_interval = valueUpdater(
@@ -153,7 +147,7 @@ class ModSwitcher:
                                 1
                             )
 
-                            message = "is changing audio mod to -> " + str(self.config.audio_ports[self.strip_config.active_audio_channel_index].name)
+                            message = "is changing audio port to -> " + str(self.config.audio_ports[self.strip_config.active_audio_channel_index].name)
                             logger(self.strip_config.name, message)
 
 
@@ -169,13 +163,13 @@ class ModSwitcher:
                             logger(self.strip_config.name, message)
 
                         elif(mode == 23):
-                            self.strip_config.active_visualizer_mode = valueUpdater(
-                                self.strip_config.active_visualizer_mode,
+                            self.strip_config.chunk_size = valueUpdater(
+                                self.strip_config.chunk_size,
                                 velocity,
-                                2,
-                                1
+                                50,
+                                2
                             )
-                            logger(self.strip_config.name, "is changing active mode to " + str(self.strip_config.active_visualizer_mode))
+                            logger(self.strip_config.name, "is changing chunk size to " + str(self.strip_config.chunk_size))
 
 
                         # Old reset frame. Not used anymmore

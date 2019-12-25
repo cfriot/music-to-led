@@ -4,7 +4,6 @@ class AlternateColors():
 
     def initAlternateColors(self):
         self.alternate_colors_index = 0
-        self.alternate_colors_size = 1
 
     def drawAlternateColors(self):
 
@@ -13,11 +12,11 @@ class AlternateColors():
         which_color = 0
         self.alternateColorsInterval = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.time_interval)
 
-        if(self.alternate_colors_size == 0):
-            self.alternate_colors_size = 1
+        if(self.strip_config.chunk_size == 0):
+            self.strip_config.chunk_size = 1
 
         for i in range(self.number_of_pixels):
-            if(i % self.alternate_colors_size == 0):
+            if(i % self.strip_config.chunk_size == 0):
                 which_color += 1
                 if(which_color >= len(color_scheme)):
                     which_color = 0
@@ -27,10 +26,6 @@ class AlternateColors():
 
     def visualizeAlternateColors(self):
         """Effect that alternate two colors moving forward"""
-
-        if(self.timeSinceStart.getMs() >= self.alternateColorsInterval):
-            self.alternate_colors_index += 1
-            self.timeSinceStart.restart()
 
         self.pixels = np.roll(
             self.pixels, int(1 * (self.strip_config.time_interval / 100)) + 1, axis=1)

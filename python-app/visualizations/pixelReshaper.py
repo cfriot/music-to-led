@@ -104,8 +104,8 @@ if __name__ == "__main__":
     from settings.settingsLoader import StripSettings
 
     print('Starting PixelReshaper test on ports :')
-    print(SerialOutput.listAvailableUsbSerialPorts())
-    ports = SerialOutput.listAvailableUsbSerialPorts()
+    print(SerialOutput.listAvailablePortsName())
+    ports = SerialOutput.listAvailablePortsName()
 
     settings = StripSettings()
 

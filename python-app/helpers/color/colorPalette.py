@@ -48,7 +48,7 @@ if __name__ == '__main__':
 
     # from outputs.serialOutput import SerialOutput
     # print('Starting ColorDictionary test on ports :')
-    # ports = SerialOutput.listAvailableUsbSerialPorts()
+    # ports = SerialOutput.listAvailablePortsName()
     # print(ports)
 
     # number_of_pixels_by_strip = 250

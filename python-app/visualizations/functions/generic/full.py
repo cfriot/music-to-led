@@ -6,10 +6,6 @@ class Full():
         self.old_full_intensity = 0
         self.old_intensity_bounce = 0
 
-    @staticmethod
-    def lerp(start, end, d):
-        return start * (1 - d) + end * d
-
     def visualizeFull(self):
         color_scheme = self.strip_config.formatted_color_schemes[self.strip_config.active_color_scheme_index]
         self.pixels[0] = self.lerp(self.pixels[0], color_scheme[0][0], self.old_full_intensity)
@@ -19,9 +15,9 @@ class Full():
         if(self.old_full_intensity < 1):
             self.old_full_intensity += 0.01
 
-        return self.pixels
+        return self.pixelReshaper.reshapeFromPixels(self.pixels)
 
-    def visualizeNothing(self):
+    def visualizeFadeToNothing(self):
         self.pixels[0] = self.pixels[0] * self.old_full_intensity
         self.pixels[1] = self.pixels[1] * self.old_full_intensity
         self.pixels[2] = self.pixels[2] * self.old_full_intensity
@@ -29,4 +25,11 @@ class Full():
         if(self.old_full_intensity > 0):
             self.old_full_intensity -= 0.01
 
-        return self.pixels
+        return self.pixelReshaper.reshapeFromPixels(self.pixels)
+
+    def visualizeClear(self):
+        self.pixels[0] = self.pixels[0] * 0
+        self.pixels[1] = self.pixels[0] * 0
+        self.pixels[2] = self.pixels[0] * 0
+
+        return self.pixelReshaper.reshapeFromPixels(self.pixels)

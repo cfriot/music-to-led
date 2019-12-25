@@ -32,11 +32,6 @@
   #define DATAPIN D4
 #endif
 
-#if BLUETOOTH_MODE
-  #include <SoftwareSerial.h>
-  SoftwareSerial Bluetooth(11, 10); // (RX, TX) (pin Rx BT, pin Tx BT)
-#endif
-
 #define PIXELS 500
 
 byte pixelBuffer[3];

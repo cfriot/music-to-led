@@ -68,6 +68,26 @@ class AudioInput:
                     i)["name"], "index": audio.get_device_info_by_index(i)["index"]})
         return ports
 
+    @staticmethod
+    def printDeviceList():
+        print('Audio ports available :')
+        for port in AudioInput.listAvailablePortsName():
+            print("- " + port["name"])
+
+    @staticmethod
+    def testDevice(name):
+        if(AudioInput.getPortIndexFromName(name) != -1):
+            print('Audio tests test on port :')
+            print(name)
+            audioInput = AudioInput(name)
+            while 1:
+                data = audioInput.getRawData()
+                print(data)
+                print(len(data))
+                time.sleep(1)
+        else:
+            print('This port is not available ->' + name)
+
     def getRawData(self):
         """Return actual audio data"""
         try:
@@ -97,6 +117,8 @@ class AudioInput:
             self.audio.terminate()
 
 
+
+
 if __name__ == "__main__":
 
     import argparse
@@ -108,20 +130,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if(args.list):
-        print('Audio ports available :')
-        for port in AudioInput.listAvailablePortsName():
-            print("- " + port["name"])
-
+        AudioInput.printDeviceList()
     if(args.test):
-        if(AudioInput.getPortIndexFromName(args.test) != -1):
-            print('Audio tests test on port :')
-            print(args.test)
-            audioInput = AudioInput(args.test)
-            import time
-            while 1:
-                data = audioInput.getRawData()
-                print(data)
-                print(len(data))
-                time.sleep(1)
-        else:
-            print('This port is not available ->' + args.test)
+        AudioInput.testDevice(args.test)

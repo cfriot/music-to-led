@@ -5,16 +5,16 @@
 
 <p align="center">
 	<a href="https://github.com/tfrere/music-2-led#licence"><img src="https://img.shields.io/badge/licence-MIT-green" alt="Licence"></a>
-	<a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/badge/platform-osx--64%20%7C%20linux--64%20%7C%20win--64-lightgrey" alt="Platform support"></a>
+	<a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/badge/platform-osx--64%20%7C%20linux--64%20%7C" alt="Platform support"></a>
   <a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/github/last-commit/tfrere/music-2-led" alt="Last update"></a>
 <a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/github/v/tag/tfrere/music-2-led" alt="Current version"></a>
 </p>
 
 #
 
-**Music 2 Led** is an open source program that allows you to create **real-time audio and midi visualizations on led strips** using Arduino, Electron and Python. It was designed for **DJ**'s or **music groups** that want to add some **automated lighting effects** to their shows without big budget.
+**Music 2 Led** is an open source program that allows you to create **real-time audio and midi visualizations on led strips** using Arduino and Python. It was designed for **DJ**'s or **music groups** that want to add some **automated lighting effects** to their shows without big budget.
 
-( starting at ~40$ including arduino and leds )
+All you need is a **computer**, an **arduino** and a **led strip**.
 
 ### Showcase
 
@@ -24,7 +24,7 @@
 
 ![software-architecture](images/archi.png)
 
-### What do i need to make one ?
+### What do i need to do to use it ?
 
 1. [Install the program](#python-program)
 2. [Build an arduino case](#arduino-part)
@@ -60,23 +60,36 @@
 
 
 
-# Install
+# Python part
 
-If you encounter any problems running program, please open a new issue. Also, please consider opening an issue if you have any questions or suggestions for improving the installation process.
-
-## Python program
-Code is compatible with Python 3.7. Install dependencies using pip and the conda package manager.
+The binary file is [here(DEADLINK)](/toto)
 
 ```
-pip install -r requirements.txt
-conda install --file requirements.txt
+
+./music2led --help
+
+-h, --help            show this help message and exit
+-l, --list-devices    list available devices
+--test-audio-device TEST_AUDIO_DEVICE
+                      Test a given audio port.
+--test-midi-device TEST_MIDI_DEVICE
+                      Test a given midi port.
+--test-serial-device TEST_SERIAL_DEVICE
+                      Test a given serial port. This will test your arduino / led installation by displaying three ( red green bue ) pixels and make them roll on the strip.
+--test-config-file TEST_CONFIG_FILE
+                      Test a given config file.
+--single-strip SINGLE_STRIP
+                      Launch on the first strip.
+--with-config-file WITH_CONFIG_FILE
+                      Launch with spectific config file. Default one is CONFIG.yml just near the executable.
+
 ```
 
-## Arduino setup
+## Arduino part
 
 As each led project has very specific needs, i kept this part as simple as possible.
 
-In case you need a complete packaged product, there is a more advanced version of this part in the [Arduino folder](/arduino/). You will find 3d printed arduino cases and a more complete electronic scheme.
+In case you need a complete packaged product, there is a more advanced version available in the [Arduino folder](/arduino/). You will find 3d printed arduino cases and a more complete electronic scheme.
 
 The arduino code is [here](arduino/serial-case/serial-case.ino).
 
@@ -85,22 +98,30 @@ PS : For now, please consider not using more than 254 leds by arduino.
 ![electronic-scheme](images/simple-electronic-scheme.png)
 
 
-<!-- # Links
-- [Wikipedia DMX](https://fr.wikipedia.org/wiki/DMX_(%C3%A9clairage) -->
 <!--
 
-  Mon projet est Music 2 led, il s'addresse aux dj et groupes de musiques, se trouvant
-  ..., qui ont besoin d'un setup light automatisé.
-  Il est plutot utilisé quand le groupe n'a pas beaucoup de budget
-
-
-  - Package electron
-  - Toggle interface
+  # COM
   - Faire un helper imprimable sur piano
   - Bel exemple réel en gif
-  - Faire une branch dev et master // faire un vrai tag release avec le binary
 
-  # entre 50 et 110 Decibels
+  # VISUAL LANGUAGE
+  # - définir chaque entité et stabiliser en fonction
+
+  # PYINSTALLER OSX AND LINUX PACKAGE
+  # - refaire le systeme de propagation de config ?
+  # - Develop l'interface Ncurse
+  # - Permettre l'utilisation sur clavier d'ordi
+
+  # FINIR MAIN
+
+  # --with-config :  lance le programme suivant le config à lemplacement donné
+
+
+# OPTIONAL
+
+    # GENERIC STUFF
+    # Rendre le fire generic à color et speed ?
+    # Faire un meteor ?
 
 
  -->
@@ -113,7 +134,7 @@ To help you to configure your CONFIG.yml correctly, there is a little helper tha
 will list all available ports for each of them.
 
 ```
-npm run list-ports
+./music2led --list-available-devices
 ```
 
 ## Audio channels
@@ -123,6 +144,8 @@ This program streams audio from the default audio input device (set by the opera
 Examples of typical audio sources:
 - Audio cable connected to the audio input jack (requires USB sound card on Raspberry Pi)
 - Webcam microphone, headset, studio recording microphone, etc
+
+On OSX you have the "Built-In Microphone" as a default choice.
 
 <!-- You can make some tests with a tone generator and the spectrum mode
 https://www.szynalski.com/tone-generator/ -->
@@ -136,10 +159,15 @@ Linux users can use [Jack Audio](http://jackaudio.org/) to create a virtual audi
 ### OSX
 On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a virtual audio device.
 
-### Windows
-...
-
 ## Midi channels
+
+For the MIDI part, it's pretty simple, just plug-in your MIDI devices and run the following command to check if it's detected.
+
+```
+./music2led --list-available-devices
+```
+
+## Virtual MIDI ports
 
 ### OSX
 
@@ -228,6 +256,10 @@ strips:
     # Time interval value that is used in time based visualizers
 
     time_interval: 120
+
+    # Chunk size used in alternate colors
+
+    chunk_size: 5
 
     # Shapes
     # Real shape : represents the physical shape of the strip
@@ -329,8 +361,8 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 | *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
 |:--|:--|:--|:--|:--
 | 5 | F-2   | **Piano** | - | ![scroll](images/piano.gif)
-| 6 | F#-2  | **Envelope** | Color intensity based on pitch bend | ![scroll](images/envelope.gif)
-| 7 | G-2   | - | - | ![scroll](images/nothing.gif)
+| 6 | F#-2  | **Piano2** | - | TO ADD
+| 7 | G-2   | **Envelope** | Color intensity based on pitch bend | ![scroll](images/envelope.gif)
 | 8 | G#-2  | - | - | ![scroll](images/nothing.gif)
 
 ### Time based
@@ -338,8 +370,8 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 | *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
 |:--|:--|:--|:--|:--
 | 10 | A#-2   | **AlternateColors** | Chunk size based on velocity | ![scroll](images/alternate-chunks.gif)
-| 11 | B-2    | **AlternateColorsFull** | - | ![scroll](images/alternate-colors.gif)
-| 12 | C-1    | **AlternateColorsForStrips** | - | ![scroll](images/alternate-strips.gif)
+| 11 | B-2    | **AlternateColorsForStrips** | - | ![scroll](images/alternate-strips.gif)
+| 12 | C-1    | - | - | ![scroll](images/nothing.gif)
 | 13 | C#-1   | - | - | ![scroll](images/nothing.gif)
 
 ### Generic
@@ -347,9 +379,9 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 | *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
 |:--|:--|:--|:--|:--
 | 15 | D#-1  | **Full** | - | ![scroll](images/full.gif)
-| 16 | E-1   | **Nothing** | - | ![scroll](images/nothing.gif)
-| 17 | F-1  | **Fire** | - | ![scroll](images/fire.gif)
-| 18 | F#-1  | - | - | ![scroll](images/nothing.gif)
+| 16 | E-1   | **FadeToNothing** | - | ![scroll](images/nothing.gif)
+| 17 | F-1  | **Clear** | - | ![scroll](images/nothing.gif)
+| 18 | F#-1  | **Fire** | - | ![scroll](images/fire.gif)
 
 ## Modes
 
@@ -362,14 +394,18 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 | 24 | C-0  | **Change time interval in ms** | Update based on velocity | ![scroll](images/nothing.gif)
 | 25 | C#-0  | **Change audio channel** | Update based on velocity | ![scroll](images/nothing.gif)
 | 26 | D-0 | **Change max Brightness** | Update based on velocity | ![scroll](images/nothing.gif)
-| 27 | D#-0 | **Change visualizer mode** | - | ![scroll](images/nothing.gif)
+| 27 | D#-0 | **Change chunk size** | Update based on velocity | ![scroll](images/nothing.gif)
+
+# Want to add new effects to the library ?
+...
 
 
 # Credits
 This project was a fork of the great [audio-reactive-led-strip](https://github.com/scottlawsonbc/audio-reactive-led-strip). A lot of code has been rewritten since the beginning but it still remains some of the visualizers and audio processing code.
 
 # Contribute
-Feel free to send me an e-mail or submit a pull request.
+
+If you have any idea to improve this project or any problem using this, please feel free to upload an [issue](https://github.com/tfrere/music-to-led/issues).
 
 # License
 This project was developed by Thibaud FRERE and is released

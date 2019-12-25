@@ -28,12 +28,17 @@ class Scroll():
         g = g / length_of_color_scheme
         b = b / length_of_color_scheme
 
-        self.pixels[:, 1:] = self.pixels[:, :-1]
+        # self.pixels[:, 2:] = self.pixels[:, :-2]
+
+        roll_value = int(1 * (self.strip_config.time_interval / 100)) + 1
+        self.pixels = np.roll(self.pixels, roll_value, axis=1)
+
         self.pixels *= 0.98
-        self.blurFrame(0.2)
-        self.pixels[0, 0] = r
-        self.pixels[1, 0] = g
-        self.pixels[2, 0] = b
+        self.pixels = self.blurFrame(self.pixels, 0.2)
+        for i in range(roll_value):
+            self.pixels[0, i] = r
+            self.pixels[1, i] = g
+            self.pixels[2, i] = b
 
         self.pixels = np.clip(self.pixels, 0, 255)
 

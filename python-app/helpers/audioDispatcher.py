@@ -8,7 +8,9 @@ class AudioDispatcher():
     def __init__(self, audio_ports):
         self.audio_ports = audio_ports
         self.number_of_audio_ports = len(audio_ports)
-        self.audio_datas = np.tile(0., (self.number_of_audio_ports, 24))
+        self.audio_datas = []
+        # for i in range(self.number_of_audio_ports):
+        #     self.audio_datas = np.tile(0., (self.number_of_audio_ports, audio_port.number_of_audio_samples))
         self.audio_input_classes = []
         self.audio_processors = []
         for audio_port in self.audio_ports:

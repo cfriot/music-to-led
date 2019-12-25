@@ -8,6 +8,7 @@ class SerialOutput:
         self.serial_port = port
         self.serial_class = None
         self.trying_to_connect = False
+        self.is_connected = False
         self.clear_command = b'\xff'
         self.show_command = b'\x00'
         self.send_number_of_pixel_command = b'\x02'
@@ -26,11 +27,11 @@ class SerialOutput:
             s.close()
         except (OSError, serial.SerialException):
             print("Serial port not found or busy, please check your config file -> ", port_name)
-            print("Here's the ports available ->", SerialOutput.listAvailableUsbSerialPorts())
+            print("Here's the ports available ->", SerialOutput.listAvailablePortsName())
             quit()
 
     @staticmethod
-    def listAvailableUsbSerialPorts():
+    def listAvailablePortsName():
         """ Lists serial port names
 
             :raises EnvironmentError:
@@ -59,8 +60,39 @@ class SerialOutput:
                 pass
         return result
 
+    @staticmethod
+    def printDeviceList():
+        print('Serial ports available :')
+
+        ports = SerialOutput.listAvailablePortsName()
+        for port in ports:
+            print("- " + port)
+
+    @staticmethod
+    def testDevice(name):
+        SerialOutput.tryPort(name)
+
+        number_of_pixels = 30
+        serialOutputs = []
+
+        pixels = np.tile(1, (3, number_of_pixels))
+        pixels *= 0
+        pixels[0, 0] = 125  # Set 1st pixel red
+        pixels[1, 1] = 125  # Set 2nd pixel green
+        pixels[2, 2] = 125  # Set 3rd pixel blue
+        pixels[0, 3] = 255  # Set 1st pixel red
+        pixels[1, 4] = 255  # Set 2nd pixel green
+        pixels[2, 5] = 255  # Set 3rd pixel blue
+
+        serialClass = SerialOutput(number_of_pixels, name)
+
+        while True:
+            pixels = np.roll(pixels, 1, axis=1)
+            serialClass.update(pixels)
+            time.sleep(.016)
+
     def isOnline(self):
-        return not self.trying_to_connect
+        return not self.is_connected
 
     def setup(self):
 
@@ -119,6 +151,7 @@ class SerialOutput:
         self.pixels = pixels
         if(not self.trying_to_connect and self.serial_class):
             try:
+                self.is_connected = True
                 self.serial_class.write(self.show_command)
                 self.serial_class.read(1)
                 number_of_pixel_command = (self.number_of_pixels).to_bytes(2, byteorder="big")
@@ -127,8 +160,9 @@ class SerialOutput:
                 self.serial_class.write(message)
             except IOError:
                 # TO DO : Remove display and find a way to display if it's ONLINE or not
-                print("Hey it seem's that your cable has been unpluged on port ", self.serial_port)
+                #print("Hey it seem's that your cable has been unpluged on port ", self.serial_port)
                 self.trying_to_connect = True
+                self.is_connected = False
                 self.setup()
                 self.trying_to_connect = False
                 return
@@ -144,31 +178,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if(args.list):
-        print('Serial ports available :')
-
-        ports = SerialOutput.listAvailableUsbSerialPorts()
-        for port in ports:
-            print("- " + port)
+        serialOutput.printDeviceList()
 
     if(args.test):
-
-        SerialOutput.tryPort(args.test)
-
-        number_of_pixels = 30
-        serialOutputs = []
-
-        pixels = np.tile(1, (3, number_of_pixels))
-        pixels *= 0
-        pixels[0, 0] = 125  # Set 1st pixel red
-        pixels[1, 1] = 125  # Set 2nd pixel green
-        pixels[2, 2] = 125  # Set 3rd pixel blue
-        pixels[0, 3] = 255  # Set 1st pixel red
-        pixels[1, 4] = 255  # Set 2nd pixel green
-        pixels[2, 5] = 255  # Set 3rd pixel blue
-
-        serialClass = SerialOutput(number_of_pixels, args.test)
-
-        while True:
-            pixels = np.roll(pixels, 1, axis=1)
-            serialClass.update(pixels)
-            time.sleep(.016)
+        serialOutput.testDevice(args.test)

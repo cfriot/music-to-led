@@ -29,6 +29,29 @@ class MidiInput:
         """ List avaiable ports names """
         return mido.get_output_names()
 
+    @staticmethod
+    def printDeviceList():
+        print('Midi ports available :')
+        ports = MidiInput.listAvailablePortsName()
+        for port in ports:
+            print("- " + port)
+
+    @staticmethod
+    def testDevice(name):
+        MidiInput.tryPort(name)
+        print('Midi tests test on port :')
+        print(name)
+
+        midiClass = MidiInput(name)
+
+        while 1:
+            notes = []
+
+            notes = midiClass.getRawData()
+
+            if(notes != []):
+                print(notes)
+
     def getRawData(self):
         """ Return actual midi data """
         self.notes = []
@@ -60,23 +83,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if(args.list):
-        print('Midi ports available :')
-        ports = MidiInput.listAvailablePortsName()
-        for port in ports:
-            print("- " + port)
+        MidiInput.printDeviceList()
 
     if(args.test):
-
-        MidiInput.tryPort(args.test)
-        print('Midi tests test on port :')
-        print(args.test)
-
-        midiClass = MidiInput(args.test)
-
-        while 1:
-            notes = []
-
-            notes = midiClass.getRawData()
-
-            if(notes != []):
-                print(notes)
+        MidiInput.testDevice(args.test)

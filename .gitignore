@@ -19,6 +19,7 @@ $RECYCLE.BIN/
 
 
 # Tests
+tests/
 python-app/python-tests
 python-app/buid
 python-app/dist

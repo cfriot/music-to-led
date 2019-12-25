@@ -1,6 +1,17 @@
 import numpy as np
 
+from helpers.audio.expFilter import ExpFilter
+
 class Energy():
+
+    def initEnergy(self):
+        self.p_filt = ExpFilter(
+            np.tile(1, (3, self.number_of_pixels)),
+            alpha_decay = 0.1,
+            alpha_rise=0.99
+        )
+
+        ## 0.01 to 0.99 for speed setting
 
     def visualizeEnergy(self):
         """Effect that expands from the center with increasing sound energy"""
@@ -31,10 +42,9 @@ class Energy():
         self.pixels[2, :b] = 255.0
         self.pixels[2, b:] = 0.0
 
-        if(self.strip_config.active_visualizer_mode == 1):
-            self.p_filt.update(self.pixels)
-            self.pixels = np.round(self.p_filt.value)
+        self.p_filt.update(self.pixels)
+        self.pixels = np.round(self.p_filt.value)
 
-        self.blurFrame(0.1)
+        self.pixels = self.blurFrame(self.pixels, 0.1)
 
         return self.pixelReshaper.reshapeFromPixels(self.pixels)

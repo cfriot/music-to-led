@@ -40,7 +40,7 @@ class IntensityChannels():
                 if(intensity < 0) :
                     intensity = 0
             else:
-                intensity = int(np.mean(self.audio_data[x:y]**scale))
+                intensity = int(np.max(self.audio_data[x:y]**scale))
 
             max_intensity = len(self.pixelReshaper.strips[i][0])
             if(self.strip_config.is_mirror):
@@ -70,7 +70,7 @@ class IntensityChannels():
                 strip[0] = color_scheme[colorIndex][0]
                 strip[1] = color_scheme[colorIndex][1]
                 strip[2] = color_scheme[colorIndex][2]
-                self.pixelReshaper.strips[x] = self.applyMaxBrightness(strip, stripItensities[x] * 10)
+                self.pixelReshaper.strips[x] = self.applyMaxBrightness(strip, maxStripItensities[x] * 10)
         else :
             for x, strip in enumerate(self.pixelReshaper.strips):
                 max_length = len(strip[0])
