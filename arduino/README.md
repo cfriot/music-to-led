@@ -12,7 +12,7 @@
 
 ### Electronic scheme
 
-![electronic-scheme](images/electronic-scheme.png)
+![electronic-scheme](../images/electronic-scheme.png)
 
 ### 3d printed case
 
@@ -22,7 +22,7 @@ Slicer settings
 - Resolution **0.2**
 - Infill **30-100%**
 
-![arduino-case](images/arduino-case.png)
+![arduino-case](../images/arduino-case.png)
 
 ### Led number limitation
 

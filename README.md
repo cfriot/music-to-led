@@ -176,7 +176,7 @@ Here is an example for using them with ableton live.
 You can validate the config file with
 
 ```
-./music2led --test-config-file
+./music2led --test-config-file "./CONFIG.yml"
 ```
 
 ### Sample config file
