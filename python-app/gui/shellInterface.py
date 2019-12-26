@@ -8,21 +8,21 @@ class ShellInterface():
         # self.echo("Init Shell Interface")
 
         self.term = Terminal()
+        self.echo = partial(print, end='', flush=True)
 
-        with self.term.fullscreen():
+        self.height, self.width = self.term.height, self.term.width
 
-            self.input = ""
-            self.echo = partial(print, end='', flush=True)
+        self.term.fullscreen()
 
-            self.height, self.width = self.term.height, self.term.width
+        self.echo(self.term.clear)
+        # for i in range(self.height):
+        #     self.echo(self.term.move(i, 0) + (" " * self.width))
+        # self.clearTerminal()
 
-            color_bg = self.term.on_black
-            signal.signal(signal.SIGWINCH, self.on_resize)
+        self.input = ""
 
-            # self.echo(self.term.clear)
-            for i in range(self.height):
-                self.echo(self.term.move(i, 0) + (" " * self.width))
-            # self.clearTerminal()
+        color_bg = self.term.on_black
+        signal.signal(signal.SIGWINCH, self.on_resize)
 
     def on_resize(self, signum, frame):
         self.height, self.width = self.term.height, self.term.width
@@ -46,57 +46,77 @@ class ShellInterface():
         with term.hidden_cursor(), term.cbreak(), term.location():
             self.echo("drawframe")
 
-    def printHeader(self):
-        self.echo(self.term.move(0, 1) + "    __  _____  _______________    __________      __   _______")
-        self.echo(self.term.move(1, 1) + "   /  |/  / / / / __/  _/ ___/   /_  __/ __ \\    / /  / __/ _ \\")
-        self.echo(self.term.move(2, 1) + "  / /|_/ / /_/ /\\ \\_/ // /__      / / / /_/ /   / /__/ _// // /")
-        self.echo(self.term.move(3, 1) + " /_/  /_/\\____/___/___/\___/     /_/  \\____/   /____/___/____/")
-        self.echo(self.term.move(4, 1) + "                                                    v0.1.1")
+    def printHeader(self, y):
+        self.echo(self.term.move(y + 0, 1) + " __  __ _   _ ___ ___ ___   _____ ___    _    ___ ___")
+        self.echo(self.term.move(y + 1, 1) + "|  \\/  | | | / __|_ _/ __| |_   _/ _ \\  | |  | __|   \\")
+        self.echo(self.term.move(y + 2, 1) + "| |\\/| | |_| \__ \\| | (__    | || (_) | | |__| _|| |) |")
+        self.echo(self.term.move(y + 3, 1) + "|_|  |_|\___/|___/___\\___|   |_| \___/  |____|___|___/")
+        self.echo(self.term.move(y + 4, 1) + "                                                    v0.1.1")
 
-    def drawBox(self, offset, size):
+    def drawBox(self, offset, size, color=(255,255,255)):
         style = "─│┌┐└┘"
         x, y = offset
         w, h = size
+        r,g,b = color
 
         first_line = style[2] + (style[0] * (w - 2)) + style[3]
         middle_line = style[1] + (" " * (w - 2)) + style[1]
         last_line = style[4] + (style[0] * (w - 2)) + style[5]
 
-        self.echo(self.term.move(y, x) + first_line)
+        self.echo(self.term.move(y, x) + self.textWithColor(r,g,b,first_line))
         for i in range(h):
-            self.echo(self.term.move(y + i + 1, x) + middle_line)
-        self.echo(self.term.move(y + h, x) + last_line)
+            self.echo(self.term.move(y + i + 1, x) + self.textWithColor(r,g,b,middle_line))
+        self.echo(self.term.move(y + h, x) + self.textWithColor(r,g,b,last_line))
 
     def waitForInput(self):
         self.input = self.term.inkey(timeout=0)
         self.echo(self.term.move(0, 85) + "input :" + self.input)
+        if(self.input == "f"):
+            print("ditwoula")
 
-    def textWithColor(self, r,g,b,text):
+    def textWithColor(self, r, g, b, text):
         return self.term.color(int(self.rgbToAnsi256(r, g, b)))(text)
 
-    def printAudio(self, y, audio_datas):
-        self.echo(self.term.move(y, 1) + "audio" + audio_datas[0])
+    def printAudio(self, y, x, name, audio_datas):
+        self.echo(self.term.move(y, x) + name)
 
-    # ------------------------------------------------------------------------------
-    #  Name of the strip                                                      online
-    #
-    #  mode ---------- mirror - reverse - color - shape - time interval - brightness
-    #
-    #  █████████████████████████████████████████████████████████████████████████████
-    # ------------------------------------------------------------------------------
+        style = "▁▂▃▅▆▇"
 
-    def printStrip(self, y, is_connected, strip_config, pixels):
+        graph = ""
+
+        for channel in audio_datas:
+            charIndex = int(channel * 10) if int(channel * 10) < len(style) - 1 else len(style) - 1
+            graph += style[charIndex]
+
+        self.echo(self.term.move(y + 2, x + 1) + graph)
+
+    def printStrip(self, y, is_connected, fps, strip_config, pixels):
 
        with self.term.hidden_cursor(), self.term.cbreak(), self.term.location():
             self.echo(self.term.move(y + 1, 2) + strip_config.name)
-            self.echo(self.term.move(y + 1, 73) + "30 / 60")
-            strip_config.active_visualizer_mode
+            self.echo(self.term.move(y + 1, 30) + strip_config.active_visualizer_effect)
             isConnected = self.textWithColor(0, 255, 0, 'online') if is_connected else self.textWithColor(255, 0, 0, 'offline')
-            self.echo(self.term.move(y + 2, 73) + isConnected)
+            self.echo(self.term.move(y + 1, 74) + isConnected)
+            self.echo(self.term.move(y + 2, 0) + self.textWithColor(50,50,50,"├" + ("─" * (81)) + "┤"))
+            self.echo(self.term.move(y + 3, 72) + fps)
             mirrorMode = self.textWithColor(255, 255, 255, 'mirror') if strip_config.is_mirror else self.textWithColor(50, 50, 50, 'mirror')
-            self.echo(self.term.move(y + 2, 2) + mirrorMode)
+            self.echo(self.term.move(y + 3, 2) + mirrorMode)
             reverseMode = self.textWithColor(255, 255, 255, 'reverse') if strip_config.is_reverse else self.textWithColor(50, 50, 50, 'reverse')
-            self.echo(self.term.move(y + 2, 10) + reverseMode)
+            self.echo(self.term.move(y + 3, 10) + reverseMode)
+
+            color = ""
+            for current_color in strip_config.formatted_color_schemes[strip_config.active_color_scheme_index]:
+                color += self.term.color(int(self.rgbToAnsi256(current_color[0], current_color[1], current_color[2])))('█ ')
+            self.echo(self.term.move(y + 3, 20) + color)
+
+            shape = ""
+            for current_shape in strip_config.shapes[strip_config.active_shape_index].shape:
+                shape += "." + str(current_shape) + "."
+            self.echo(self.term.move(y + 3, 30) + shape)
+
+            self.echo(self.term.move(y + 3, 45) + str(strip_config.time_interval))
+            self.echo(self.term.move(y + 3, 55) + str(strip_config.max_brightness))
+            self.echo(self.term.move(y + 3, 65) + str(strip_config.chunk_size))
 
             array = self.getTermArrayFromPixels(pixels)
             self.echo(self.term.move(y + 5, 2) + array)

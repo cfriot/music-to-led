@@ -3,7 +3,7 @@ import concurrent.futures
 from multiprocessing import Pool
 import numpy as np
 
-from settings.settingsLoader import SettingsLoader
+from config.configLoader import ConfigLoader
 
 from gui.shellInterface import ShellInterface
 
@@ -23,16 +23,26 @@ from visualizations.modSwitcher import ModSwitcher
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("-l", "--list-devices", help="list available devices", action="store_true")
+parser.add_argument("--list-devices", help="List available devices.", action="store_true")
 
-parser.add_argument("--test-audio-device", help="test a given audio port", type=str)
-parser.add_argument("--test-midi-device", help="test a given midi port", type=str)
-parser.add_argument("--test-serial-device", help="test a given serial port", type=str)
-parser.add_argument("--test-config-file", help="test a given config file", type=str)
+parser.add_argument("--test-audio-device", help="Test a given audio port.", type=str, metavar="PORT_NAME")
+parser.add_argument("--test-midi-device", help="Test a given midi port.", type=str, metavar="PORT_NAME")
+parser.add_argument("--test-serial-device", help="Test a given serial port.", type=str, metavar="PORT_NAME")
+parser.add_argument(
+    "--test-config-file",
+    help="Test a given config file. If your type \"\", it will test the default config file.",
+    metavar="FILE_PATH"
+)
 
-parser.add_argument("--single-strip", help="launch on the first strip", type=str)
+parser.add_argument("--single-strip", help="Launch on the first strip.", type=str)
 
-parser.add_argument("--with-config-file", help="launch with spectific config file", type=str)
+parser.add_argument(
+    "--with-config-file",
+    help="Launch with spectific config file.",
+    type=str,
+    default=os.path.abspath(os.path.dirname(sys.argv[0])) + '/CONFIG.yml',
+    metavar="FILE_PATH"
+)
 
 args = parser.parse_args()
 
@@ -50,74 +60,8 @@ elif(args.test_midi_device):
 elif(args.test_serial_device):
     SerialOutput.testDevice(args.test_serial_device)
 
-elif(args.single_strip):
-
-    config_file_path = os.path.abspath(os.path.dirname(sys.argv[0])) + '/CONFIG.yml'
-
-    settingsLoader = SettingsLoader(config_file_path)
-
-    print("Launching -> ", args.single_strip)
-
-    config = settingsLoader.data
-    index = settingsLoader.findStripIndexByStripName(args.single_strip)
-    strip_config = config.strips[index]
-
-    audioDispatcher = AudioDispatcher(config.audio_ports)
-
-    # shellInterface = ShellInterface()
-
-    framerateCalculator = FramerateCalculator(config.fps)
-
-    midi_ports_for_changing_mode = strip_config.midi_ports_for_changing_mode
-    associated_midi_channels = strip_config.associated_midi_channels
-
-    midiDispacther = MidiDispatcher(
-        midi_ports_for_changing_mode,
-        associated_midi_channels
-    )
-
-    visualizer = Visualizer(
-        config,
-        index
-    )
-
-    serial_port_name = config.strips[index].serial_port_name
-    number_of_pixels = strip_config.shapes[strip_config.active_shape_index].number_of_pixels
-
-    serialOutput = SerialOutput(
-        number_of_pixels,
-        serial_port_name
-    )
-
-    modSwitcher = ModSwitcher(
-        visualizer,
-        config,
-        index
-    )
-
-    while 1:
-
-        audioDispatcher.dispatch()
-        midiDispacther.dispatch()
-
-        visualizer.audio_datas = audioDispatcher.audio_datas
-        modSwitcher.midi_datas = midiDispacther.midi_datas_for_changing_mode
-        visualizer.midi_datas =  midiDispacther.midi_datas_for_visualization
-
-        modSwitcher.changeMod()
-
-        pixels = visualizer.drawFrame()
-
-        pixels = np.clip(pixels, 0, strip_config.max_brightness).astype(int)
-
-        serialOutput.update(
-            pixels
-        )
-
-        # shellInterface.printAudio(1, visualizer.audio_datas)
-        # shellInterface.printStrip(10, serialOutput.is_connected, strip_config, pixels)
-        # shellInterface.waitForInput()
-
+elif(args.test_config_file):
+    ConfigLoader.testConfig(path=args.test_config_file, verbose=False)
 
 elif not len(sys.argv) > 1:
 
@@ -135,6 +79,7 @@ elif not len(sys.argv) > 1:
 
     def serialProcess(index, shared_list):
 
+
         config = shared_list[0]
         audio_datas = shared_list[1]
         strip_config = config.strips[index]
@@ -145,17 +90,16 @@ elif not len(sys.argv) > 1:
         print("* Init Serial process on port : ", serial_port_name)
 
         serialOutput = SerialOutput(
-            number_of_pixels,
-            serial_port_name
+            number_of_pixels=number_of_pixels,
+            port=serial_port_name
         )
 
         while 1:
 
             # shared_list[0].strips[index].is_online = serialOutput.isOnline()
-            # print("is_online ", shared_list[0].strips[index].is_online)
 
             serialOutput.update(
-                shared_list[2 + index]
+                shared_list[2 + index][0]
             )
 
     def stripProcess(index, shared_list):
@@ -188,7 +132,8 @@ elif not len(sys.argv) > 1:
         modSwitcher = ModSwitcher(
             visualizer,
             config,
-            index
+            index,
+            False
         )
 
         while 1:
@@ -212,13 +157,8 @@ elif not len(sys.argv) > 1:
             pixels = visualizer.applyMaxBrightness(pixels, strip_config.max_brightness)
             pixels = np.clip(pixels, 0, 255).astype(int)
 
-            shared_list[2 + index] = pixels
-
-            # shared_list[0].strips[index] = config.strips[index]
-            shared_list[0] = config
-
-            # shared_list[2 + config.number_of_strips + index] = config.strips[index]
-            # print(shared_list[2 + config.number_of_strips + index].is_mirror)
+            shared_list[2 + index] = [pixels, strip_config, framerateCalculator.getFps()]
+            # shared_list[2 + index] = pixels
 
             time.sleep(config.delay_between_frames)
 
@@ -226,10 +166,9 @@ elif not len(sys.argv) > 1:
 
     print("Parsing config file...")
 
-    config_file_path = os.path.abspath(os.path.dirname(sys.argv[0])) + '/CONFIG.yml'
-    settingsLoader = SettingsLoader(config_file_path)
+    configLoader = ConfigLoader(args.with_config_file)
 
-    config = settingsLoader.data
+    config = configLoader.data
     number_of_strips = config.number_of_strips
 
     manager = multiprocessing.Manager()
@@ -263,25 +202,39 @@ elif not len(sys.argv) > 1:
         audio_datas = shared_list[1]
         pixels = [[],[],[]]
 
-        shellInterface.printHeader()
+        header_offset = 0
+        audio_offset = 7
+        strip_offset = 12
+        rgb_border_color = (100,100,100)
+        rgb_inner_border_color = (50,50,50)
 
-        # shellInterface.drawBox((10, 10), (10, 10))
+        shellInterface.printHeader(header_offset)
+
+        for index in range(config.number_of_audio_ports):
+
+            strip_config = config.strips[index]
+            offset = ((index * 32), audio_offset)
+            size = (29, 3)
+            shellInterface.drawBox(offset, size, rgb_border_color)
 
         for index in range(config.number_of_strips):
 
-            strip_config = shared_list[0].strips[index]
-            offset = (0, (index * 10) + 5)
-            size = (83, 8)
-            shellInterface.drawBox(offset, size)
+            strip_config = config.strips[index]
+            offset = (0, strip_offset + (index * 8))
+            size = (83, 6)
+            shellInterface.drawBox(offset, size, rgb_border_color)
 
         while 1:
 
-            shellInterface.printAudio(0 * 10, audio_datas)
+            for index in range(config.number_of_audio_ports):
+                shellInterface.printAudio(audio_offset, (32 * index) + 1, config.audio_ports[index].name, shared_list[1][index])
+
             shellInterface.waitForInput()
 
             for index in range(config.number_of_strips):
 
-                pixels = shared_list[2 + index]
-                strip_config = shared_list[0].strips[index]
+                pixels = shared_list[2 + index][0]
+                strip_config = shared_list[2 + index][1]
+                fps = shared_list[2 + index][2]
                 audio_datas = shared_list[1]
-                shellInterface.printStrip((index * 10) + 5, True, strip_config, pixels)
+                shellInterface.printStrip(strip_offset + (index * 8), True, fps, strip_config, pixels)

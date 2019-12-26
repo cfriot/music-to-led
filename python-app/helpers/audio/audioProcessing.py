@@ -5,7 +5,6 @@ from scipy.ndimage.filters import gaussian_filter1d
 from helpers.audio.expFilter import ExpFilter
 from helpers.audio.melbank import MelBank
 
-
 class AudioProcessing():
     def __init__(
         self,

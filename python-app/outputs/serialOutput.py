@@ -4,7 +4,7 @@ import numpy as np
 
 class SerialOutput:
     """ Send pixels data to arduino via serial port """
-    def __init__(self, number_of_pixels=30, port="", baud_rate=1000000):
+    def __init__(self, verbose=False, number_of_pixels=30, port="", baud_rate=1000000):
         self.serial_port = port
         self.serial_class = None
         self.trying_to_connect = False
@@ -18,6 +18,7 @@ class SerialOutput:
         self.pixels = np.tile(.0, (3, number_of_pixels))
         self.raw_data = []
         self.baud_rate = baud_rate
+        self.verbose = verbose
         self.setup()
 
     @staticmethod
@@ -100,7 +101,8 @@ class SerialOutput:
             self.serial_class = serial.Serial(
                 self.serial_port, self.baud_rate, timeout=1, bytesize=serial.EIGHTBITS)
         except IOError:
-            print("Hey it seem's that your cable is not plugged on port ", self.serial_port)
+            if(self.verbose):
+                print("Hey it seem's that your cable is not plugged on port ", self.serial_port)
             time.sleep(1)
             self.setup()
             return
@@ -109,15 +111,18 @@ class SerialOutput:
         time.sleep(1)
         self.serial_class.flushInput()
         self.serial_class.setDTR(True)
-        print("Setup begin for %s" % self.serial_port)
+        if(self.verbose):
+            print("Setup begin for %s" % self.serial_port)
         while True:
             message = self.serial_class.readline()
             if("Setup ok" in str(message)):
                 break
-        print("Setup finished for %s" % self.serial_port)
+        if(self.verbose):
+            print("Setup finished for %s" % self.serial_port)
         while (message != self.show_command):
             message = self.serial_class.read(1)
-        print("Begin transmision for %s" % self.serial_port)
+        if(self.verbose):
+            print("Begin transmision for %s" % self.serial_port)
 
     def getVector(self, array, col):
         vector = []

@@ -45,12 +45,6 @@ class Visualizer(Full, AlternateColors, DrawLine, Scroll, IntensityChannels, Ene
 
         self.pixelReshaper = PixelReshaper(config.strips[index])
 
-        # print(interval)
-        #
-        # if(self.timeSinceStart.getMs() >= interval):
-        #     self.alternate_colors_index += 1
-        #     self.timeSinceStart.restart()
-
     def initVizualiser(self):
         self.number_of_pixels = self.strip_config.shapes[self.strip_config.active_shape_index].number_of_pixels
         self.gain = ExpFilter(
@@ -95,7 +89,7 @@ class Visualizer(Full, AlternateColors, DrawLine, Scroll, IntensityChannels, Ene
         return tmp
 
     def drawFrame(self):
-        """ Draw current pixels """
+        """ Return current pixels """
         self.audio_data = self.audio_datas[self.strip_config.active_audio_channel_index]
 
         pixels = []
@@ -135,10 +129,5 @@ class Visualizer(Full, AlternateColors, DrawLine, Scroll, IntensityChannels, Ene
             pixels = self.visualizeClear()
         if(self.strip_config.active_visualizer_effect == "fire"):
             pixels = self.visualizeFire()
-
-
-
-        # import time
-        # time.sleep(10)
 
         return pixels

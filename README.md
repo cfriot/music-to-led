@@ -8,13 +8,15 @@
   # - définir chaque entité et stabiliser en fonction
 
   # PYINSTALLER OSX AND LINUX PACKAGE
-  # - refaire le systeme de propagation de config ?
+  OK # - refaire le systeme de propagation de config ?
   # - Develop l'interface Ncurse
   # - Permettre l'utilisation sur clavier d'ordi
 
   # FINIR MAIN
 
-  # --with-config :  lance le programme suivant le config à lemplacement donné
+  OK # Faire le nouveau fichier de conf
+  # Faire le systeme de states et permettre une modification rapide d'un state
+  OK # --with-config :  lance le programme suivant le config à lemplacement donné
 
 
 # OPTIONAL
@@ -42,9 +44,7 @@
 
 **Music 2 Led** is an open source program that allows you to create **real-time audio and midi visualizations on led strips** using Arduino and Python. It was designed for **DJ**'s or **music groups** that want to add some **automated lighting effects** to their shows without big budget.
 
-All you need is a **computer***, an **arduino** and a **led strip**.
-
-* Like a RaspberryPi 4
+All you need is a **computer** *( works on Raspi 4 )*, an **arduino** and a **led strip**.
 
 ### Showcase
 
@@ -137,7 +137,7 @@ To help you to configure your CONFIG.yml correctly, there is a little helper tha
 will list all available ports for each of them.
 
 ```
-./music2led --list-available-devices
+./music2led --list-devices
 ```
 
 ## Audio channels
@@ -167,7 +167,7 @@ On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a
 For the MIDI part, it's pretty simple, just plug-in your MIDI devices and run the following command to check if it's detected.
 
 ```
-./music2led --list-available-devices
+./music2led --list-devices
 ```
 
 ### Virtual MIDI ports
@@ -202,7 +202,7 @@ display_interface: false
 
 # Audio ports
 # List of used audio ports
-# Can be listed with --list-available-devices
+# Can be listed with --list-devices
 # Can be changed with "Change audio channel"
 
 audio_ports:
@@ -227,7 +227,7 @@ strips:
     name: Led strip name
 
     # Name of the associated serial port
-    # Can be listed with --list-available-devices
+    # Can be listed with --list-devices
 
     serial_port_name: /dev/tty.usbserial-14210
 
@@ -238,7 +238,7 @@ strips:
     max_brightness: 255
 
     # Midi channels
-    # Can be listed with --list-available-devices
+    # Can be listed with --list-devices
     # associated_midi_channels : used for midi based visualizers
     # midi_ports_for_changing_mode : used for live changing modes
 

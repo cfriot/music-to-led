@@ -1,4 +1,4 @@
-import yaml, json, sys
+import yaml, json, sys, os
 import numpy as np
 
 
@@ -18,7 +18,7 @@ def isAnEvenArray(arr):
             return False
     return True
 
-class AudioPortSettings() :
+class AudioPortConfig() :
 
     def __init__(
         self,
@@ -46,7 +46,7 @@ class AudioPortSettings() :
     def print(self):
         print("--")
         print("----------------")
-        print("Audio Port Settings : ")
+        print("Audio Port Config : ")
         print("----------------")
         print("name -> ", self.name)
         print("min_frequency -> ", self.min_frequency)
@@ -59,7 +59,7 @@ class AudioPortSettings() :
         print("--")
 
 
-class ShapeSettings() :
+class ShapeConfig() :
 
     def __init__(
         self,
@@ -75,7 +75,7 @@ class ShapeSettings() :
     def print(self):
         print("--")
         print("----------------")
-        print("Shape Settings : ")
+        print("Shape Config : ")
         print("----------------")
         print("shape -> ", self.shape)
         print("number_of_substrip -> ", self.number_of_substrip)
@@ -84,7 +84,7 @@ class ShapeSettings() :
         print("--")
 
 
-class StripSettings() :
+class StripConfig() :
 
     def __init__(
         self,
@@ -92,8 +92,8 @@ class StripSettings() :
         serial_port_name = "/dev/tty.usbserial-14240",
         is_online= False,
         max_brightness = 120,
-        midi_ports_for_changing_mode = ["Ableton-virtual-midi-ouput ChangeModLeftSynth"],
-        associated_midi_channels = ["Ableton-virtual-midi-ouput LeftSynth"],
+        midi_ports_for_changing_mode = [],
+        associated_midi_channels = [],
         active_visualizer_effect = "scroll",
         active_visualizer_mode = 0,
         real_shape = [52],
@@ -124,14 +124,15 @@ class StripSettings() :
 
         if(debug):
             SerialOutput.tryPort(serial_port_name)
-            for name in associated_midi_channels + midi_ports_for_changing_mode:
-                MidiInput.tryPort(name)
+            if(associated_midi_channels or midi_ports_for_changing_mode):
+                for name in associated_midi_channels + midi_ports_for_changing_mode:
+                    MidiInput.tryPort(name)
 
         self.active_shape_index = active_shape_index
         self.real_shape = real_shape
         self.shapes = []
         for shape in shapes:
-            self.shapes.append(ShapeSettings(shape))
+            self.shapes.append(ShapeConfig(shape))
         self.number_of_shapes = len(self.shapes)
 
         self.active_visualizer_effect = active_visualizer_effect
@@ -155,7 +156,7 @@ class StripSettings() :
     def print(self):
         print("--")
         print("----------------")
-        print("Strip Settings : ")
+        print("Strip Config : ")
         print("----------------")
         print("name -> ", self.name)
         print("serial_port_name -> ", self.serial_port_name)
@@ -181,7 +182,7 @@ class StripSettings() :
         print("--")
 
 
-class Settings():
+class Config():
 
     def __init__(
         self,
@@ -223,7 +224,7 @@ class Settings():
         self.audio_ports = []
         for audio_port in audio_ports:
             self.audio_ports.append(
-                AudioPortSettings(
+                AudioPortConfig(
                     name = audio_port["name"],
                     min_frequency = audio_port["min_frequency"],
                     max_frequency = audio_port["max_frequency"],
@@ -237,7 +238,7 @@ class Settings():
         self.strips = []
         for strip in strips :
             self.strips.append(
-                StripSettings(
+                StripConfig(
                     name = strip["name"],
                     serial_port_name = strip["serial_port_name"],
                     is_online = False,
@@ -261,13 +262,13 @@ class Settings():
             )
         self.number_of_strips = len(self.strips)
 
-    def getJsonFromSettings(self):
+    def getJsonFromConfig(self):
         return json.dumps(self.__dict__, default=lambda o: o.__dict__, indent=4)
 
     def print(self):
         print("--")
         print("----------------")
-        print("Settings : ")
+        print("Config : ")
         print("----------------")
         print("fps -> ", self.fps)
         print("delay_between_frames -> ", self.delay_between_frames)
@@ -281,9 +282,10 @@ class Settings():
         print("--")
 
 
-class SettingsLoader():
+class ConfigLoader():
     """ Load and instanciate settings class from settings file """
     def __init__(self, file, debug=False):
+        ConfigLoader.testFilePath(file)
         with open(file, 'r') as stream:
             try:
 
@@ -292,7 +294,7 @@ class SettingsLoader():
                     Loader = yaml.FullLoader
                 )
 
-                self.data = Settings(
+                self.data = Config(
                     fps = file["fps"],
                     audio_ports = file["audio_ports"],
                     strips = file["strips"],
@@ -308,15 +310,28 @@ class SettingsLoader():
                 return i
         return -1
 
+    @staticmethod
+    def testFilePath(path):
+        try:
+            open(path)
+        except IOError:
+            print("Cannot load this config file. Please check your path.")
+            quit()
+
+
+    @staticmethod
+    def testConfig(path=os.path.abspath(os.path.dirname(sys.argv[0])) + '/../CONFIG.yml', verbose=False):
+
+        ConfigLoader.testFilePath(path)
+        config = ConfigLoader(path, debug=True)
+        if(verbose):
+            config.data.print()
+
+        print("Congrats, your config file is valid !")
+
 
 if __name__ == "__main__":
 
-    print('Starting SettingsLoader test')
-
-    config = SettingsLoader("CONFIG.yml", debug=True)
-    config.data.print()
-
+    config = ConfigLoader.testConfig(verbose=False)
     # method_list = [func for func in dir(Visualizer) if callable(getattr(Visualizer, func)) and not func.startswith("__")]
     # print(method_list)
-
-    print("Config fie is valid")

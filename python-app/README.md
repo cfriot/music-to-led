@@ -2,7 +2,7 @@
 
 If you encounter any problems running program, please open a new issue. Also, please consider opening an issue if you have any questions or suggestions for improving the installation process.
 
-Code is compatible with Python 3.7. Install dependencies using pip and the conda package manager.
+Code is compatible with Python 3.7.
 
 ```
 pip install -r requirements.txt

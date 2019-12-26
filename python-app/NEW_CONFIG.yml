@@ -1,0 +1,64 @@
+---  # document start
+
+################
+# CONFIG FILE  #
+################
+
+desired_framerate: 60
+display_interface: false
+
+audio_ports:
+  -
+    name: Built-in Microphone
+    min_frequency: 200
+    max_frequency: 12000
+    sampling_rate: 44100
+    number_of_audio_samples: 24
+    min_volume_threshold: 1e-7
+    n_rolling_history: 4
+
+
+midi_ports:
+  - USB MIDI Interface
+  - LPK25
+
+strips:
+  -
+    name: Front Desk 2
+    serial_port_name: /dev/tty.usbserial-1420
+    associated_midi_channels:
+      - USB MIDI Interface
+    midi_ports_for_changing_mode:
+      - LPK25
+
+    associated_midi_channels_indexes:
+      - 0
+    midi_ports_for_changing_mode_indexes:
+      - 1
+
+    active_state: 0
+
+states:
+  -
+    active_visualizer_effect: energy
+    active_audio_channel_index: 0
+
+    active_shape_index: 0
+    shapes:
+      -
+        - 255
+
+    active_color_scheme_index: 0
+    color_schemes:
+      -
+        - red
+        - green
+        - blue
+
+    is_reverse: false
+    is_mirror: true
+    time_interval: 5
+    chunk_size: 5
+    max_brightness: 255
+
+...  # document end

@@ -3,7 +3,7 @@ import concurrent.futures
 from multiprocessing import Pool
 import numpy as np
 
-from settings.settingsLoader import SettingsLoader
+from config.configLoader import ConfigLoader
 
 from gui.shellInterface import ShellInterface
 
@@ -31,38 +31,52 @@ pixels *= 0
 pixels[0, 0] = 125  # Set 1st pixel red
 pixels[1, 1] = 125  # Set 2nd pixel green
 pixels[2, 2] = 125  # Set 3rd pixel blue
-pixels[0, 3] = 255  # Set 1st pixel red
-pixels[1, 4] = 255  # Set 2nd pixel green
-pixels[2, 5] = 255  # Set 3rd pixel blue
 
 config_file_path = os.path.abspath(os.path.dirname(sys.argv[0])) + '/CONFIG.yml'
-settingsLoader = SettingsLoader(config_file_path)
+configLoader = ConfigLoader(config_file_path)
 
-config = settingsLoader.data
+config = configLoader.data
 number_of_strips = config.number_of_strips
 
 audioDispatcher = AudioDispatcher(config.audio_ports)
 
 print(config.audio_ports[0].name)
 
-# shellInterface = ShellInterface()
-# shellInterface.printHeader()
+shellInterface = ShellInterface()
 
+header_offset = 0
+audio_offset = 7
+strip_offset = 12
+rgb_border_color = (100,100,100)
+rgb_inner_border_color = (50,50,50)
+shellInterface.printHeader(header_offset)
+
+for index in range(config.number_of_audio_ports):
+
+    strip_config = config.strips[index]
+    offset = ((index * 32), audio_offset)
+    size = (29, 3)
+    shellInterface.drawBox(offset, size, rgb_border_color)
+
+y = 12
 for index in range(config.number_of_strips):
 
     strip_config = config.strips[index]
-    offset = (0, (index * 10) + 15)
-    size = (83, 8)
-    # shellInterface.drawBox(offset, size)
+    offset = (0, y + (index * 8))
+    size = (83, 6)
+    shellInterface.drawBox(offset, size, rgb_border_color)
 
 while 1:
 
-    # shellInterface.waitForInput()
+    audioDispatcher.dispatch()
+    shellInterface.waitForInput()
 
     pixels = np.roll(pixels, 1, axis=1)
+
+    for index in range(config.number_of_audio_ports):
+        shellInterface.printAudio(audio_offset, (32 * index) + 1, config.audio_ports[index].name, audioDispatcher.audio_datas[index])
 
     for index in range(config.number_of_strips):
 
         strip_config = config.strips[index]
-        # shellInterface.printAudio(10, audioDispatcher.audio_datas)
-        # shellInterface.printStrip((index * 10) + 15, True, strip_config, pixels)
+        shellInterface.printStrip(strip_offset + (index * 8), True, 30, strip_config, pixels)

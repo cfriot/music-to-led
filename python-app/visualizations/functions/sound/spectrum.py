@@ -58,8 +58,6 @@ class Spectrum():
         # else:
         new_length = self.number_of_pixels
 
-        # FOR EACH SCRIPT PREV SPECTRUM ETOUT ET TOUT
-
         self.prev_spectrum = np.tile(0.01, new_length)
 
         self.r_filt = ExpFilter(

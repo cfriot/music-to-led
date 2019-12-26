@@ -18,6 +18,14 @@ audio_ports:
     min_volume_threshold: 1e-7
     n_rolling_history: 4
   # -
+  #   name: Built-in Microphone
+  #   min_frequency: 200
+  #   max_frequency: 12000
+  #   sampling_rate: 44100
+  #   number_of_audio_samples: 24
+  #   min_volume_threshold: 1e-7
+  #   n_rolling_history: 4
+  # -
   #   name: Scarlett Solo USB
   #   min_frequency: 200
   #   max_frequency: 10000
@@ -33,19 +41,19 @@ audio_ports:
   #   number_of_audio_samples: 24
   #   min_volume_threshold: 1e-7
   #   n_rolling_history: 4
-  # -
-  #   name: USB PnP Sound Device
-  #   min_frequency: 6000
-  #   max_frequency: 12000
-  #   sampling_rate: 44100
-  #   number_of_audio_samples: 24
-  #   min_volume_threshold: 1e-7
-  #   n_rolling_history: 4
+  -
+    name: USB PnP Sound Device
+    min_frequency: 6000
+    max_frequency: 12000
+    sampling_rate: 44100
+    number_of_audio_samples: 24
+    min_volume_threshold: 1e-7
+    n_rolling_history: 4
 
 strips:
   -
     name: Front Desk
-    serial_port_name: /dev/tty.usbserial-14210
+    serial_port_name: /dev/tty.usbserial-14110
     max_brightness: 80
     associated_midi_channels:
       # - Audio2Led Synth
@@ -112,89 +120,90 @@ strips:
         - "#FF00C8"
 
     active_visualizer_effect: scroll
-  # -
-  #   name: Front Desk 2
-  #   serial_port_name: /dev/tty.usbserial-1420
-  #   max_brightness: 80
-  #   associated_midi_channels:
-  #     # - Audio2Led Synth
-  #     # - USB MIDI Interface
-  #   midi_ports_for_changing_mode:
-  #     # - Audio2Led ChangeMod
-  #     # - LPK25
-  #   real_shape:
-  #     - 80
-  #   shapes:
-  #     -
-  #       - 255
-  #     -
-  #       - 20
-  #       - 60
-  #     -
-  #       - 20
-  #       - 20
-  #       - 20
-  #       - 20
-  #
-  #   active_audio_channel_index: 0
-  #   active_visualizer_mode: 0
-  #   active_color_index: 0
-  #   active_shape_index: 0
-  #   is_reverse: false
-  #   time_interval: 5
-  #   is_mirror: true
-  #   active_color_scheme_index: 0
-  #   color_schemes:
-  #     # -
-  #     #   - "#00EDFF"
-  #     #   - "#00C3FF"
-  #     #   - "#006FFF"
-  #     #   - "#6F01FF"
-  #     #   - "#FF00C8"
-  #     -
-  #       - HotPink
-  #       - purple
-  #       - blue
-  #       - DarkGreen
-  #       - LightGreen
-  #       - yellow
-  #       - orange
-  #       - red
-  #     -
-  #       - red
-  #       - green
-  #       - blue
-  #     - # pink blue
-  #       - "#FF00C8"
-  #       - "#00C6FF"
-  #     - # orange blue
-  #       - "#FFA200"
-  #       - "#00C6FF"
-  #     - # red green
-  #       - "#FF002E"
-  #       - "#00FFA4"
-  #     - # purple green
-  #       - "#F900FF"
-  #       - "#22FF00"
-  #     - # blue yellow
-  #       - "#0024FF"
-  #       - "#FFE500"
-  #     -
-  #       - red
-  #       - green
-  #       - blue
-  #     -
-  #       - red
-  #     -
-  #       - green
-  #     -
-  #       - blue
-  #     -
-  #       - white
-  #     -
-  #       - "#FF00C8"
-  #
-  #   active_visualizer_effect: energy
+  -
+    name: Front Desk 2
+    serial_port_name: /dev/tty.usbserial-14120
+    max_brightness: 80
+    associated_midi_channels:
+      # - Audio2Led Synth
+      # - USB MIDI Interface
+    midi_ports_for_changing_mode:
+      # - Audio2Led ChangeMod
+      # - LPK25
+    real_shape:
+      - 80
+    shapes:
+      -
+        - 80
+      -
+        - 20
+        - 60
+      -
+        - 20
+        - 20
+        - 20
+        - 20
+
+    active_audio_channel_index: 0
+    active_visualizer_mode: 0
+    active_color_index: 0
+    active_shape_index: 0
+    is_reverse: false
+    time_interval: 5
+    chunk_size: 5
+    is_mirror: true
+    active_color_scheme_index: 0
+    color_schemes:
+      # -
+      #   - "#00EDFF"
+      #   - "#00C3FF"
+      #   - "#006FFF"
+      #   - "#6F01FF"
+      #   - "#FF00C8"
+      -
+        - HotPink
+        - purple
+        - blue
+        - DarkGreen
+        - LightGreen
+        - yellow
+        - orange
+        - red
+      -
+        - red
+        - green
+        - blue
+      - # pink blue
+        - "#FF00C8"
+        - "#00C6FF"
+      - # orange blue
+        - "#FFA200"
+        - "#00C6FF"
+      - # red green
+        - "#FF002E"
+        - "#00FFA4"
+      - # purple green
+        - "#F900FF"
+        - "#22FF00"
+      - # blue yellow
+        - "#0024FF"
+        - "#FFE500"
+      -
+        - red
+        - green
+        - blue
+      -
+        - red
+      -
+        - green
+      -
+        - blue
+      -
+        - white
+      -
+        - "#FF00C8"
+
+    active_visualizer_effect: energy
   # -
   #   name: Front Desk 3
   #   serial_port_name: /dev/tty.usbserial-1420
@@ -225,6 +234,7 @@ strips:
   #   active_shape_index: 0
   #   is_reverse: false
   #   time_interval: 5
+  #   chunk_size: 5
   #   is_mirror: true
   #   active_color_scheme_index: 0
   #   color_schemes:
@@ -308,6 +318,7 @@ strips:
   #   active_shape_index: 0
   #   is_reverse: false
   #   time_interval: 5
+  #   chunk_size: 5
   #   is_mirror: true
   #   active_color_scheme_index: 0
   #   color_schemes:
