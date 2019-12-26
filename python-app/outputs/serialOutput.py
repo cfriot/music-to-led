@@ -85,7 +85,7 @@ class SerialOutput:
         pixels[1, 4] = 255  # Set 2nd pixel green
         pixels[2, 5] = 255  # Set 3rd pixel blue
 
-        serialClass = SerialOutput(number_of_pixels, name)
+        serialClass = SerialOutput(False, number_of_pixels, name)
 
         while True:
             pixels = np.roll(pixels, 1, axis=1)
@@ -93,7 +93,7 @@ class SerialOutput:
             time.sleep(.016)
 
     def isOnline(self):
-        return not self.is_connected
+        return self.is_connected
 
     def setup(self):
 
@@ -183,7 +183,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if(args.list):
-        serialOutput.printDeviceList()
+        SerialOutput.printDeviceList()
 
     if(args.test):
-        serialOutput.testDevice(args.test)
+        SerialOutput.testDevice(args.test)

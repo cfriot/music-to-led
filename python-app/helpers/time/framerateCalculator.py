@@ -46,6 +46,6 @@ class FramerateCalculator:
         fps = self.frames_per_second()
         if time.time() - 0.5 > self.prev_fps_update:
             self.prev_fps_update = time.time()
-            return '{:.0f} / {:.0f}'.format(fps, self.desired_framerate)
+            return '{:.0f}'.format(fps)
         else:
-            return '{:.0f} / {:.0f}'.format(fps, self.desired_framerate)
+            return '{:.0f}'.format(fps)

@@ -124,8 +124,11 @@ class StripConfig() :
 
         if(debug):
             SerialOutput.tryPort(serial_port_name)
-            if(associated_midi_channels or midi_ports_for_changing_mode):
-                for name in associated_midi_channels + midi_ports_for_changing_mode:
+            if(associated_midi_channels):
+                for name in associated_midi_channels:
+                    MidiInput.tryPort(name)
+            if(midi_ports_for_changing_mode):
+                for name in midi_ports_for_changing_mode:
                     MidiInput.tryPort(name)
 
         self.active_shape_index = active_shape_index
@@ -187,6 +190,7 @@ class Config():
     def __init__(
         self,
         fps = 60,
+        display_interface = True,
         number_of_audio_samples = 24,
         debug = False,
         audio_ports = [
@@ -218,6 +222,7 @@ class Config():
     ):
 
         self.fps = fps
+        self.display_interface = display_interface
         self.delay_between_frames = 1 / fps
         self.timeSinceStart = TimeSinceStart()
         self.number_of_audio_samples = number_of_audio_samples
@@ -271,6 +276,7 @@ class Config():
         print("Config : ")
         print("----------------")
         print("fps -> ", self.fps)
+        print("display_interface -> ", self.display_interface)
         print("delay_between_frames -> ", self.delay_between_frames)
         for audio_port in self.audio_ports:
             audio_port.print()

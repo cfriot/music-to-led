@@ -94,10 +94,9 @@ elif not len(sys.argv) > 1:
             port=serial_port_name
         )
 
+        i = 0
+
         while 1:
-
-            # shared_list[0].strips[index].is_online = serialOutput.isOnline()
-
             serialOutput.update(
                 shared_list[2 + index][0]
             )
@@ -133,7 +132,7 @@ elif not len(sys.argv) > 1:
             visualizer,
             config,
             index,
-            False
+            not config.display_interface
         )
 
         while 1:
@@ -158,15 +157,12 @@ elif not len(sys.argv) > 1:
             pixels = np.clip(pixels, 0, 255).astype(int)
 
             shared_list[2 + index] = [pixels, strip_config, framerateCalculator.getFps()]
-            # shared_list[2 + index] = pixels
 
             time.sleep(config.delay_between_frames)
 
-            # print("FPS from process ", serial_port_name, framerateCalculator.getFps())
+    print("Parsing and testing config file...")
 
-    print("Parsing config file...")
-
-    configLoader = ConfigLoader(args.with_config_file)
+    configLoader = ConfigLoader(args.with_config_file, debug=False)
 
     config = configLoader.data
     number_of_strips = config.number_of_strips
@@ -176,7 +172,7 @@ elif not len(sys.argv) > 1:
     # Shared list :
     # 0     : Config
     # 1     : Audio datas
-    # 2...n : Pixels
+    # 2...n : Pixels -- [pixels, strip_config, framerateCalculator.getFps()]
     shared_list.append(config)
     shared_list.append(np.tile(0.,(config.number_of_audio_ports, 24)))
 
@@ -196,45 +192,50 @@ elif not len(sys.argv) > 1:
             executor.submit(stripProcess, i, shared_list)
             executor.submit(serialProcess, i, shared_list)
 
-        time.sleep(1)
 
-        shellInterface = ShellInterface()
-        audio_datas = shared_list[1]
-        pixels = [[],[],[]]
+        if(config.display_interface):
 
-        header_offset = 0
-        audio_offset = 7
-        strip_offset = 12
-        rgb_border_color = (100,100,100)
-        rgb_inner_border_color = (50,50,50)
+            time.sleep(1)
+            print("Starting GUI ...")
+            time.sleep(1)
 
-        shellInterface.printHeader(header_offset)
+            shellInterface = ShellInterface()
+            audio_datas = shared_list[1]
+            pixels = [[],[],[]]
 
-        for index in range(config.number_of_audio_ports):
+            header_offset = 0
+            audio_offset = 7
+            strip_offset = 12
+            rgb_border_color = (100,100,100)
+            rgb_inner_border_color = (50,50,50)
 
-            strip_config = config.strips[index]
-            offset = ((index * 32), audio_offset)
-            size = (29, 3)
-            shellInterface.drawBox(offset, size, rgb_border_color)
-
-        for index in range(config.number_of_strips):
-
-            strip_config = config.strips[index]
-            offset = (0, strip_offset + (index * 8))
-            size = (83, 6)
-            shellInterface.drawBox(offset, size, rgb_border_color)
-
-        while 1:
+            shellInterface.printHeader(header_offset)
 
             for index in range(config.number_of_audio_ports):
-                shellInterface.printAudio(audio_offset, (32 * index) + 1, config.audio_ports[index].name, shared_list[1][index])
 
-            shellInterface.waitForInput()
+                strip_config = config.strips[index]
+                offset = ((index * 32), audio_offset)
+                size = (29, 3)
+                shellInterface.drawBox(offset, size, rgb_border_color)
 
             for index in range(config.number_of_strips):
 
-                pixels = shared_list[2 + index][0]
-                strip_config = shared_list[2 + index][1]
-                fps = shared_list[2 + index][2]
-                audio_datas = shared_list[1]
-                shellInterface.printStrip(strip_offset + (index * 8), True, fps, strip_config, pixels)
+                strip_config = config.strips[index]
+                offset = (0, strip_offset + (index * 8))
+                size = (83, 6)
+                shellInterface.drawBox(offset, size, rgb_border_color)
+
+            while 1:
+
+                for index in range(config.number_of_audio_ports):
+                    shellInterface.printAudio(audio_offset, (32 * index) + 1, config.audio_ports[index].name, shared_list[1][index])
+
+                shellInterface.waitForInput()
+
+                for index in range(config.number_of_strips):
+
+                    pixels = shared_list[2 + index][0]
+                    strip_config = shared_list[2 + index][1]
+                    fps = shared_list[2 + index][2]
+                    audio_datas = shared_list[1]
+                    shellInterface.printStrip(strip_offset + (index * 8), strip_config.is_online, fps, strip_config, pixels)

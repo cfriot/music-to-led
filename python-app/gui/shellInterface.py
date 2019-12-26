@@ -47,14 +47,17 @@ class ShellInterface():
             self.echo("drawframe")
 
     def printHeader(self, y):
-        self.echo(self.term.move(y + 0, 1) + " __  __ _   _ ___ ___ ___   _____ ___    _    ___ ___")
-        self.echo(self.term.move(y + 1, 1) + "|  \\/  | | | / __|_ _/ __| |_   _/ _ \\  | |  | __|   \\")
-        self.echo(self.term.move(y + 2, 1) + "| |\\/| | |_| \__ \\| | (__    | || (_) | | |__| _|| |) |")
-        self.echo(self.term.move(y + 3, 1) + "|_|  |_|\___/|___/___\\___|   |_| \___/  |____|___|___/")
-        self.echo(self.term.move(y + 4, 1) + "                                                    v0.1.1")
+        size_of_title = len(" __  __ _   _ ___ ___ ___   _____ ___    _    ___ ___")
+        total_size = 80
+        space = (80 - size_of_title) // 2
+        self.echo(self.term.move(y + 0, space) + " __  __ _   _ ___ ___ ___   _____ ___    _    ___ ___")
+        self.echo(self.term.move(y + 1, space) + "|  \\/  | | | / __|_ _/ __| |_   _/ _ \\  | |  | __|   \\")
+        self.echo(self.term.move(y + 2, space) + "| |\\/| | |_| \__ \\| | (__    | || (_) | | |__| _|| |) |")
+        self.echo(self.term.move(y + 3, space) + "|_|  |_|\___/|___/___\\___|   |_| \___/  |____|___|___/")
+        self.echo(self.term.move(y + 4, space) + "                                                v0.1.1")
 
     def drawBox(self, offset, size, color=(255,255,255)):
-        style = "─│┌┐└┘"
+        style = "─|┌┐└┘" # ││
         x, y = offset
         w, h = size
         r,g,b = color
@@ -90,38 +93,54 @@ class ShellInterface():
 
         self.echo(self.term.move(y + 2, x + 1) + graph)
 
-    def printStrip(self, y, is_connected, fps, strip_config, pixels):
+    def printStrip(self, y, is_connected, framerate, strip_config, pixels):
 
        with self.term.hidden_cursor(), self.term.cbreak(), self.term.location():
-            self.echo(self.term.move(y + 1, 2) + strip_config.name)
-            self.echo(self.term.move(y + 1, 30) + strip_config.active_visualizer_effect)
-            isConnected = self.textWithColor(0, 255, 0, 'online') if is_connected else self.textWithColor(255, 0, 0, 'offline')
-            self.echo(self.term.move(y + 1, 74) + isConnected)
-            self.echo(self.term.move(y + 2, 0) + self.textWithColor(50,50,50,"├" + ("─" * (81)) + "┤"))
-            self.echo(self.term.move(y + 3, 72) + fps)
-            mirrorMode = self.textWithColor(255, 255, 255, 'mirror') if strip_config.is_mirror else self.textWithColor(50, 50, 50, 'mirror')
-            self.echo(self.term.move(y + 3, 2) + mirrorMode)
-            reverseMode = self.textWithColor(255, 255, 255, 'reverse') if strip_config.is_reverse else self.textWithColor(50, 50, 50, 'reverse')
-            self.echo(self.term.move(y + 3, 10) + reverseMode)
 
-            color = ""
+            is_connected = self.textWithColor(0, 255, 0, ' ⬤ online') if is_connected else self.textWithColor(255, 0, 0, ' ⬤ offline')
+            mirror_mode = self.textWithColor(255, 255, 255, 'mirror') if strip_config.is_mirror else self.textWithColor(50, 50, 50, 'mirror')
+            reverse_mode = self.textWithColor(255, 255, 255, 'reverse') if strip_config.is_reverse else self.textWithColor(50, 50, 50, 'reverse')
+            color_scheme = ""
             for current_color in strip_config.formatted_color_schemes[strip_config.active_color_scheme_index]:
-                color += self.term.color(int(self.rgbToAnsi256(current_color[0], current_color[1], current_color[2])))('█ ')
-            self.echo(self.term.move(y + 3, 20) + color)
-
+                color_scheme += self.term.color(int(self.rgbToAnsi256(current_color[0], current_color[1], current_color[2])))('█ ')
             shape = ""
             for current_shape in strip_config.shapes[strip_config.active_shape_index].shape:
-                shape += "." + str(current_shape) + "."
-            self.echo(self.term.move(y + 3, 30) + shape)
+                shape += "[" + str(current_shape) + "]"
 
-            self.echo(self.term.move(y + 3, 45) + str(strip_config.time_interval))
-            self.echo(self.term.move(y + 3, 55) + str(strip_config.max_brightness))
-            self.echo(self.term.move(y + 3, 65) + str(strip_config.chunk_size))
+
+            self.echo(self.term.move(y, 2) + " " + strip_config.name + self.textWithColor(100, 100, 100, ' on ') + strip_config.active_visualizer_effect + " ")
+            self.echo(self.term.move(y, 61) + is_connected + self.textWithColor(100, 100, 100, ' at ') + framerate + self.textWithColor(100, 100, 100, ' FPS '))
+
+            #self.echo(self.term.move(y + 2, 0) + self.textWithColor(50,50,50,"├" + ("─" * (81)) + "┤"))
+
+            self.echo(self.term.move(y + 2, 3) + self.textWithColor(100, 100, 100, 'color scheme'))
+            self.echo(self.term.move(y + 3, 3) + "                    ")
+            self.echo(self.term.move(y + 3, 3) + color_scheme)
+
+            self.echo(self.term.move(y + 2, 17) + self.textWithColor(100, 100, 100, 'shape'))
+            self.echo(self.term.move(y + 3, 17) + "                    ")
+            self.echo(self.term.move(y + 3, 17) + shape)
+
+            self.echo(self.term.move(y + 2, 27) + self.textWithColor(100, 100, 100, 'time_interval'))
+            self.echo(self.term.move(y + 3, 27) + "                    ")
+            self.echo(self.term.move(y + 3, 27) + str(strip_config.time_interval))
+
+            self.echo(self.term.move(y + 2, 42) + self.textWithColor(100, 100, 100, 'brightness'))
+            self.echo(self.term.move(y + 3, 42) + "                    ")
+            self.echo(self.term.move(y + 3, 42) + str(strip_config.max_brightness))
+
+            self.echo(self.term.move(y + 2, 52) + self.textWithColor(100, 100, 100, 'chunk_size'))
+            self.echo(self.term.move(y + 3, 52) + "                    ")
+            self.echo(self.term.move(y + 3, 52) + str(strip_config.chunk_size))
 
             array = self.getTermArrayFromPixels(pixels)
             self.echo(self.term.move(y + 5, 2) + array)
 
-            self.echo(self.term.move(0, 0))
+
+            self.echo(self.term.move(y + 2, 65) + mirror_mode)
+            self.echo(self.term.move(y + 2, 73) + reverse_mode)
+
+            # self.echo(self.term.move(0, 0))
 
     def getTermArrayFromPixels(self, pixels):
         array = ""
