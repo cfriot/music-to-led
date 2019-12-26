@@ -42,7 +42,7 @@
 
 #
 
-**Music 2 Led** is an open source program that allows you to create **real-time audio and midi visualizations on led strips** using Arduino and Python. It was designed for **DJ**'s or **music groups** that want to add some **automated lighting effects** to their shows without big budget.
+**Music 2 Led** is an **open source program** that allows you to create **real-time audio and midi visualizations on led strips** using Arduino and Python. It was designed for **DJ**'s or **music groups** that want to add some **automated lighting effects** to their shows at lowest cost.
 
 All you need is a **computer** *( works on Raspi 4 )*, an **arduino** and a **led strip**.
 
@@ -69,11 +69,11 @@ All you need is a **computer** *( works on Raspi 4 )*, an **arduino** and a **le
   * [Arduino part](#arduino-part)
 - [Configuration](#configuration)
   * [Audio channels](#audio-channels)
-    + [Virtual Audio Source](#virtual-audio-source)
+    + [Virtual audio sources](#virtual-audio-source)
       - [Linux](#linux)
       - [OSX](#osx)
   * [Midi channels](#midi-channels)
-    + [Virtual MIDI ports](#virtual-midi-ports)
+    + [Virtual MIDI sources](#virtual-midi-ports)
   * [CONFIG.yml](#configyml)
     + [Sample config file](#sample-config-file)
 - [Effects & Modes](#effects---modes)
@@ -150,10 +150,7 @@ Examples of typical audio sources:
 
 On OSX you have the "Built-In Microphone" as a default choice.
 
-<!-- You can make some tests with a tone generator and the spectrum mode
-https://www.szynalski.com/tone-generator/ -->
-
-### Virtual Audio Source
+### Virtual audio sources
 You can use a "virtual audio device" to transfer audio playback from one application to another. This means that you can play music on your computer and connect the playback directly into the program.
 
 #### Linux
@@ -164,15 +161,11 @@ On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a
 
 ## Midi channels
 
-For the MIDI part, it's pretty simple, just plug-in your MIDI devices and run the following command to check if it's detected.
+...
 
-```
-./music2led --list-devices
-```
+### Virtual MIDI Sources
 
-### Virtual MIDI ports
-
-On OSX, it's pretty easy to make some virtual MIDI ports.
+On OSX, it's pretty easy to make some virtual MIDI channels.
 Here is an example for using them with ableton live.
 
 ![osx-midi-settings](images/osx-midi-settings.png)
@@ -183,7 +176,7 @@ Here is an example for using them with ableton live.
 You can validate the config file with
 
 ```
-./music2led --text-config-file
+./music2led --test-config-file
 ```
 
 ### Sample config file
