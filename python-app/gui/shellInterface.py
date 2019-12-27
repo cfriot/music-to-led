@@ -4,13 +4,31 @@ from functools import partial
 import numpy as np
 
 class ShellInterface():
-    def __init__(self):
-        # self.echo("Init Shell Interface")
+    def __init__(self, config):
+
+        self.input = ""
+
+        self.min_width = 123
+        self.header_offset = 0
+        self.audio_offset = 7
+        self.strip_offset = 12
+        self.rgb_border_color = (100,100,100)
+        self.rgb_inner_border_color = (50,50,50)
+
+
+        self.config = config
+
+        time.sleep(1)
 
         self.term = Terminal()
+        self.color_background = self.term.on_black
         self.echo = partial(print, end='', flush=True)
 
         self.height, self.width = self.term.height, self.term.width
+
+        if (self.width < self.min_width):
+            print("min size")
+            quit()
 
         self.term.fullscreen()
 
@@ -19,13 +37,31 @@ class ShellInterface():
         #     self.echo(self.term.move(i, 0) + (" " * self.width))
         # self.clearTerminal()
 
-        self.input = ""
+        # signal.signal(signal.SIGWINCH, self.on_resize)
 
-        color_bg = self.term.on_black
-        signal.signal(signal.SIGWINCH, self.on_resize)
+        self.initBoxes()
 
     def on_resize(self, signum, frame):
         self.height, self.width = self.term.height, self.term.width
+
+    def initBoxes(self):
+
+        self.printHeader(self.header_offset)
+
+        for index in range(self.config.number_of_audio_ports):
+
+            offset = ((index * 32), self.audio_offset)
+            size = (29, 3)
+            self.drawBox(offset, size, self.rgb_border_color)
+
+        for index in range(self.config.number_of_strips):
+
+            offset = (0, self.strip_offset + (index * 8))
+            size = (self.min_width, 7)
+            self.drawBox(offset, size, self.rgb_border_color)
+            self.echo(self.term.move(offset[1] + 2, 0) + self.textWithColor(50,50,50,"├" + ("─" * (self.min_width - 2)) + "┤"))
+            self.echo(self.term.move(offset[1] + 5, 0) + self.textWithColor(50,50,50,"├" + ("─" * (self.min_width - 2)) + "┤"))
+
 
     @staticmethod
     def clearTerminal():
@@ -48,8 +84,7 @@ class ShellInterface():
 
     def printHeader(self, y):
         size_of_title = len(" __  __ _   _ ___ ___ ___   _____ ___    _    ___ ___")
-        total_size = 80
-        space = (80 - size_of_title) // 2
+        space = (self.min_width - size_of_title) // 2
         self.echo(self.term.move(y + 0, space) + " __  __ _   _ ___ ___ ___   _____ ___    _    ___ ___")
         self.echo(self.term.move(y + 1, space) + "|  \\/  | | | / __|_ _/ __| |_   _/ _ \\  | |  | __|   \\")
         self.echo(self.term.move(y + 2, space) + "| |\\/| | |_| \__ \\| | (__    | || (_) | | |__| _|| |) |")
@@ -92,12 +127,14 @@ class ShellInterface():
             graph += style[charIndex]
 
         self.echo(self.term.move(y + 2, x + 1) + graph)
+        self.echo(self.term.move(0, 0))
 
     def printStrip(self, y, is_connected, framerate, strip_config, pixels):
 
        with self.term.hidden_cursor(), self.term.cbreak(), self.term.location():
 
             is_connected = self.textWithColor(0, 255, 0, ' ⬤ online') if is_connected else self.textWithColor(255, 0, 0, ' ⬤ offline')
+            is_connected_str = is_connected + self.textWithColor(100, 100, 100, ' at ') + framerate + self.textWithColor(100, 100, 100, ' FPS ')
             mirror_mode = self.textWithColor(255, 255, 255, 'mirror') if strip_config.is_mirror else self.textWithColor(50, 50, 50, 'mirror')
             reverse_mode = self.textWithColor(255, 255, 255, 'reverse') if strip_config.is_reverse else self.textWithColor(50, 50, 50, 'reverse')
             color_scheme = ""
@@ -108,39 +145,42 @@ class ShellInterface():
                 shape += "[" + str(current_shape) + "]"
 
 
-            self.echo(self.term.move(y, 2) + " " + strip_config.name + self.textWithColor(100, 100, 100, ' on ') + strip_config.active_visualizer_effect + " ")
-            self.echo(self.term.move(y, 61) + is_connected + self.textWithColor(100, 100, 100, ' at ') + framerate + self.textWithColor(100, 100, 100, ' FPS '))
+            self.echo(self.term.move(y + 1, 2) + strip_config.name + self.textWithColor(100, 100, 100, ' on ') + "                           ")
+            self.echo(self.term.move(y + 1, 2) + strip_config.name + self.textWithColor(100, 100, 100, ' on ') + strip_config.active_visualizer_effect + " ")
+            self.echo(self.term.move(y + 1, self.min_width - 22) + is_connected_str)
 
-            #self.echo(self.term.move(y + 2, 0) + self.textWithColor(50,50,50,"├" + ("─" * (81)) + "┤"))
 
-            self.echo(self.term.move(y + 2, 3) + self.textWithColor(100, 100, 100, 'color scheme'))
-            self.echo(self.term.move(y + 3, 3) + "                    ")
-            self.echo(self.term.move(y + 3, 3) + color_scheme)
+            self.echo(self.term.move(y + 3, 2) + self.textWithColor(100, 100, 100, 'audio channel'))
+            self.echo(self.term.move(y + 4, 2) + "                    ")
+            self.echo(self.term.move(y + 4, 2) + self.config.audio_ports[strip_config.active_audio_channel_index].name)
 
-            self.echo(self.term.move(y + 2, 17) + self.textWithColor(100, 100, 100, 'shape'))
-            self.echo(self.term.move(y + 3, 17) + "                    ")
-            self.echo(self.term.move(y + 3, 17) + shape)
+            self.echo(self.term.move(y + 3, 22) + self.textWithColor(100, 100, 100, 'color scheme'))
+            self.echo(self.term.move(y + 4, 22) + "                    ")
+            self.echo(self.term.move(y + 4, 22) + color_scheme)
 
-            self.echo(self.term.move(y + 2, 27) + self.textWithColor(100, 100, 100, 'time_interval'))
-            self.echo(self.term.move(y + 3, 27) + "                    ")
-            self.echo(self.term.move(y + 3, 27) + str(strip_config.time_interval))
+            self.echo(self.term.move(y + 3, 42) + self.textWithColor(100, 100, 100, 'shape'))
+            self.echo(self.term.move(y + 4, 42) + "                    ")
+            self.echo(self.term.move(y + 4, 42) + shape)
 
-            self.echo(self.term.move(y + 2, 42) + self.textWithColor(100, 100, 100, 'brightness'))
-            self.echo(self.term.move(y + 3, 42) + "                    ")
-            self.echo(self.term.move(y + 3, 42) + str(strip_config.max_brightness))
+            self.echo(self.term.move(y + 3, 62) + self.textWithColor(100, 100, 100, 'time_interval'))
+            self.echo(self.term.move(y + 4, 62) + "                    ")
+            self.echo(self.term.move(y + 4, 62) + str(strip_config.time_interval))
 
-            self.echo(self.term.move(y + 2, 52) + self.textWithColor(100, 100, 100, 'chunk_size'))
-            self.echo(self.term.move(y + 3, 52) + "                    ")
-            self.echo(self.term.move(y + 3, 52) + str(strip_config.chunk_size))
+            self.echo(self.term.move(y + 3, 78) + self.textWithColor(100, 100, 100, 'brightness'))
+            self.echo(self.term.move(y + 4, 78) + "                    ")
+            self.echo(self.term.move(y + 4, 78) + str(strip_config.max_brightness))
+
+            self.echo(self.term.move(y + 3, 90) + self.textWithColor(100, 100, 100, 'chunk_size'))
+            self.echo(self.term.move(y + 4, 90) + "                    ")
+            self.echo(self.term.move(y + 4, 90) + str(strip_config.chunk_size))
+
+            self.echo(self.term.move(y + 3, 103) + mirror_mode)
+            self.echo(self.term.move(y + 3, 113) + reverse_mode)
 
             array = self.getTermArrayFromPixels(pixels)
-            self.echo(self.term.move(y + 5, 2) + array)
+            self.echo(self.term.move(y + 6, 2) + array)
 
-
-            self.echo(self.term.move(y + 2, 65) + mirror_mode)
-            self.echo(self.term.move(y + 2, 73) + reverse_mode)
-
-            # self.echo(self.term.move(0, 0))
+            self.echo(self.term.move(0, 0))
 
     def getTermArrayFromPixels(self, pixels):
         array = ""

@@ -4,9 +4,9 @@
 # CONFIG FILE  #
 ################
 
-fps: 60
+fps: 40
 
-display_interface: False
+display_interface: True
 
 audio_ports:
   -
@@ -61,9 +61,9 @@ audio_ports:
 strips:
   -
     name: Front Desk
-    serial_port_name: /dev/tty.usbserial-14110
+    serial_port_name: /dev/tty.usbserial-14120
     max_brightness: 80
-    associated_midi_channels:
+    midi_ports_for_visualization:
       # - Audio2Led Synth
       # - USB MIDI Interface
     midi_ports_for_changing_mode:
@@ -114,272 +114,121 @@ strips:
         - "#FFE500"
       -
         - red
-        - green
-        - blue
-      -
-        - red
       -
         - green
       -
         - blue
       -
         - white
-      -
-        - "#FF00C8"
 
     active_visualizer_effect: scroll
-  # -
-  #   name: Front Desk 2
-  #   serial_port_name: /dev/tty.usbserial-14110
-  #   max_brightness: 80
-  #   associated_midi_channels:
-  #     # - Audio2Led Synth
-  #     # - USB MIDI Interface
-  #     - LPK25
-  #   midi_ports_for_changing_mode:
-  #     # - Audio2Led ChangeMod
-  #   real_shape:
-  #     - 80
-  #   shapes:
-  #     -
-  #       - 80
-  #     -
-  #       - 20
-  #       - 60
-  #     -
-  #       - 20
-  #       - 20
-  #       - 20
-  #       - 20
-  #
-  #   active_audio_channel_index: 0
-  #   active_visualizer_mode: 0
-  #   active_color_index: 0
-  #   active_shape_index: 0
-  #   is_reverse: false
-  #   time_interval: 5
-  #   chunk_size: 5
-  #   is_mirror: true
-  #   active_color_scheme_index: 0
-  #   color_schemes:
-  #     # -
-  #     #   - "#00EDFF"
-  #     #   - "#00C3FF"
-  #     #   - "#006FFF"
-  #     #   - "#6F01FF"
-  #     #   - "#FF00C8"
-  #     -
-  #       - HotPink
-  #       - purple
-  #       - blue
-  #       - DarkGreen
-  #       - LightGreen
-  #       - yellow
-  #       - orange
-  #       - red
-  #     -
-  #       - red
-  #       - green
-  #       - blue
-  #     - # pink blue
-  #       - "#FF00C8"
-  #       - "#00C6FF"
-  #     - # orange blue
-  #       - "#FFA200"
-  #       - "#00C6FF"
-  #     - # red green
-  #       - "#FF002E"
-  #       - "#00FFA4"
-  #     - # purple green
-  #       - "#F900FF"
-  #       - "#22FF00"
-  #     - # blue yellow
-  #       - "#0024FF"
-  #       - "#FFE500"
-  #     -
-  #       - red
-  #       - green
-  #       - blue
-  #     -
-  #       - red
-  #     -
-  #       - green
-  #     -
-  #       - blue
-  #     -
-  #       - white
-  #     -
-  #       - "#FF00C8"
-  #
-  #   active_visualizer_effect: piano
-  # -
-  #   name: Front Desk 3
-  #   serial_port_name: /dev/tty.usbserial-1420
-  #   max_brightness: 80
-  #   associated_midi_channels:
-  #     # - Audio2Led Synth
-  #     # - USB MIDI Interface
-  #   midi_ports_for_changing_mode:
-  #     # - Audio2Led ChangeMod
-  #     # - LPK25
-  #   real_shape:
-  #     - 80
-  #   shapes:
-  #     -
-  #       - 255
-  #     -
-  #       - 20
-  #       - 60
-  #     -
-  #       - 20
-  #       - 20
-  #       - 20
-  #       - 20
-  #
-  #   active_audio_channel_index: 0
-  #   active_visualizer_mode: 0
-  #   active_color_index: 0
-  #   active_shape_index: 0
-  #   is_reverse: false
-  #   time_interval: 5
-  #   chunk_size: 5
-  #   is_mirror: true
-  #   active_color_scheme_index: 0
-  #   color_schemes:
-  #     # -
-  #     #   - "#00EDFF"
-  #     #   - "#00C3FF"
-  #     #   - "#006FFF"
-  #     #   - "#6F01FF"
-  #     #   - "#FF00C8"
-  #     -
-  #       - HotPink
-  #       - purple
-  #       - blue
-  #       - DarkGreen
-  #       - LightGreen
-  #       - yellow
-  #       - orange
-  #       - red
-  #     -
-  #       - red
-  #       - green
-  #       - blue
-  #     - # pink blue
-  #       - "#FF00C8"
-  #       - "#00C6FF"
-  #     - # orange blue
-  #       - "#FFA200"
-  #       - "#00C6FF"
-  #     - # red green
-  #       - "#FF002E"
-  #       - "#00FFA4"
-  #     - # purple green
-  #       - "#F900FF"
-  #       - "#22FF00"
-  #     - # blue yellow
-  #       - "#0024FF"
-  #       - "#FFE500"
-  #     -
-  #       - red
-  #       - green
-  #       - blue
-  #     -
-  #       - red
-  #     -
-  #       - green
-  #     -
-  #       - blue
-  #     -
-  #       - white
-  #     -
-  #       - "#FF00C8"
-  #
-  #   active_visualizer_effect: energy
-  # -
-  #   name: Front Desk 2
-  #   serial_port_name: /dev/tty.usbserial-1420
-  #   max_brightness: 255
-  #   associated_midi_channels:
-  #     # - Audio2Led Synth
-  #     # - USB MIDI Interface
-  #   midi_ports_for_changing_mode:
-  #     # - Audio2Led ChangeMod
-  #     # - LPK25
-  #   real_shape:
-  #     - 80
-  #   shapes:
-  #     -
-  #       - 255
-  #     -
-  #       - 20
-  #       - 60
-  #     -
-  #       - 20
-  #       - 20
-  #       - 20
-  #       - 20
-  #
-  #   active_audio_channel_index: 0
-  #   active_visualizer_mode: 0
-  #   active_color_index: 0
-  #   active_shape_index: 0
-  #   is_reverse: false
-  #   time_interval: 5
-  #   chunk_size: 5
-  #   is_mirror: true
-  #   active_color_scheme_index: 0
-  #   color_schemes:
-  #     # -
-  #     #   - "#00EDFF"
-  #     #   - "#00C3FF"
-  #     #   - "#006FFF"
-  #     #   - "#6F01FF"
-  #     #   - "#FF00C8"
-  #     -
-  #       - HotPink
-  #       - purple
-  #       - blue
-  #       - DarkGreen
-  #       - LightGreen
-  #       - yellow
-  #       - orange
-  #       - red
-  #     -
-  #       - red
-  #       - green
-  #       - blue
-  #     - # pink blue
-  #       - "#FF00C8"
-  #       - "#00C6FF"
-  #     - # orange blue
-  #       - "#FFA200"
-  #       - "#00C6FF"
-  #     - # red green
-  #       - "#FF002E"
-  #       - "#00FFA4"
-  #     - # purple green
-  #       - "#F900FF"
-  #       - "#22FF00"
-  #     - # blue yellow
-  #       - "#0024FF"
-  #       - "#FFE500"
-  #     -
-  #       - red
-  #       - green
-  #       - blue
-  #     -
-  #       - red
-  #     -
-  #       - green
-  #     -
-  #       - blue
-  #     -
-  #       - white
-  #     -
-  #       - "#FF00C8"
-  #
-  #   active_visualizer_effect: energy
 
+  -
+    name: Front Desk 2
+    serial_port_name: /dev/tty.usbserial-14110
+    max_brightness: 80
+    midi_ports_for_visualization:
+      # - Audio2Led Synth
+      # - USB MIDI Interface
+    midi_ports_for_changing_mode:
+      # - Audio2Led ChangeMod
+      - LPK25
+    real_shape:
+      - 80
+    shapes:
+      -
+        - 80
+      -
+        - 20
+        - 50
+
+    active_audio_channel_index: 0
+    active_visualizer_mode: 0
+    active_color_index: 0
+    active_shape_index: 0
+    is_reverse: false
+    time_interval: 5
+    chunk_size: 5
+    is_mirror: true
+    active_color_scheme_index: 0
+    color_schemes:
+      -
+        - red
+        - green
+        - blue
+
+    active_visualizer_effect: scroll
+
+  -
+    name: Front Desk 2
+    serial_port_name: /dev/tty.usbserial-141103
+    max_brightness: 80
+    midi_ports_for_visualization:
+      # - Audio2Led Synth
+      # - USB MIDI Interface
+    midi_ports_for_changing_mode:
+      # - Audio2Led ChangeMod
+      - LPK25
+    real_shape:
+      - 80
+    shapes:
+      -
+        - 80
+      -
+        - 20
+        - 50
+
+    active_audio_channel_index: 0
+    active_visualizer_mode: 0
+    active_color_index: 0
+    active_shape_index: 0
+    is_reverse: false
+    time_interval: 5
+    chunk_size: 5
+    is_mirror: true
+    active_color_scheme_index: 0
+    color_schemes:
+      -
+        - red
+        - green
+        - blue
+
+    active_visualizer_effect: scroll
+
+  -
+    name: Front Desk 3
+    serial_port_name: /dev/tty.usbserial-14310
+    max_brightness: 80
+    midi_ports_for_visualization:
+      # - Audio2Led Synth
+      # - USB MIDI Interface
+    midi_ports_for_changing_mode:
+      # - Audio2Led ChangeMod
+      - LPK25
+    real_shape:
+      - 80
+    shapes:
+      -
+        - 80
+      -
+        - 20
+        - 50
+
+    active_audio_channel_index: 0
+    active_visualizer_mode: 0
+    active_color_index: 0
+    active_shape_index: 0
+    is_reverse: false
+    time_interval: 5
+    chunk_size: 5
+    is_mirror: true
+    active_color_scheme_index: 0
+    color_schemes:
+      -
+        - red
+        - green
+        - blue
+
+    active_visualizer_effect: scroll
 
 ...  # document end

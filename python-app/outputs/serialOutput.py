@@ -90,6 +90,7 @@ class SerialOutput:
         while True:
             pixels = np.roll(pixels, 1, axis=1)
             serialClass.update(pixels)
+            print(serialClass.isOnline())
             time.sleep(.016)
 
     def isOnline(self):
@@ -98,11 +99,13 @@ class SerialOutput:
     def setup(self):
 
         try:
+            self.is_connected = False
             self.serial_class = serial.Serial(
                 self.serial_port, self.baud_rate, timeout=1, bytesize=serial.EIGHTBITS)
         except IOError:
             if(self.verbose):
                 print("Hey it seem's that your cable is not plugged on port ", self.serial_port)
+            self.is_connected = False
             time.sleep(1)
             self.setup()
             return
@@ -123,6 +126,7 @@ class SerialOutput:
             message = self.serial_class.read(1)
         if(self.verbose):
             print("Begin transmision for %s" % self.serial_port)
+
 
     def getVector(self, array, col):
         vector = []
@@ -156,13 +160,13 @@ class SerialOutput:
         self.pixels = pixels
         if(not self.trying_to_connect and self.serial_class):
             try:
-                self.is_connected = True
                 self.serial_class.write(self.show_command)
                 self.serial_class.read(1)
                 number_of_pixel_command = (self.number_of_pixels).to_bytes(2, byteorder="big")
                 self.getRawPixels(self.pixels)
                 message = self.send_data_command[:1] + number_of_pixel_command[:2] + bytes(self.raw_data)
                 self.serial_class.write(message)
+                self.is_connected = True
             except IOError:
                 # TO DO : Remove display and find a way to display if it's ONLINE or not
                 #print("Hey it seem's that your cable has been unpluged on port ", self.serial_port)

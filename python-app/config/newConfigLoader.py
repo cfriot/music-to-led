@@ -91,70 +91,17 @@ class StripConfig() :
         name = "strip",
         serial_port_name = "/dev/tty.usbserial-14240",
         is_online= False,
-        max_brightness = 120,
         midi_ports_for_changing_mode = [],
         midi_ports_for_visualization = [],
-        active_visualizer_effect = "scroll",
-        active_visualizer_mode = 0,
-        real_shape = [52],
-        shapes = [[26,26],[12,12]],
-        active_audio_channel_index = 0,
-        active_shape_index = 0,
-        is_reverse = False,
-        time_interval = 120,
-        chunk_size = 5,
-        is_mirror = False,
-        active_color_scheme_index = 0,
-        color_schemes = [["#FF0000", "#00FF00"]],
         debug = False
     ):
 
         self.name = name
         self.serial_port_name = serial_port_name
         self.is_online = is_online
-        self.max_brightness = max_brightness
         self.midi_ports_for_changing_mode = midi_ports_for_changing_mode
         self.midi_ports_for_visualization = midi_ports_for_visualization
         self.active_audio_channel_index = active_audio_channel_index
-
-        real_shape_number_of_pixels = 0
-        for pixel_number in real_shape:
-            real_shape_number_of_pixels += pixel_number
-        self.pixels = np.tile(0., (3, real_shape_number_of_pixels)).tolist()
-
-        if(debug):
-            SerialOutput.tryPort(serial_port_name)
-            if(midi_ports_for_visualization):
-                for name in midi_ports_for_visualization:
-                    MidiInput.tryPort(name)
-            if(midi_ports_for_changing_mode):
-                for name in midi_ports_for_changing_mode:
-                    MidiInput.tryPort(name)
-
-        self.active_shape_index = active_shape_index
-        self.real_shape = real_shape
-        self.shapes = []
-        for shape in shapes:
-            self.shapes.append(ShapeConfig(shape))
-        self.number_of_shapes = len(self.shapes)
-
-        self.active_visualizer_effect = active_visualizer_effect
-        self.active_visualizer_mode = active_visualizer_mode
-
-        self.time_interval = time_interval
-        self.chunk_size = chunk_size
-
-        self.is_reverse = is_reverse
-        self.is_mirror = is_mirror
-
-        self.active_color_scheme_index = active_color_scheme_index
-        self.color_schemes = color_schemes
-        self.number_of_color_schemes = len(color_schemes)
-
-        self.formatted_color_schemes = []
-        colorSchemeFormatter = ColorSchemeFormatter()
-        for scheme in self.color_schemes:
-            self.formatted_color_schemes.append(colorSchemeFormatter.render(scheme))
 
     def print(self):
         print("--")
@@ -183,7 +130,6 @@ class StripConfig() :
         print("formatted_color_schemes -> ", self.formatted_color_schemes)
         print("----------------")
         print("--")
-
 
 class Config():
 

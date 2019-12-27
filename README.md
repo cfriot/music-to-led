@@ -10,7 +10,6 @@
   # PYINSTALLER OSX AND LINUX PACKAGE
   OK # - refaire le systeme de propagation de config ?
   # - Develop l'interface Ncurse
-  # - Permettre l'utilisation sur clavier d'ordi
 
   # FINIR MAIN
 
@@ -20,6 +19,10 @@
 
 
 # OPTIONAL
+
+    # - Courbes d'acceleration sur les propagations type scroll
+
+    # - Permettre l'utilisation sur clavier d'ordi histoire de test
 
     # GENERIC STUFF
     # Rendre le fire generic à color et speed ?
@@ -232,10 +235,10 @@ strips:
 
     # Midi channels
     # Can be listed with --list-devices
-    # associated_midi_channels : used for midi based visualizers
+    # midi_ports_for_visualization : used for midi based visualizers
     # midi_ports_for_changing_mode : used for live changing modes
 
-    associated_midi_channels:
+    midi_ports_for_visualization:
       - Audio2Led Synth
     midi_ports_for_changing_mode:
       - Audio2Led ChangeMod

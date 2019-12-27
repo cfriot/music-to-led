@@ -21,6 +21,7 @@ $RECYCLE.BIN/
 # Tests
 tests/
 python-app/python-tests
+python-app/singleStripMain.py
 python-app/buid
 python-app/dist
 /midi-test-files

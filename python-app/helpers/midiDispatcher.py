@@ -3,7 +3,7 @@ from inputs.midiInput import MidiInput
 class MidiDispatcher() :
     def __init__(self, midi_ports_for_changing_mode, dedicated_midi_ports):
         self.midi_ports_for_changing_mode = midi_ports_for_changing_mode
-        self.associated_midi_channels = dedicated_midi_ports
+        self.midi_ports_for_visualization = dedicated_midi_ports
         self.midi_input_classes = []
         self.midi_datas = []
         self.midi_datas_for_visualization = []
@@ -12,8 +12,8 @@ class MidiDispatcher() :
         if(self.midi_ports_for_changing_mode):
             for midi_port_for_changing_mode in self.midi_ports_for_changing_mode:
                 self.midi_input_classes.append(MidiInput(midi_port_for_changing_mode))
-        if(self.associated_midi_channels):
-            for midi_port in self.associated_midi_channels:
+        if(self.midi_ports_for_visualization):
+            for midi_port in self.midi_ports_for_visualization:
                 self.midi_input_classes.append(MidiInput(midi_port))
 
     def dispatch(self):
@@ -28,7 +28,7 @@ class MidiDispatcher() :
                         for channel in self.midi_ports_for_changing_mode:
                             if(midi_note["port"] == channel):
                                 self.midi_datas_for_changing_mode.append(midi_note)
-                    if(self.associated_midi_channels):
-                        for channel in self.associated_midi_channels:
+                    if(self.midi_ports_for_visualization):
+                        for channel in self.midi_ports_for_visualization:
                             if(midi_note["port"] == channel):
                                 self.midi_datas_for_visualization.append(midi_note)
