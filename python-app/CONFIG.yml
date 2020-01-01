@@ -19,7 +19,7 @@ audio_ports:
     n_rolling_history: 4
   # -
   #   name: Built-in Microphone
-  #   min_frequency: 200
+  #   min_frequency: 200++
   #   max_frequency: 12000
   #   sampling_rate: 44100
   #   number_of_audio_samples: 24
@@ -68,15 +68,23 @@ strips:
       # - USB MIDI Interface
     midi_ports_for_changing_mode:
       # - Audio2Led ChangeMod
-      - LPK25
+      # - LPK25
     real_shape:
-      - 80
+      - 24
+      - 36
+      - 20
     shapes:
       -
-        - 80
+        - 24
+        - 36
+        - 20
       -
-        - 40
-        - 40
+        - 12
+        - 12
+        - 16
+        - 16
+        - 10
+        - 10
       -
         - 20
         - 20
@@ -132,7 +140,7 @@ strips:
       # - USB MIDI Interface
     midi_ports_for_changing_mode:
       # - Audio2Led ChangeMod
-      - LPK25
+      # - LPK25
     real_shape:
       - 80
     shapes:
@@ -168,7 +176,7 @@ strips:
       # - USB MIDI Interface
     midi_ports_for_changing_mode:
       # - Audio2Led ChangeMod
-      - LPK25
+      # - LPK25
     real_shape:
       - 80
     shapes:
@@ -204,7 +212,7 @@ strips:
       # - USB MIDI Interface
     midi_ports_for_changing_mode:
       # - Audio2Led ChangeMod
-      - LPK25
+      # - LPK25
     real_shape:
       - 80
     shapes:
@@ -217,7 +225,7 @@ strips:
     active_audio_channel_index: 0
     active_visualizer_mode: 0
     active_color_index: 0
-    active_shape_index: 0
+    active_shape_index: 1
     is_reverse: false
     time_interval: 5
     chunk_size: 5

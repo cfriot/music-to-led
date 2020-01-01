@@ -44,6 +44,9 @@ states:
     active_audio_channel_index: 0
 
     active_shape_index: 0
+
+    physical_shape:
+      - 255
     shapes:
       -
         - 255

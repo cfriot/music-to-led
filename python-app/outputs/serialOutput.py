@@ -85,7 +85,7 @@ class SerialOutput:
         pixels[1, 4] = 255  # Set 2nd pixel green
         pixels[2, 5] = 255  # Set 3rd pixel blue
 
-        serialClass = SerialOutput(False, number_of_pixels, name)
+        serialClass = SerialOutput(True, number_of_pixels, name)
 
         while True:
             pixels = np.roll(pixels, 1, axis=1)
@@ -99,15 +99,14 @@ class SerialOutput:
     def setup(self):
 
         try:
-            self.is_connected = False
             self.serial_class = serial.Serial(
                 self.serial_port, self.baud_rate, timeout=1, bytesize=serial.EIGHTBITS)
         except IOError:
+            self.is_connected = False
             if(self.verbose):
                 print("Hey it seem's that your cable is not plugged on port ", self.serial_port)
-            self.is_connected = False
-            time.sleep(1)
-            self.setup()
+            # time.sleep(1)
+            # self.setup()
             return
 
         self.serial_class.setDTR(False)

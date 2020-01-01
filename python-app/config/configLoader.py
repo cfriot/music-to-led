@@ -72,6 +72,14 @@ class ShapeConfig() :
         for pixel_number in self.shape:
             self.number_of_pixels += pixel_number
 
+        self.offsets = []
+        for i, bock_size in enumerate(self.shape):
+            if(i - 1 >= 0):
+                self.offsets.append(bock_size + self.offsets[i - 1])
+            else:
+                self.offsets.append(bock_size)
+
+
     def print(self):
         print("--")
         print("----------------")
@@ -80,6 +88,7 @@ class ShapeConfig() :
         print("shape -> ", self.shape)
         print("number_of_substrip -> ", self.number_of_substrip)
         print("number_of_pixels -> ", self.number_of_pixels)
+        print("shape chunks offset -> ", self.offsets)
         print("----------------")
         print("--")
 
@@ -132,7 +141,7 @@ class StripConfig() :
                     MidiInput.tryPort(name)
 
         self.active_shape_index = active_shape_index
-        self.real_shape = real_shape
+        self.real_shape = ShapeConfig(real_shape)
         self.shapes = []
         for shape in shapes:
             self.shapes.append(ShapeConfig(shape))
@@ -286,7 +295,6 @@ class Config():
         print("number_of_strips -> ", self.number_of_strips)
         print("----------------")
         print("--")
-
 
 class ConfigLoader():
     """ Load and instanciate settings class from settings file """

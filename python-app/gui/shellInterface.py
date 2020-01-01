@@ -46,7 +46,7 @@ class ShellInterface():
 
     def initBoxes(self):
 
-        self.printHeader(self.header_offset)
+        # self.printHeader(self.header_offset)
 
         for index in range(self.config.number_of_audio_ports):
 
@@ -144,11 +144,9 @@ class ShellInterface():
             for current_shape in strip_config.shapes[strip_config.active_shape_index].shape:
                 shape += "[" + str(current_shape) + "]"
 
-
-            self.echo(self.term.move(y + 1, 2) + strip_config.name + self.textWithColor(100, 100, 100, ' on ') + "                           ")
-            self.echo(self.term.move(y + 1, 2) + strip_config.name + self.textWithColor(100, 100, 100, ' on ') + strip_config.active_visualizer_effect + " ")
+            self.echo(self.term.move(y + 1, 2) + strip_config.name + self.textWithColor(100, 100, 100, ' on ') + "                                            ")
+            self.echo(self.term.move(y + 1, 2) + strip_config.name + self.textWithColor(100, 100, 100, ' on ') + strip_config.serial_port_name + self.textWithColor(100, 100, 100, ' with mode -> ') + strip_config.active_visualizer_effect + " ")
             self.echo(self.term.move(y + 1, self.min_width - 22) + is_connected_str)
-
 
             self.echo(self.term.move(y + 3, 2) + self.textWithColor(100, 100, 100, 'audio channel'))
             self.echo(self.term.move(y + 4, 2) + "                    ")
@@ -177,13 +175,37 @@ class ShellInterface():
             self.echo(self.term.move(y + 3, 103) + mirror_mode)
             self.echo(self.term.move(y + 3, 113) + reverse_mode)
 
-            array = self.getTermArrayFromPixels(pixels)
-            self.echo(self.term.move(y + 6, 2) + array)
+            self.printPixels(y + 6, 2, strip_config, pixels)
 
-            self.echo(self.term.move(0, 0))
 
-    def getTermArrayFromPixels(self, pixels):
+
+    def printPixels(self, y, x, strip_config, pixels):
+
+        total_number_of_lines = 0
+        index_of_separators = 0
+
+        for real_strip in strip_config.real_shape.shape:
+            total_number_of_lines += (real_strip + 2) // self.min_width if (real_strip + 2) // self.min_width > 0 else 1
+
+        print(total_number_of_lines)
+
         array = ""
         for i in range(len(pixels[0])):
-            array += self.term.color(int(self.rgbToAnsi256(pixels[0][i], pixels[1][i], pixels[2][i])))('█')
-        return array
+            if(i == 0):
+                array += "["
+            elif(i == len(pixels[0])):
+                array += "]"
+            else:
+                for j, offset in enumerate(strip_config.shapes[strip_config.active_shape_index].offsets):
+                    if(i == offset):
+                        index_of_separators += 1
+                        if(i == 0):
+                            array += "["
+                for k, offset in enumerate(strip_config.real_shape.offsets):
+                    if(i == offset):
+                        array += "\n  "
+                array += self.term.color(int(self.rgbToAnsi256(pixels[0][i], pixels[1][i], pixels[2][i])))('█')
+                index_of_separators = 0
+
+        self.echo(self.term.move(y, x) + array)
+        # self.echo(self.term.move(0, 0))

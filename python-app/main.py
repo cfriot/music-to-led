@@ -67,9 +67,12 @@ elif not len(sys.argv) > 1:
 
     def audioProcess(shared_list):
 
-        print("* Init Audio Process")
-
         config = shared_list[0]
+        ports = ""
+        for port in config.audio_ports:
+            ports += port.name
+        print("- Init Audio process on ports : ", ports)
+
         audioDispatcher = AudioDispatcher(config.audio_ports)
 
         while 1:
@@ -87,7 +90,7 @@ elif not len(sys.argv) > 1:
         serial_port_name = strip_config.serial_port_name
         number_of_pixels = strip_config.shapes[strip_config.active_shape_index].number_of_pixels
 
-        print("* Init Serial process on port : ", serial_port_name)
+        print("- Init Serial process on port : ", serial_port_name)
 
         serialOutput = SerialOutput(
             number_of_pixels=number_of_pixels,
@@ -104,12 +107,13 @@ elif not len(sys.argv) > 1:
 
     def stripProcess(index, shared_list):
 
-        print("* Init Strip process")
-
         config = shared_list[0]
-        audio_datas = shared_list[1]
         strip_config = config.strips[index]
+        audio_datas = shared_list[1]
         strip_config.midi_logs = []
+
+        print("- Init strip process : ", strip_config.name)
+
 
         framerateCalculator = FramerateCalculator(config.fps)
 
@@ -158,13 +162,10 @@ elif not len(sys.argv) > 1:
             pixels = np.clip(pixels, 0, 255).astype(int)
 
             shared_list[2 + index] = [pixels, strip_config, framerateCalculator.getFps(), True]
-            # shared_list[2 + index][0] = pixels
-            # shared_list[2 + index][1] = strip_config
-            # shared_list[2 + index][2] = framerateCalculator.getFps()
 
             time.sleep(config.delay_between_frames)
 
-    print("Parsing and testing config file...")
+    print("- Parsing and testing config file...")
 
     configLoader = ConfigLoader(args.with_config_file, debug=False)
 
@@ -176,7 +177,9 @@ elif not len(sys.argv) > 1:
     # Shared list :
     # 0     : Config
     # 1     : Audio datas
-    # 2...n : Pixels -- [pixels, strip_config, framerateCalculator.getFps()]
+    # 2...n : [pixels, strip_config, framerateCalculator.getFps()]
+    # 2 + config.number_of_strips + ...n : isOnline for each strip
+
     shared_list.append(config)
 
     shared_list.append(np.tile(0.,(config.number_of_audio_ports, 24)))
@@ -190,7 +193,7 @@ elif not len(sys.argv) > 1:
     max_workers = multiprocessing.cpu_count()
     number_of_workers = config.number_of_strips * 2 + 2
 
-    print("Starting " + str(number_of_workers) + " sub-processes :")
+    print("- Starting " + str(number_of_workers) + " sub-processes :")
 
     with concurrent.futures.ProcessPoolExecutor(
         max_workers = number_of_workers
@@ -202,9 +205,9 @@ elif not len(sys.argv) > 1:
 
         if(config.display_interface):
 
-            time.sleep(2)
-            print("Starting GUI ...")
-            time.sleep(2)
+            time.sleep(1)
+            print("- Starting GUI ...")
+            time.sleep(1)
 
             shellInterface = ShellInterface(config)
             audio_datas = shared_list[1]

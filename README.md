@@ -1,30 +1,38 @@
 <!--
 
-  # COM
-  - Faire un helper imprimable sur piano
-  - Bel exemple réel en gif
+  # README AND DOC
+    - Faire un helper imprimable sur piano
+    - Bel exemple réel en gif
+    - Update de la doc pour fiter aux derniers changements
 
   # VISUAL LANGUAGE
   # - définir chaque entité et stabiliser en fonction
 
-  # PYINSTALLER OSX AND LINUX PACKAGE
-  OK # - refaire le systeme de propagation de config ?
-  # - Develop l'interface Ncurse
+  # BLESSED  GUI
+    OK -- Terminer le print de pixels en ajoutant les splits sur pixels
+    OK -- encadrer
+    -- gérer multiline
+    -- gérer physicalshape
+    -- gérer inférieur à min_width et resize
+    -- (OPTIONNEL) Permettre l'utilisation sur clavier d'ordi histoire de test
 
   # FINIR MAIN
+    OK # Faire le nouveau fichier de conf
+    OK # --with-config :  lance le programme suivant le config à lemplacement donné
+    # Faire le systeme de states et permettre une modification rapide d'un state
+    # Rendre midi et audio inputs comme serial, si port non existant, tentative de connection permanente
 
-  OK # Faire le nouveau fichier de conf
-  # Faire le systeme de states et permettre une modification rapide d'un state
-  OK # --with-config :  lance le programme suivant le config à lemplacement donné
+  # STRESS TEST
+   -- macbook
+   -- raspi
 
 
 # OPTIONAL
 
     # - Courbes d'acceleration sur les propagations type scroll
-
     # - Permettre l'utilisation sur clavier d'ordi histoire de test
 
-    # GENERIC STUFF
+    # SUPER OPTIONNEL
     # Rendre le fire generic à color et speed ?
     # Faire un meteor ?
 
