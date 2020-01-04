@@ -3,93 +3,123 @@ from blessed import Terminal
 from functools import partial
 import numpy as np
 
+import time
+
+from gui.helpers import *
+
+""" This is a proper debounce function, the way a electrical engineer would think about it.
+    This wrapper never calls sleep.  It has two counters: one for successful calls, and one for rejected calls.
+    If the wrapped function throws an exception, the counters and debounce timer are still correct """
+
+
+class Debounce(object):
+
+    def __init__(self, period):
+        self.period = period  # never call the wrapped function more often than this (in seconds)
+        self.count = 0  # how many times have we successfully called the function
+        self.count_rejected = 0  # how many times have we rejected the call
+        self.last = None  # the last time it was called
+
+    # force a reset of the timer, aka the next call will always work
+    def reset(self):
+        self.last = None
+
+    def __call__(self, f):
+        def wrapped(*args, **kwargs):
+            now = time.time()
+            willcall = False
+            if self.last is not None:
+                # amount of time since last call
+                delta = now - self.last
+                if delta >= self.period:
+                    willcall = True
+                else:
+                    willcall = False
+            else:
+                willcall = True  # function has never been called before
+
+            if willcall:
+                # set these first incase we throw an exception
+                self.last = now  # don't use time.time()
+                self.count += 1
+                f(*args, **kwargs)  # call wrapped function
+            else:
+                self.count_rejected += 1
+        return wrapped
+
 class ShellInterface():
     def __init__(self, config):
 
         self.input = ""
 
-        self.min_width = 123
+        self.original_min_width = 130
+        self.min_width = self.original_min_width
         self.header_offset = 0
         self.audio_offset = 7
         self.strip_offset = 12
         self.rgb_border_color = (100,100,100)
         self.rgb_inner_border_color = (50,50,50)
-
+        self.debounce = Debounce(1.0)
+        self.has_to_draw_static_components = True
+        self.frameIndex = 0
 
         self.config = config
 
         time.sleep(1)
 
         self.term = Terminal()
-        self.color_background = self.term.on_black
         self.echo = partial(print, end='', flush=True)
 
-        self.height, self.width = self.term.height, self.term.width
+        self.echo(self.term.clear)
 
-        if (self.width < self.min_width):
-            print("min size")
-            quit()
+        self.height = self.term.height
+        self.width = self.term.width
+        self.color_background = self.term.on_black
+
+        signal.signal(signal.SIGWINCH, self.updateShellDimensionsHandler)
+        signal.siginterrupt(signal.SIGWINCH, False)
 
         self.term.fullscreen()
 
-        self.echo(self.term.clear)
-        # for i in range(self.height):
-        #     self.echo(self.term.move(i, 0) + (" " * self.width))
-        # self.clearTerminal()
+        self.updateShellDimensions()
 
-        # signal.signal(signal.SIGWINCH, self.on_resize)
+    def updateShellDimensionsHandler(self, signum, frame):
+        self.updateShellDimensions()
 
-        self.initBoxes()
+    def updateShellDimensions(self):
+        # if(self.height != self.term.height or self.width != self.term.width):
+        self.height = self.term.height
+        self.width = self.term.width
+        if(self.width > self.original_min_width):
+            self.min_width = self.width
 
-    def on_resize(self, signum, frame):
-        self.height, self.width = self.term.height, self.term.width
+        self.term.location(0,0)
+        self.updateIsBellowMinWidth()
+        clearTerminal()
+        # self.debounce(self.drawStaticComponents)()
+        self.has_to_draw_static_components = True
 
-    def initBoxes(self):
+    def updateIsBellowMinWidth(self):
+        if (self.width < self.original_min_width):
+            self.is_below_min_width = True
+        else:
+            self.is_below_min_width = False
 
-        # self.printHeader(self.header_offset)
-
-        for index in range(self.config.number_of_audio_ports):
-
-            offset = ((index * 32), self.audio_offset)
-            size = (29, 3)
-            self.drawBox(offset, size, self.rgb_border_color)
-
-        for index in range(self.config.number_of_strips):
-
-            offset = (0, self.strip_offset + (index * 8))
-            size = (self.min_width, 7)
-            self.drawBox(offset, size, self.rgb_border_color)
-            self.echo(self.term.move(offset[1] + 2, 0) + self.textWithColor(50,50,50,"├" + ("─" * (self.min_width - 2)) + "┤"))
-            self.echo(self.term.move(offset[1] + 5, 0) + self.textWithColor(50,50,50,"├" + ("─" * (self.min_width - 2)) + "┤"))
-
-
-    @staticmethod
-    def clearTerminal():
-        os.system('cls' if os.name == 'nt' else 'clear')
-
-    @staticmethod
-    def rgbToAnsi256(r, g, b):
-        if (r == g and g == b):
-            if (r < 8):
-                return 16
-            if (r > 248):
-                return 231
-            return round(((r - 8) / 247) * 24) + 232
-        ansi = 16 + (36 * round(r / 255 * 5)) + (6 * round(g / 255 * 5)) + round(b / 255 * 5)
-        return ansi
-
-    def drawFrame(pixel):
-        with term.hidden_cursor(), term.cbreak(), term.location():
-            self.echo("drawframe")
+    def printVirtualMemory(self, y):
+        import json
+        memoryConsumtion = json.dumps(getVirtualMemoryConsumtion(), indent = 4)
+        self.echo(self.term.move(y + 0, 2) + memoryConsumtion)
 
     def printHeader(self, y):
+
         size_of_title = len(" __  __ _   _ ___ ___ ___   _____ ___    _    ___ ___")
         space = (self.min_width - size_of_title) // 2
         self.echo(self.term.move(y + 0, space) + " __  __ _   _ ___ ___ ___   _____ ___    _    ___ ___")
         self.echo(self.term.move(y + 1, space) + "|  \\/  | | | / __|_ _/ __| |_   _/ _ \\  | |  | __|   \\")
         self.echo(self.term.move(y + 2, space) + "| |\\/| | |_| \__ \\| | (__    | || (_) | | |__| _|| |) |")
         self.echo(self.term.move(y + 3, space) + "|_|  |_|\___/|___/___\\___|   |_| \___/  |____|___|___/")
-        self.echo(self.term.move(y + 4, space) + "                                                v0.1.1")
+        self.echo(self.term.move(y + 4, space) + "                                    v0.1.1")
+        self.echo(self.term.move(y + 5, space) + "w:" + str(self.width) + " h:" + str(self.height))
 
     def drawBox(self, offset, size, color=(255,255,255)):
         style = "─|┌┐└┘" # ││
@@ -113,10 +143,17 @@ class ShellInterface():
             print("ditwoula")
 
     def textWithColor(self, r, g, b, text):
-        return self.term.color(int(self.rgbToAnsi256(r, g, b)))(text)
+        return self.term.color(int(rgbToAnsi256(r, g, b)))(text)
 
     def printAudio(self, y, x, name, audio_datas):
-        self.echo(self.term.move(y, x) + name)
+
+        if(self.has_to_draw_static_components):
+            offset = (x - 1, self.audio_offset)
+            size = (29, 4)
+            self.drawBox(offset, size, self.rgb_border_color)
+            self.echo(self.term.move(y + 2, 0) + self.textWithColor(50,50,50,"├" + ("─" * (29 - 2)) + "┤"))
+
+        self.echo(self.term.move(y + 1, x + 1) + name)
 
         style = "▁▂▃▅▆▇"
 
@@ -126,86 +163,181 @@ class ShellInterface():
             charIndex = int(channel * 10) if int(channel * 10) < len(style) - 1 else len(style) - 1
             graph += style[charIndex]
 
-        self.echo(self.term.move(y + 2, x + 1) + graph)
+        self.echo(self.term.move(y + 3, x + 1) + graph)
         self.echo(self.term.move(0, 0))
 
     def printStrip(self, y, is_connected, framerate, strip_config, pixels):
 
-       with self.term.hidden_cursor(), self.term.cbreak(), self.term.location():
+        if(self.has_to_draw_static_components):
+            total_number_of_lines = self.getTotalLinesOfStrip(strip_config)
+            offset = (0, y)
+            size = (self.min_width, 6 + total_number_of_lines)
+            self.drawBox(offset, size, self.rgb_border_color)
+            self.echo(self.term.move(offset[1] + 2, 0) + self.textWithColor(50,50,50,"├" + ("─" * (self.min_width - 2)) + "┤"))
+            self.echo(self.term.move(offset[1] + 5, 0) + self.textWithColor(50,50,50,"├" + ("─" * (self.min_width - 2)) + "┤"))
 
-            is_connected = self.textWithColor(0, 255, 0, ' ⬤ online') if is_connected else self.textWithColor(255, 0, 0, ' ⬤ offline')
-            is_connected_str = is_connected + self.textWithColor(100, 100, 100, ' at ') + framerate + self.textWithColor(100, 100, 100, ' FPS ')
-            mirror_mode = self.textWithColor(255, 255, 255, 'mirror') if strip_config.is_mirror else self.textWithColor(50, 50, 50, 'mirror')
-            reverse_mode = self.textWithColor(255, 255, 255, 'reverse') if strip_config.is_reverse else self.textWithColor(50, 50, 50, 'reverse')
-            color_scheme = ""
-            for current_color in strip_config.formatted_color_schemes[strip_config.active_color_scheme_index]:
-                color_scheme += self.term.color(int(self.rgbToAnsi256(current_color[0], current_color[1], current_color[2])))('█ ')
-            shape = ""
-            for current_shape in strip_config.shapes[strip_config.active_shape_index].shape:
-                shape += "[" + str(current_shape) + "]"
+        is_connected = self.textWithColor(0, 255, 0, ' ⬤ online') if is_connected else self.textWithColor(255, 0, 0, ' ⬤ offline')
+        is_connected_str = is_connected + self.textWithColor(100, 100, 100, ' at ') + framerate + self.textWithColor(100, 100, 100, ' FPS ')
+        mirror_mode = self.textWithColor(255, 255, 255, 'mirror') if strip_config.is_mirror else self.textWithColor(50, 50, 50, 'mirror')
+        reverse_mode = self.textWithColor(255, 255, 255, 'reverse') if strip_config.is_reverse else self.textWithColor(50, 50, 50, 'reverse')
+        color_scheme = ""
+        for current_color in strip_config.formatted_color_schemes[strip_config.active_color_scheme_index]:
+            color_scheme += self.term.color(int(rgbToAnsi256(current_color[0], current_color[1], current_color[2])))('█ ')
+        shape = ""
+        for current_shape in strip_config.shapes[strip_config.active_shape_index].shape:
+            shape += "[" + str(current_shape) + "]"
 
-            self.echo(self.term.move(y + 1, 2) + strip_config.name + self.textWithColor(100, 100, 100, ' on ') + "                                            ")
-            self.echo(self.term.move(y + 1, 2) + strip_config.name + self.textWithColor(100, 100, 100, ' on ') + strip_config.serial_port_name + self.textWithColor(100, 100, 100, ' with mode -> ') + strip_config.active_visualizer_effect + " ")
-            self.echo(self.term.move(y + 1, self.min_width - 22) + is_connected_str)
+        self.echo(self.term.move(y + 1, 2) + strip_config.name
+                                    + self.textWithColor(100, 100, 100, ' on port ')
+                                    + "                                                            ")
+        self.echo(self.term.move(y + 1, 2) + strip_config.name
+                                    + self.textWithColor(100, 100, 100, ' on port ')
+                                    + strip_config.serial_port_name
+                                    + self.textWithColor(100, 100, 100, ' with ')
+                                    + strip_config.active_visualizer_effect
+                                    + self.textWithColor(100, 100, 100, ' visualizer'))
+        self.echo(self.term.move(y + 1, self.min_width - 22) + is_connected_str)
 
-            self.echo(self.term.move(y + 3, 2) + self.textWithColor(100, 100, 100, 'audio channel'))
-            self.echo(self.term.move(y + 4, 2) + "                    ")
-            self.echo(self.term.move(y + 4, 2) + self.config.audio_ports[strip_config.active_audio_channel_index].name)
+        self.echo(self.term.move(y + 3, 2) + self.textWithColor(100, 100, 100, 'audio channel'))
+        self.echo(self.term.move(y + 4, 2) + "                    ")
+        self.echo(self.term.move(y + 4, 2) + self.config.audio_ports[strip_config.active_audio_channel_index].name)
 
-            self.echo(self.term.move(y + 3, 22) + self.textWithColor(100, 100, 100, 'color scheme'))
-            self.echo(self.term.move(y + 4, 22) + "                    ")
-            self.echo(self.term.move(y + 4, 22) + color_scheme)
+        self.echo(self.term.move(y + 3, 24) + self.textWithColor(100, 100, 100, 'color scheme'))
+        self.echo(self.term.move(y + 4, 24) + "                    ")
+        self.echo(self.term.move(y + 4, 24) + color_scheme)
 
-            self.echo(self.term.move(y + 3, 42) + self.textWithColor(100, 100, 100, 'shape'))
-            self.echo(self.term.move(y + 4, 42) + "                    ")
-            self.echo(self.term.move(y + 4, 42) + shape)
+        self.echo(self.term.move(y + 3, 42) + self.textWithColor(100, 100, 100, 'shape'))
+        self.echo(self.term.move(y + 4, 42) + "                    ")
+        self.echo(self.term.move(y + 4, 42) + shape)
 
-            self.echo(self.term.move(y + 3, 62) + self.textWithColor(100, 100, 100, 'time_interval'))
-            self.echo(self.term.move(y + 4, 62) + "                    ")
-            self.echo(self.term.move(y + 4, 62) + str(strip_config.time_interval))
+        self.echo(self.term.move(y + 3, 69) + self.textWithColor(100, 100, 100, 'time_interval'))
+        self.echo(self.term.move(y + 4, 69) + "                    ")
+        self.echo(self.term.move(y + 4, 69) + str(strip_config.time_interval))
 
-            self.echo(self.term.move(y + 3, 78) + self.textWithColor(100, 100, 100, 'brightness'))
-            self.echo(self.term.move(y + 4, 78) + "                    ")
-            self.echo(self.term.move(y + 4, 78) + str(strip_config.max_brightness))
+        self.echo(self.term.move(y + 3, 85) + self.textWithColor(100, 100, 100, 'brightness'))
+        self.echo(self.term.move(y + 4, 85) + "                    ")
+        self.echo(self.term.move(y + 4, 85) + str(strip_config.max_brightness))
 
-            self.echo(self.term.move(y + 3, 90) + self.textWithColor(100, 100, 100, 'chunk_size'))
-            self.echo(self.term.move(y + 4, 90) + "                    ")
-            self.echo(self.term.move(y + 4, 90) + str(strip_config.chunk_size))
+        self.echo(self.term.move(y + 3, 97) + self.textWithColor(100, 100, 100, 'chunk_size'))
+        self.echo(self.term.move(y + 4, 97) + "                    ")
+        self.echo(self.term.move(y + 4, 97) + str(strip_config.chunk_size))
 
-            self.echo(self.term.move(y + 3, 103) + mirror_mode)
-            self.echo(self.term.move(y + 3, 113) + reverse_mode)
+        self.echo(self.term.move(y + 3, 110) + mirror_mode)
+        self.echo(self.term.move(y + 3, 120) + reverse_mode)
 
-            self.printPixels(y + 6, 2, strip_config, pixels)
+        total_number_of_lines = self.printPixels(y + 6, 2, strip_config, pixels)
+        return total_number_of_lines
 
+    def printChunk(self, y, x, strip_config, pixels, chunk_index):
 
+        total_number_of_lines = 0
+        j = 0
+        array = ""
+
+        chunk_length = strip_config.real_shape.shape[chunk_index]
+        if(chunk_index == 0):
+            chunk_offset = 0
+        else:
+            chunk_offset = strip_config.real_shape.offsets[chunk_index - 1]
+
+        for i in range(chunk_offset, chunk_offset + chunk_length):
+            if(i >= chunk_offset + chunk_length - 1):
+                array = array[:len(array)] + "]"
+
+                self.echo(self.term.move(y + total_number_of_lines, x) + array)
+                if(i != strip_config.real_shape.number_of_pixels):
+                    total_number_of_lines += 1
+                return total_number_of_lines
+            elif(j >= self.min_width - 4):
+                self.echo(self.term.move(y + total_number_of_lines, x) + array)
+                array = ""
+                total_number_of_lines += 1
+                j = 0
+            else:
+                if(j == 0 and total_number_of_lines == 0):
+                    array += "["
+                else:
+                    if(i < len(pixels[0])):
+                        array += self.term.color(int(rgbToAnsi256(pixels[0][i], pixels[1][i], pixels[2][i])))('█')
+                    else:
+                        array += self.term.color(int(rgbToAnsi256(50, 50, 50)))('-')
+                j += 1
+
+        return total_number_of_lines
+
+    def getTotalLinesOfStrip(self, strip_config):
+
+        total_number_of_lines = 0
+
+        for k, chunk in enumerate(strip_config.real_shape.shape):
+
+            j = 0
+            chunk_length = strip_config.real_shape.shape[k]
+            if(k == 0):
+                chunk_offset = 0
+            else:
+                chunk_offset = strip_config.real_shape.offsets[k - 1]
+
+            for i in range(chunk_offset, chunk_offset + chunk_length):
+                if(i >= chunk_offset + chunk_length - 1):
+                    if(i != strip_config.real_shape.number_of_pixels):
+                        total_number_of_lines += 1
+                    break
+                elif(j >= self.min_width - 4):
+                    total_number_of_lines += 1
+                    j = 0
+                else:
+                    j += 1
+
+        return total_number_of_lines
 
     def printPixels(self, y, x, strip_config, pixels):
 
         total_number_of_lines = 0
-        index_of_separators = 0
+        for i, chunk in enumerate(strip_config.real_shape.shape):
+            total_number_of_lines += self.printChunk(y + total_number_of_lines, 2, strip_config, pixels, i)
 
-        for real_strip in strip_config.real_shape.shape:
-            total_number_of_lines += (real_strip + 2) // self.min_width if (real_strip + 2) // self.min_width > 0 else 1
+        return total_number_of_lines
 
-        print(total_number_of_lines)
+    def drawFrame(self, shared_list):
 
-        array = ""
-        for i in range(len(pixels[0])):
-            if(i == 0):
-                array += "["
-            elif(i == len(pixels[0])):
-                array += "]"
+        config = shared_list[0]
+        audio_datas = shared_list[1]
+        pixels = [[],[],[]]
+        total_number_of_lines = 0
+        self.frameIndex += 1
+        with self.term.hidden_cursor(), self.term.cbreak(), self.term.location():
+
+            if(self.is_below_min_width):
+                minWidthSentence = "<-- Please enlarge your shell until you reach " + str(self.width) + " / " + str(self.original_min_width) + " char width -->"
+                self.term.move(0, 0)
+                self.echo(self.term.move(self.height // 2, self.width // 2 - (len(minWidthSentence) // 2)) + minWidthSentence)
             else:
-                for j, offset in enumerate(strip_config.shapes[strip_config.active_shape_index].offsets):
-                    if(i == offset):
-                        index_of_separators += 1
-                        if(i == 0):
-                            array += "["
-                for k, offset in enumerate(strip_config.real_shape.offsets):
-                    if(i == offset):
-                        array += "\n  "
-                array += self.term.color(int(self.rgbToAnsi256(pixels[0][i], pixels[1][i], pixels[2][i])))('█')
-                index_of_separators = 0
 
-        self.echo(self.term.move(y, x) + array)
-        # self.echo(self.term.move(0, 0))
+                for index in range(config.number_of_audio_ports):
+                    self.printAudio(
+                        self.audio_offset,
+                        (32 * index) + 1,
+                        config.audio_ports[index].name,
+                        audio_datas[index]
+                    )
+
+                total_number_of_lines = 0
+                for index in range(config.number_of_strips):
+                    pixels = shared_list[2 + index][0]
+                    strip_config = shared_list[2 + index][1]
+                    fps = shared_list[2 + index][2]
+                    is_online = shared_list[2 + config.number_of_strips + index]
+                    total_number_of_lines += self.printStrip(
+                                                self.strip_offset + (index * 7 + total_number_of_lines),
+                                                is_online,
+                                                fps,
+                                                strip_config,
+                                                pixels
+                                            )
+
+                if(self.has_to_draw_static_components):
+                    self.printHeader(self.header_offset)
+                    self.has_to_draw_static_components = False
+
+                time.sleep(0.015)

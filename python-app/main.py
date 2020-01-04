@@ -71,7 +71,7 @@ elif not len(sys.argv) > 1:
         ports = ""
         for port in config.audio_ports:
             ports += port.name
-        print("- Init Audio process on ports : ", ports)
+        print("└-> Init Audio process on ports : ", ports)
 
         audioDispatcher = AudioDispatcher(config.audio_ports)
 
@@ -82,7 +82,6 @@ elif not len(sys.argv) > 1:
 
     def serialProcess(index, shared_list):
 
-
         config = shared_list[0]
         audio_datas = shared_list[1]
         strip_config = config.strips[index]
@@ -90,7 +89,7 @@ elif not len(sys.argv) > 1:
         serial_port_name = strip_config.serial_port_name
         number_of_pixels = strip_config.shapes[strip_config.active_shape_index].number_of_pixels
 
-        print("- Init Serial process on port : ", serial_port_name)
+        print("└-> Init Serial process on port : ", serial_port_name)
 
         serialOutput = SerialOutput(
             number_of_pixels=number_of_pixels,
@@ -112,8 +111,7 @@ elif not len(sys.argv) > 1:
         audio_datas = shared_list[1]
         strip_config.midi_logs = []
 
-        print("- Init strip process : ", strip_config.name)
-
+        print("└-> Init strip process : ", strip_config.name)
 
         framerateCalculator = FramerateCalculator(config.fps)
 
@@ -165,9 +163,10 @@ elif not len(sys.argv) > 1:
 
             time.sleep(config.delay_between_frames)
 
-    print("- Parsing and testing config file...")
+    print("- Parsing and testing config file...", "")
 
     configLoader = ConfigLoader(args.with_config_file, debug=False)
+    print("└-> OK")
 
     config = configLoader.data
     number_of_strips = config.number_of_strips
@@ -193,7 +192,7 @@ elif not len(sys.argv) > 1:
     max_workers = multiprocessing.cpu_count()
     number_of_workers = config.number_of_strips * 2 + 2
 
-    print("- Starting " + str(number_of_workers) + " sub-processes :")
+    print("- Starting " + str(number_of_workers) + " sub-processes...")
 
     with concurrent.futures.ProcessPoolExecutor(
         max_workers = number_of_workers
@@ -206,29 +205,11 @@ elif not len(sys.argv) > 1:
         if(config.display_interface):
 
             time.sleep(1)
-            print("- Starting GUI ...")
+            print("- Starting GUI...")
             time.sleep(1)
 
             shellInterface = ShellInterface(config)
-            audio_datas = shared_list[1]
-            pixels = [[],[],[]]
-            audio_offset = 7
-            strip_offset = 12
-            rgb_border_color = (100,100,100)
-            rgb_inner_border_color = (50,50,50)
 
             while 1:
 
-                for index in range(config.number_of_audio_ports):
-                    shellInterface.printAudio(audio_offset, (32 * index) + 1, config.audio_ports[index].name, shared_list[1][index])
-
-                # shellInterface.waitForInput()
-
-                for index in range(config.number_of_strips):
-
-                    pixels = shared_list[2 + index][0]
-                    strip_config = shared_list[2 + index][1]
-                    fps = shared_list[2 + index][2]
-                    is_online = shared_list[2 + config.number_of_strips + index]
-                    audio_datas = shared_list[1]
-                    shellInterface.printStrip(strip_offset + (index * 8), is_online, fps, strip_config, pixels)
+                shellInterface.drawFrame(shared_list)

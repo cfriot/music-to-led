@@ -9,6 +9,7 @@ fps: 40
 display_interface: True
 
 audio_ports:
+
   -
     name: Built-in Microphone
     min_frequency: 200
@@ -17,6 +18,7 @@ audio_ports:
     number_of_audio_samples: 24
     min_volume_threshold: 1e-7
     n_rolling_history: 4
+
   # -
   #   name: Built-in Microphone
   #   min_frequency: 200++
@@ -61,23 +63,26 @@ audio_ports:
 strips:
   -
     name: Front Desk
-    serial_port_name: /dev/tty.usbserial-14120
+    serial_port_name: /dev/tty.usbserial-14220
     max_brightness: 80
     midi_ports_for_visualization:
       # - Audio2Led Synth
       # - USB MIDI Interface
     midi_ports_for_changing_mode:
       # - Audio2Led ChangeMod
-      # - LPK25
+      - LPK25
     real_shape:
-      - 24
+      - 48
       - 36
-      - 20
+      - 88
     shapes:
       -
         - 24
-        - 36
-        - 20
+        - 24
+        - 18
+        - 18
+        - 44
+        - 44
       -
         - 12
         - 12
@@ -129,114 +134,119 @@ strips:
       -
         - white
 
-    active_visualizer_effect: scroll
+    active_visualizer_effect: full
+  #
+  # -
+  #   name: Front Desk 2
+  #   serial_port_name: /dev/tty.usbserial-14110
+  #   max_brightness: 80
+  #   midi_ports_for_visualization:
+  #     # - Audio2Led Synth
+  #     # - USB MIDI Interface
+  #   midi_ports_for_changing_mode:
+  #     # - Audio2Led ChangeMod
+  #     # - LPK25
+  #   real_shape:
+  #     - 40
+  #     - 40
+  #     - 240
+  #   shapes:
+  #     -
+  #       - 20
+  #       - 20
+  #       - 220
+  #     -
+  #       - 20
+  #       - 50
+  #
+  #   active_audio_channel_index: 0
+  #   active_visualizer_mode: 0
+  #   active_color_index: 0
+  #   active_shape_index: 0
+  #   is_reverse: false
+  #   time_interval: 5
+  #   chunk_size: 5
+  #   is_mirror: true
+  #   active_color_scheme_index: 0
+  #   color_schemes:
+  #     -
+  #       - red
+  #       - green
+  #       - blue
+  #
+  #   active_visualizer_effect: scroll
+  #
+  # -
+  #   name: Front Desk 2
+  #   serial_port_name: /dev/tty.usbserial-141103
+  #   max_brightness: 80
+  #   midi_ports_for_visualization:
+  #     # - Audio2Led Synth
+  #     # - USB MIDI Interface
+  #   midi_ports_for_changing_mode:
+  #     # - Audio2Led ChangeMod
+  #     # - LPK25
+  #   real_shape:
+  #     - 280
+  #   shapes:
+  #     -
+  #       - 280
+  #     -
+  #       - 20
+  #       - 50
+  #
+  #   active_audio_channel_index: 0
+  #   active_visualizer_mode: 0
+  #   active_color_index: 0
+  #   active_shape_index: 0
+  #   is_reverse: false
+  #   time_interval: 5
+  #   chunk_size: 5
+  #   is_mirror: true
+  #   active_color_scheme_index: 0
+  #   color_schemes:
+  #     -
+  #       - red
+  #       - green
+  #       - blue
+  #
+  #   active_visualizer_effect: scroll
 
-  -
-    name: Front Desk 2
-    serial_port_name: /dev/tty.usbserial-14110
-    max_brightness: 80
-    midi_ports_for_visualization:
-      # - Audio2Led Synth
-      # - USB MIDI Interface
-    midi_ports_for_changing_mode:
-      # - Audio2Led ChangeMod
-      # - LPK25
-    real_shape:
-      - 80
-    shapes:
-      -
-        - 80
-      -
-        - 20
-        - 50
-
-    active_audio_channel_index: 0
-    active_visualizer_mode: 0
-    active_color_index: 0
-    active_shape_index: 0
-    is_reverse: false
-    time_interval: 5
-    chunk_size: 5
-    is_mirror: true
-    active_color_scheme_index: 0
-    color_schemes:
-      -
-        - red
-        - green
-        - blue
-
-    active_visualizer_effect: scroll
-
-  -
-    name: Front Desk 2
-    serial_port_name: /dev/tty.usbserial-141103
-    max_brightness: 80
-    midi_ports_for_visualization:
-      # - Audio2Led Synth
-      # - USB MIDI Interface
-    midi_ports_for_changing_mode:
-      # - Audio2Led ChangeMod
-      # - LPK25
-    real_shape:
-      - 80
-    shapes:
-      -
-        - 80
-      -
-        - 20
-        - 50
-
-    active_audio_channel_index: 0
-    active_visualizer_mode: 0
-    active_color_index: 0
-    active_shape_index: 0
-    is_reverse: false
-    time_interval: 5
-    chunk_size: 5
-    is_mirror: true
-    active_color_scheme_index: 0
-    color_schemes:
-      -
-        - red
-        - green
-        - blue
-
-    active_visualizer_effect: scroll
-
-  -
-    name: Front Desk 3
-    serial_port_name: /dev/tty.usbserial-14310
-    max_brightness: 80
-    midi_ports_for_visualization:
-      # - Audio2Led Synth
-      # - USB MIDI Interface
-    midi_ports_for_changing_mode:
-      # - Audio2Led ChangeMod
-      # - LPK25
-    real_shape:
-      - 80
-    shapes:
-      -
-        - 80
-      -
-        - 20
-        - 50
-
-    active_audio_channel_index: 0
-    active_visualizer_mode: 0
-    active_color_index: 0
-    active_shape_index: 1
-    is_reverse: false
-    time_interval: 5
-    chunk_size: 5
-    is_mirror: true
-    active_color_scheme_index: 0
-    color_schemes:
-      -
-        - red
-        - green
-        - blue
-
-    active_visualizer_effect: scroll
+  # -
+  #   name: Front Desk 3
+  #   serial_port_name: /dev/tty.usbserial-14310
+  #   max_brightness: 80
+  #   midi_ports_for_visualization:
+  #     # - Audio2Led Synth
+  #     # - USB MIDI Interface
+  #   midi_ports_for_changing_mode:
+  #     # - Audio2Led ChangeMod
+  #     # - LPK25
+  #   real_shape:
+  #     - 250
+  #   shapes:
+  #     -
+  #       - 200
+  #       - 50
+  #     -
+  #       - 20
+  #       - 50
+  #
+  #   active_audio_channel_index: 0
+  #   active_visualizer_mode: 0
+  #   active_color_index: 0
+  #   active_shape_index: 1
+  #   is_reverse: false
+  #   time_interval: 5
+  #   chunk_size: 5
+  #   is_mirror: true
+  #   active_color_scheme_index: 0
+  #   color_schemes:
+  #     -
+  #       - red
+  #       - green
+  #       - blue
+  #
+  #   active_visualizer_effect: scroll
 
 ...  # document end

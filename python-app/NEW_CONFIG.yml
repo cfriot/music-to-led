@@ -4,6 +4,10 @@
 # CONFIG FILE  #
 ################
 
+#BASS 60 to 250 Hz
+#MID 300 to 5000 Hz.
+#TREBLE 2048 to 16384 Hz
+
 desired_framerate: 60
 display_interface: false
 
@@ -11,12 +15,11 @@ audio_ports:
   -
     name: Built-in Microphone
     min_frequency: 200
-    max_frequency: 12000
+    max_frequency: 16000
     # sampling_rate: 44100
     # number_of_audio_samples: 24
     # min_volume_threshold: 1e-7
     # n_rolling_history: 4
-
 
 midi_ports:
   - USB MIDI Interface
@@ -38,16 +41,20 @@ strips:
 
     active_state_index: 0
 
+    physical_shape:
+      - 255
+
 states:
   -
     active_visualizer_effect: energy
+    active_propagation_curve: ease_in
+
     active_audio_channel_index: 0
+    audio_channel_min_frequency: 200
+    audio_channel_max_frequency: 12000
 
-    active_shape_index: 0
-
-    physical_shape:
-      - 255
-    shapes:
+    active_virtual_shape_index: 0
+    virtual_shapes:
       -
         - 255
 
@@ -59,7 +66,7 @@ states:
         - blue
 
     is_reverse: false
-    is_mirror: true
+    is_mirror: false
     time_interval: 5
     chunk_size: 5
     max_brightness: 255

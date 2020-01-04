@@ -17,7 +17,7 @@ class Full():
 
         return self.pixelReshaper.reshapeFromPixels(self.pixels)
 
-    def visualizeFadeToNothing(self):
+    def VisualizeFadeToBlack(self):
         self.pixels[0] = self.pixels[0] * self.old_full_intensity
         self.pixels[1] = self.pixels[1] * self.old_full_intensity
         self.pixels[2] = self.pixels[2] * self.old_full_intensity

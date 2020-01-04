@@ -76,10 +76,10 @@ class ModSwitcher:
                             self.strip_config.active_visualizer_effect = "full"
                             self.visualizer.old_full_intensity = 0
                         elif(mode == 13):
-                            self.strip_config.active_visualizer_effect = "fadeToNothing"
+                            self.strip_config.active_visualizer_effect = "fade_to_black"
                             self.visualizer.old_full_intensity = 1
                         elif(mode == 14):
-                            self.strip_config.active_visualizer_effect = "clear"
+                            self.strip_config.active_visualizer_effect = "clear_frame"
                         elif(mode == 15):
                             self.strip_config.active_visualizer_effect = "fire"
 

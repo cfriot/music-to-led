@@ -123,9 +123,9 @@ class Visualizer(Full, AlternateColors, DrawLine, Scroll, IntensityChannels, Ene
         # GENERIC
         if(self.strip_config.active_visualizer_effect == "full"):
             pixels = self.visualizeFull()
-        if(self.strip_config.active_visualizer_effect == "fadeToNothing"):
-            pixels = self.visualizeFadeToNothing()
-        if(self.strip_config.active_visualizer_effect == "clear"):
+        if(self.strip_config.active_visualizer_effect == "fade_to_black"):
+            pixels = self.VisualizeFadeToBlack()
+        if(self.strip_config.active_visualizer_effect == "clear_frame"):
             pixels = self.visualizeClear()
         if(self.strip_config.active_visualizer_effect == "fire"):
             pixels = self.visualizeFire()

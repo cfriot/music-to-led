@@ -11,16 +11,15 @@
   # BLESSED  GUI
     OK -- Terminer le print de pixels en ajoutant les splits sur pixels
     OK -- encadrer
-    -- gérer multiline
-    -- gérer physicalshape
-    -- gérer inférieur à min_width et resize
+    OK -- gérer multiline
+    OK -- gérer physicalshape
+    OK A PEU PRES -- gérer inférieur à min_width et resize
     -- (OPTIONNEL) Permettre l'utilisation sur clavier d'ordi histoire de test
 
   # FINIR MAIN
     OK # Faire le nouveau fichier de conf
     OK # --with-config :  lance le programme suivant le config à lemplacement donné
     # Faire le systeme de states et permettre une modification rapide d'un state
-    # Rendre midi et audio inputs comme serial, si port non existant, tentative de connection permanente
 
   # STRESS TEST
    -- macbook
@@ -31,6 +30,7 @@
 
     # - Courbes d'acceleration sur les propagations type scroll
     # - Permettre l'utilisation sur clavier d'ordi histoire de test
+    # Rendre midi et audio inputs comme serial, si port non existant, tentative de connection permanente
 
     # SUPER OPTIONNEL
     # Rendre le fire generic à color et speed ?
@@ -43,7 +43,6 @@
 <p align="center">
   <a href="https://github.com/tfrere/music-2-led" title="haxe.org"><img src="images/logo.svg" width="400"></a>
 </p>
-
 <p align="center">
 <a href="https://github.com/tfrere/music-2-led#licence"><img src="https://img.shields.io/badge/licence-MIT-green" alt="Licence"></a>
 <a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/badge/platform-osx--64%20%7C%20linux--64-lightgrey" alt="Platform support"></a>
@@ -406,6 +405,12 @@ This project was a fork of the great [audio-reactive-led-strip](https://github.c
 
 # Contribute
 If you have any idea to improve this project or any problem using this, please feel free to upload an [issue](https://github.com/tfrere/music-to-led/issues).
+
+# Future Roadmap
+
+- Beat detection with aubio
+- Add some
+- Change audio library ?
 
 # License
 This project was developed by Thibaud FRERE and is released
