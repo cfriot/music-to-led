@@ -24,15 +24,15 @@ from visualizations.modSwitcher import ModSwitcher
 
 configLoader = ConfigLoader("./CONFIG.yml")
 
-print("Launching -> ", args.single_strip)
+print("Launching -> ", "Front Desk")
 
 config = configLoader.data
-index = configLoader.findStripIndexByStripName(args.single_strip)
+index = configLoader.findStripIndexByStripName("Front Desk")
 strip_config = config.strips[index]
 
 audioDispatcher = AudioDispatcher(config.audio_ports)
 
-shellInterface = ShellInterface()
+shellInterface = ShellInterface(config)
 
 framerateCalculator = FramerateCalculator(config.fps)
 
@@ -82,6 +82,6 @@ while 1:
         pixels
     )
 
-    shellInterface.printAudio(1, 1, config.audio_ports[index].name, audioDispatcher.audio_datas[index])
-    shellInterface.printStrip(10, serialOutput.is_connected, strip_config, pixels)
-    shellInterface.waitForInput()
+    # shellInterface.printAudio(1, 1, config.audio_ports[index].name, audioDispatcher.audio_datas[index])
+    # shellInterface.printStrip(10, serialOutput.is_connected, strip_config, pixels)
+    # shellInterface.waitForInput()

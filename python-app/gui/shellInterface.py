@@ -105,21 +105,27 @@ class ShellInterface():
         else:
             self.is_below_min_width = False
 
-    def printVirtualMemory(self, y):
+    def getConsumedVirtualMemory(self):
         import json
-        memoryConsumtion = json.dumps(getVirtualMemoryConsumtion(), indent = 4)
-        self.echo(self.term.move(y + 0, 2) + memoryConsumtion)
+        memoryConsumtion = json.dumps(getVirtualMemoryConsumtion()["percent"], indent = 4)
+        return memoryConsumtion
 
     def printHeader(self, y):
 
-        size_of_title = len(" __  __ _   _ ___ ___ ___   _____ ___    _    ___ ___")
-        space = (self.min_width - size_of_title) // 2
-        self.echo(self.term.move(y + 0, space) + " __  __ _   _ ___ ___ ___   _____ ___    _    ___ ___")
-        self.echo(self.term.move(y + 1, space) + "|  \\/  | | | / __|_ _/ __| |_   _/ _ \\  | |  | __|   \\")
-        self.echo(self.term.move(y + 2, space) + "| |\\/| | |_| \__ \\| | (__    | || (_) | | |__| _|| |) |")
-        self.echo(self.term.move(y + 3, space) + "|_|  |_|\___/|___/___\\___|   |_| \___/  |____|___|___/")
-        self.echo(self.term.move(y + 4, space) + "                                    v0.1.1")
-        self.echo(self.term.move(y + 5, space) + "w:" + str(self.width) + " h:" + str(self.height))
+        self.drawBox((0,0), (60,6), self.rgb_border_color)
+        self.echo(self.term.move(y + 2, 0) + self.textWithColor(50,50,50,"├" + ("─" * (60 - 2)) + "┤"))
+
+        space = 2
+        self.echo(self.term.move(y + 1, space) + "Music To Led v0.1.1")
+        self.echo(self.term.move(y + 3, space) + "Strips: " + str(len(self.config.strips)) + " | audio source: " + str(self.config.number_of_audio_ports))
+        self.echo(self.term.move(y + 4, space) + "Shell dimensions: " + str(self.width) + "x" + str(self.height))
+        self.echo(self.term.move(y + 5, space) + "Memory consumed: " + str(self.getConsumedVirtualMemory()))
+
+        # space = 2
+        # self.echo(self.term.move(y + 1, space) + " __  __ _   _ ___ ___ ___   _____ ___    _    ___ ___")
+        # self.echo(self.term.move(y + 2, space) + "|  \\/  | | | / __|_ _/ __| |_   _/ _ \\  | |  | __|   \\")
+        # self.echo(self.term.move(y + 3, space) + "| |\\/| | |_| \__ \\| | (__    | || (_) | | |__| _|| |) |")
+        # self.echo(self.term.move(y + 4, space) + "|_|  |_|\___/|___/___\\___|   |_| \___/  |____|___|___/")
 
     def drawBox(self, offset, size, color=(255,255,255)):
         style = "─|┌┐└┘" # ││
@@ -189,7 +195,7 @@ class ShellInterface():
 
         self.echo(self.term.move(y + 1, 2) + strip_config.name
                                     + self.textWithColor(100, 100, 100, ' on port ')
-                                    + "                                                            ")
+                                    + "                                                                        ")
         self.echo(self.term.move(y + 1, 2) + strip_config.name
                                     + self.textWithColor(100, 100, 100, ' on port ')
                                     + strip_config.serial_port_name
@@ -335,9 +341,9 @@ class ShellInterface():
                                                 strip_config,
                                                 pixels
                                             )
+                self.printHeader(self.header_offset)
 
                 if(self.has_to_draw_static_components):
-                    self.printHeader(self.header_offset)
                     self.has_to_draw_static_components = False
 
                 time.sleep(0.015)

@@ -8,7 +8,7 @@
 #MID 300 to 5000 Hz.
 #TREBLE 2048 to 16384 Hz
 
-desired_framerate: 60
+desirated_framerate: 60
 display_interface: false
 
 audio_ports:
@@ -16,28 +16,16 @@ audio_ports:
     name: Built-in Microphone
     min_frequency: 200
     max_frequency: 16000
-    # sampling_rate: 44100
-    # number_of_audio_samples: 24
-    # min_volume_threshold: 1e-7
-    # n_rolling_history: 4
-
-midi_ports:
-  - USB MIDI Interface
-  - LPK25
 
 strips:
   -
-    name: Front Desk 2
+    name: New Config 2
     serial_port_name: /dev/tty.usbserial-1420
+
     midi_ports_for_visualization:
       - USB MIDI Interface
     midi_ports_for_changing_mode:
       - LPK25
-
-    midi_ports_for_visualization_indexes:
-      - 0
-    midi_ports_for_changing_mode_indexes:
-      - 1
 
     active_state_index: 0
 
@@ -53,8 +41,10 @@ states:
     audio_channel_min_frequency: 200
     audio_channel_max_frequency: 12000
 
-    active_virtual_shape_index: 0
-    virtual_shapes:
+    max_brightness: 255
+
+    active_shape_index: 0
+    shapes:
       -
         - 255
 

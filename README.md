@@ -6,15 +6,15 @@
     - Update de la doc pour fiter aux derniers changements
 
   # VISUAL LANGUAGE
-  # - définir chaque entité et stabiliser en fonction
+  # - définir chaque entitée et stabiliser en fonction
 
   # BLESSED  GUI
     OK -- Terminer le print de pixels en ajoutant les splits sur pixels
     OK -- encadrer
     OK -- gérer multiline
     OK -- gérer physicalshape
-    OK A PEU PRES -- gérer inférieur à min_width et resize
-    -- (OPTIONNEL) Permettre l'utilisation sur clavier d'ordi histoire de test
+    OK -- gérer inférieur à min_width et resize
+    -- voir pour mieux gérer les refresh en cas de resize
 
   # FINIR MAIN
     OK # Faire le nouveau fichier de conf
@@ -25,8 +25,9 @@
    -- macbook
    -- raspi
 
-
 # OPTIONAL
+
+    - Permettre l'utilisation sur clavier d'ordi histoire de test
 
     # - Courbes d'acceleration sur les propagations type scroll
     # - Permettre l'utilisation sur clavier d'ordi histoire de test
@@ -357,7 +358,7 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 | 0 | C-2 | **Scroll** | - | ![scroll](images/scroll.gif)
 | 1 | C#-2 | **Energy** | - | ![energy](images/energy.gif)
 | 2 | D-2 | **Intensity** | - | ![intensity](images/intensity.gif)
-| 3 | D#-2 | **Spectrum** | - | ![spectrum](images/spectrum.gif)
+| 3 | D#-2 | **Light** | - | ![spectrum](images/spectrum.gif)
 
 ### Midi based
 
@@ -374,7 +375,7 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 |:--|:--|:--|:--|:--
 | 10 | A#-2   | **AlternateColors** | Chunk size based on velocity | ![scroll](images/alternate-chunks.gif)
 | 11 | B-2    | **AlternateColorsForStrips** | - | ![scroll](images/alternate-strips.gif)
-| 12 | C-1    | - | - | ![scroll](images/nothing.gif)
+| 12 | C-1    | **DrawLine** | - | ![scroll](images/nothing.gif)
 | 13 | C#-1   | - | - | ![scroll](images/nothing.gif)
 
 ### Generic
