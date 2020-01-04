@@ -177,7 +177,7 @@ class ShellInterface():
             self.echo(self.term.move(offset[1] + 5, 0) + self.textWithColor(50,50,50,"├" + ("─" * (self.min_width - 2)) + "┤"))
 
         is_connected = self.textWithColor(0, 255, 0, ' ⬤ online') if is_connected else self.textWithColor(255, 0, 0, ' ⬤ offline')
-        is_connected_str = is_connected + self.textWithColor(100, 100, 100, ' at ') + framerate + self.textWithColor(100, 100, 100, ' FPS ')
+        is_connected_str = is_connected + self.textWithColor(100, 100, 100, ' at ') + str(framerate) + self.textWithColor(100, 100, 100, ' FPS ')
         mirror_mode = self.textWithColor(255, 255, 255, 'mirror') if strip_config.is_mirror else self.textWithColor(50, 50, 50, 'mirror')
         reverse_mode = self.textWithColor(255, 255, 255, 'reverse') if strip_config.is_reverse else self.textWithColor(50, 50, 50, 'reverse')
         color_scheme = ""
