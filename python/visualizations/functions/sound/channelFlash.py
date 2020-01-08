@@ -34,12 +34,9 @@ class ChannelFlash():
             x = chunk_size * i
             y = chunk_size * (i + 1)
 
-            # if(self.active_state.active_visualizer_mode == 1):
             intensity = int(np.max(self.audio_data[x:y]**scale))
             if(intensity < 0) :
                 intensity = 0
-            # else:
-            #     intensity = int(np.max(self.audio_data[x:y]**scale))
 
             max_intensity = len(self.pixelReshaper.strips[i][0])
             if(self.active_state.is_mirror):
@@ -65,9 +62,8 @@ class ChannelFlash():
 
         for x, strip in enumerate(self.pixelReshaper.strips):
             colorIndex = x % len(color_scheme)
-            strip[0] = color_scheme[colorIndex][0]
-            strip[1] = color_scheme[colorIndex][1]
-            strip[2] = color_scheme[colorIndex][2]
-            self.pixelReshaper.strips[x] = self.applyMaxBrightness(strip, maxStripItensities[x] * 10)
+            strip[0] = (color_scheme[colorIndex][0] / 255) * (maxStripItensities[x] * 10)
+            strip[1] = (color_scheme[colorIndex][1] / 255) * (maxStripItensities[x] * 10)
+            strip[2] = (color_scheme[colorIndex][2] / 255) * (maxStripItensities[x] * 10)
 
         return self.pixelReshaper.reshapeFromStrips(self.pixelReshaper.strips)

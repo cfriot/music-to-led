@@ -33,12 +33,9 @@ class ChannelIntensity():
             x = chunk_size * i
             y = chunk_size * (i + 1)
 
-            # if(self.active_state.active_visualizer_mode == 1):
             intensity = int(np.max(self.audio_data[x:y]**scale))
             if(intensity < 0) :
                 intensity = 0
-            # else:
-            # intensity = int(np.max(self.audio_data[x:y]**scale))
 
             max_intensity = len(self.pixelReshaper.strips[i][0])
             if(self.active_state.is_mirror):
