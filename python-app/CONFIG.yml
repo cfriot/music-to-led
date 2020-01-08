@@ -4,8 +4,11 @@
 # CONFIG FILE  #
 ################
 
-fps: 60
+#BASS 60 to 250 Hz
+#MID 300 to 5000 Hz.
+#TREBLE 2048 to 16384 Hz
 
+desirated_framerate: 60
 display_interface: True
 
 audio_ports:
@@ -14,227 +17,105 @@ audio_ports:
     name: Built-in Microphone
     min_frequency: 200
     max_frequency: 12000
-    sampling_rate: 44100
-    number_of_audio_samples: 24
-    min_volume_threshold: 1e-7
-    n_rolling_history: 4
-
   # -
-  #   name: Built-in Microphone
-  #   min_frequency: 200++
-  #   max_frequency: 12000
-  #   sampling_rate: 44100
-  #   number_of_audio_samples: 24
-  #   min_volume_threshold: 1e-7
-  #   n_rolling_history: 4
-  # -
-  #   name: Scarlett Solo USB
-  #   min_frequency: 200
-  #   max_frequency: 10000
-  #   sampling_rate: 44100
-  #   number_of_audio_samples: 24
-  #   min_volume_threshold: 1e-7
-  #   n_rolling_history: 4
-  # -
-  #   name: Logicool G430 Gaming Headset
+  #   name: 'AK5371                   '
   #   min_frequency: 200
   #   max_frequency: 12000
-  #   sampling_rate: 44100
-  #   number_of_audio_samples: 24
-  #   min_volume_threshold: 1e-7
-  #   n_rolling_history: 4
-  # -
-  #   name: AudioDevice
-  #   min_frequency: 200
-  #   max_frequency: 12000
-  #   sampling_rate: 44100
-  #   number_of_audio_samples: 24
-  #   min_volume_threshold: 1e-7
-  #   n_rolling_history: 4
-  # -
-  #   name: USB PnP Sound Device
-  #   min_frequency: 6000
-  #   max_frequency: 12000
-  #   sampling_rate: 44100
-  #   number_of_audio_samples: 24
-  #   min_volume_threshold: 1e-7
-  #   n_rolling_history: 4
 
 strips:
   -
     name: Front Desk
-    serial_port_name: /dev/tty.usbserial-14220
-    max_brightness: 255
+    serial_port_name: /dev/tty.usbserial-14210
+
     midi_ports_for_visualization:
-      # - Audio2Led Synth
       - USB MIDI Interface
     midi_ports_for_changing_mode:
-      # - Audio2Led ChangeMod
       - LPK25
-    real_shape:
-      - 40
-      - 40
-    shapes:
-      -
-        - 40
-        - 40
-      -
-        - 20
-        - 20
-        - 20
-        - 20
+
+    active_state_index: 0
+
+    physical_shape:
+      - 80
+
+  -
+    name: New Config
+    serial_port_name: /dev/tty.usbserial-14240
+
+    midi_ports_for_visualization:
+      - USB MIDI Interface
+    midi_ports_for_changing_mode:
+      - LPK25
+
+    active_state_index: 0
+
+    physical_shape:
+      - 80
+
+
+states:
+  -
+    name: "Mirrored Energy light blue"
+    active_visualizer_effect: energy
+    active_propagation_curve: ease_in
 
     active_audio_channel_index: 0
-    active_visualizer_mode: 0
-    active_color_index: 0
+    audio_channel_min_frequency: 200
+    audio_channel_max_frequency: 12000
+
     active_shape_index: 0
-    is_reverse: false
-    time_interval: 5
-    chunk_size: 5
-    is_mirror: true
+    shapes:
+      -
+        - 112
+      -
+        - 56
+        - 56
+      -
+        - 28
+        - 28
+      -
+        - 14
+        - 14
+        - 14
+        - 14
+
     active_color_scheme_index: 0
     color_schemes:
       -
         - red
         - green
         - blue
-      - # pink blue
-        - "#FF00C8"
-        - "#00C6FF"
-      - # orange blue
-        - "#FFA200"
-        - "#00C6FF"
-      - # red green
-        - "#FF002E"
-        - "#00FFA4"
-      - # purple green
-        - "#F900FF"
-        - "#22FF00"
-      - # blue yellow
-        - "#0024FF"
-        - "#FFE500"
-      -
-        - red
-      -
-        - green
-      -
-        - blue
-      -
-        - white
 
-    active_visualizer_effect: full
-  #
-  # -
-  #   name: Front Desk 2
-  #   serial_port_name: /dev/tty.usbserial-14110
-  #   max_brightness: 80
-  #   midi_ports_for_visualization:
-  #     # - Audio2Led Synth
-  #     # - USB MIDI Interface
-  #   midi_ports_for_changing_mode:
-  #     # - Audio2Led ChangeMod
-  #     # - LPK25
-  #   real_shape:
-  #     - 40
-  #     - 40
-  #     - 240
-  #   shapes:
-  #     -
-  #       - 20
-  #       - 20
-  #       - 220
-  #     -
-  #       - 20
-  #       - 50
-  #
-  #   active_audio_channel_index: 0
-  #   active_visualizer_mode: 0
-  #   active_color_index: 0
-  #   active_shape_index: 0
-  #   is_reverse: false
-  #   time_interval: 5
-  #   chunk_size: 5
-  #   is_mirror: true
-  #   active_color_scheme_index: 0
-  #   color_schemes:
-  #     -
-  #       - red
-  #       - green
-  #       - blue
-  #
-  #   active_visualizer_effect: scroll
-  #
-  # -
-  #   name: Front Desk 2
-  #   serial_port_name: /dev/tty.usbserial-141103
-  #   max_brightness: 80
-  #   midi_ports_for_visualization:
-  #     # - Audio2Led Synth
-  #     # - USB MIDI Interface
-  #   midi_ports_for_changing_mode:
-  #     # - Audio2Led ChangeMod
-  #     # - LPK25
-  #   real_shape:
-  #     - 280
-  #   shapes:
-  #     -
-  #       - 280
-  #     -
-  #       - 20
-  #       - 50
-  #
-  #   active_audio_channel_index: 0
-  #   active_visualizer_mode: 0
-  #   active_color_index: 0
-  #   active_shape_index: 0
-  #   is_reverse: false
-  #   time_interval: 5
-  #   chunk_size: 5
-  #   is_mirror: true
-  #   active_color_scheme_index: 0
-  #   color_schemes:
-  #     -
-  #       - red
-  #       - green
-  #       - blue
-  #
-  #   active_visualizer_effect: scroll
+    is_reverse: true
+    is_mirror: true
+    time_interval: 5
+    chunk_size: 5
+    max_brightness: 55
 
-  # -
-  #   name: Front Desk 3
-  #   serial_port_name: /dev/tty.usbserial-14310
-  #   max_brightness: 80
-  #   midi_ports_for_visualization:
-  #     # - Audio2Led Synth
-  #     # - USB MIDI Interface
-  #   midi_ports_for_changing_mode:
-  #     # - Audio2Led ChangeMod
-  #     # - LPK25
-  #   real_shape:
-  #     - 250
-  #   shapes:
-  #     -
-  #       - 200
-  #       - 50
-  #     -
-  #       - 20
-  #       - 50
-  #
-  #   active_audio_channel_index: 0
-  #   active_visualizer_mode: 0
-  #   active_color_index: 0
-  #   active_shape_index: 1
-  #   is_reverse: false
-  #   time_interval: 5
-  #   chunk_size: 5
-  #   is_mirror: true
-  #   active_color_scheme_index: 0
-  #   color_schemes:
-  #     -
-  #       - red
-  #       - green
-  #       - blue
-  #
-  #   active_visualizer_effect: scroll
+  -
+    name: "Fast Scroll yellow and pink"
+    active_visualizer_effect: scroll
+    active_propagation_curve: ease_in
+
+    active_audio_channel_index: 0
+    audio_channel_min_frequency: 200
+    audio_channel_max_frequency: 12000
+
+    active_shape_index: 0
+    shapes:
+      -
+        - 126
+        - 126
+
+    active_color_scheme_index: 0
+    color_schemes:
+      -
+        - yellow
+        - pink
+
+    is_reverse: false
+    is_mirror: false
+    time_interval: 225
+    chunk_size: 10
+    max_brightness: 155
 
 ...  # document end

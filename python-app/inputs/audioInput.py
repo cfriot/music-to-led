@@ -2,22 +2,29 @@ import time, pyaudio
 import numpy as np
 
 class AudioInput:
-    def __init__(self, port_name, min_frequency=200, max_frequency=12000):
+    def __init__(
+        self,
+        port_name = "port_name",
+        min_frequency = 200,
+        max_frequency = 12000,
+        sampling_rate = 44100,
+        framerate = 60
+    ):
         """ Create a data stream from audio input """
         self.audio = pyaudio.PyAudio()
-        self.rate = 44100
-        self.fps = 60
+        self.sampling_rate = sampling_rate
+        self.framerate = framerate
         self.overflows = 0
         self.data = []
         self.stream = 0
         self.prev_overflow_time = time.time()
-        self.frames_per_buffer = int(self.rate / self.fps)
+        self.frames_per_buffer = int(self.sampling_rate / self.framerate)
         self.port_index = AudioInput.getPortIndexFromName(port_name)
         self.tryPort(port_name)
         self.stream = self.audio.open(
             format = pyaudio.paInt16,
             channels = 1,
-            rate = self.rate,
+            rate = self.sampling_rate,
             input = True,
             input_device_index = self.port_index,
             frames_per_buffer = self.frames_per_buffer
@@ -31,7 +38,7 @@ class AudioInput:
             for item in AudioInput.listAvailablePortsInfos():
                 if(item["maxInputChannels"] >= 2):
                     list.append(item["name"])
-            print("Here's the audio ports available ->", list)
+            print("Here's the audio ports available -> ", list)
             quit()
 
     @staticmethod
@@ -86,7 +93,7 @@ class AudioInput:
                 print(len(data))
                 time.sleep(1)
         else:
-            print('This port is not available ->' + name)
+            print('This port is not available -> ' + name)
 
     def getRawData(self):
         """Return actual audio data"""
@@ -115,8 +122,6 @@ class AudioInput:
             self.stream.stop_stream()
             self.stream.close()
             self.audio.terminate()
-
-
 
 
 if __name__ == "__main__":

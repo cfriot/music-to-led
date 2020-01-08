@@ -73,7 +73,10 @@ elif not len(sys.argv) > 1:
             ports += port.name
         print("└-> Init Audio process on ports : ", ports)
 
-        audioDispatcher = AudioDispatcher(config.audio_ports)
+        audioDispatcher = AudioDispatcher(
+                            audio_ports = config.audio_ports,
+                            framerate = config.desirated_framerate
+                        )
 
         while 1:
 
@@ -85,15 +88,16 @@ elif not len(sys.argv) > 1:
         config = shared_list[0]
         audio_datas = shared_list[1]
         strip_config = config.strips[index]
+        active_state = config.states[strip_config.active_state_index]
 
         serial_port_name = strip_config.serial_port_name
-        number_of_pixels = strip_config.shapes[strip_config.active_shape_index].number_of_pixels
+        number_of_pixels = active_state.shapes[active_state.active_shape_index].number_of_pixels
 
         print("└-> Init Serial process on port : ", serial_port_name)
 
         serialOutput = SerialOutput(
-            number_of_pixels=number_of_pixels,
-            port=serial_port_name
+            number_of_pixels = number_of_pixels,
+            port = serial_port_name
         )
 
         i = 0
@@ -108,15 +112,16 @@ elif not len(sys.argv) > 1:
 
         config = shared_list[0]
         strip_config = config.strips[index]
+        active_state = config.states[strip_config.active_state_index]
         audio_datas = shared_list[1]
         strip_config.midi_logs = []
 
         print("└-> Init strip process : ", strip_config.name)
 
-        framerateCalculator = FramerateCalculator(config.fps)
+        framerateCalculator = FramerateCalculator(config.desirated_framerate)
 
-        midi_ports_for_visualization = strip_config.midi_ports_for_visualization
         midi_ports_for_changing_mode = strip_config.midi_ports_for_changing_mode
+        midi_ports_for_visualization = strip_config.midi_ports_for_visualization
 
         midiDispatcher = MidiDispatcher(
             midi_ports_for_changing_mode,
@@ -129,7 +134,7 @@ elif not len(sys.argv) > 1:
         )
 
         serial_port_name = strip_config.serial_port_name
-        number_of_pixels = strip_config.shapes[strip_config.active_shape_index].number_of_pixels
+        number_of_pixels = active_state.shapes[active_state.active_shape_index].number_of_pixels
 
         modSwitcher = ModSwitcher(
             visualizer,
@@ -156,27 +161,29 @@ elif not len(sys.argv) > 1:
             modSwitcher.changeMod()
 
             pixels = visualizer.drawFrame()
-            pixels = visualizer.applyMaxBrightness(pixels, strip_config.max_brightness)
+            pixels = visualizer.applyMaxBrightness(pixels, active_state.max_brightness)
             pixels = np.clip(pixels, 0, 255).astype(int)
 
-            shared_list[2 + index] = [pixels, strip_config, framerateCalculator.getFps(), True]
+            shared_list[2 + index] = [pixels, strip_config, active_state, framerateCalculator.getFps()]
 
             time.sleep(config.delay_between_frames)
 
     print("- Parsing and testing config file...", "")
 
     configLoader = ConfigLoader(args.with_config_file, debug=False)
-    print("└-> OK")
 
     config = configLoader.data
     number_of_strips = config.number_of_strips
 
+    print("└-> OK")
+
     manager = multiprocessing.Manager()
     shared_list = manager.list()
+
     # Shared list :
     # 0     : Config
     # 1     : Audio datas
-    # 2...n : [pixels, strip_config, framerateCalculator.getFps()]
+    # 2...n : [pixels, strip_config, active_state, framerateCalculator.getFps()]
     # 2 + config.number_of_strips + ...n : isOnline for each strip
 
     shared_list.append(config)

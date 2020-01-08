@@ -49,17 +49,17 @@ def putPixel(strip, ledIndex, r, g, b, velocity):
         strip[1][ledIndex] = g / 127 * (velocity + 1)
         strip[2][ledIndex] = b / 127 * (velocity + 1)
 
-class Piano():
+class PianoScroll():
 
-    def initPiano(self):
+    def initPianoScroll(self):
         self.notes_on = []
         self.pitch = 0
         self.value = 0
 
-    def visualizePiano(self):
+    def visualizePianoScroll(self):
         """Piano midi visualizer"""
 
-        color_scheme = self.strip_config.formatted_color_schemes[self.strip_config.active_color_scheme_index]
+        color_scheme = self.active_state.formatted_color_schemes[self.active_state.active_color_scheme_index]
 
         for midi_note in self.midi_datas:
             if(midi_note["type"] == "note_on" and midi_note["velocity"] > 0):
@@ -72,7 +72,7 @@ class Piano():
             if(midi_note["type"] == "pitchwheel"):
                 self.pitch = midi_note["pitch"]
 
-        roll_value = int(1 * (self.strip_config.time_interval / 100)) + 1
+        roll_value = int(1 * (self.active_state.time_interval / 100)) + 1
         self.pixels = np.roll(self.pixels, roll_value, axis=1)
 
         if(len(self.notes_on) > 0):

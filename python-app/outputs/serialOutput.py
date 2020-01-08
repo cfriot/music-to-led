@@ -81,9 +81,6 @@ class SerialOutput:
         pixels[0, 0] = 125  # Set 1st pixel red
         pixels[1, 1] = 125  # Set 2nd pixel green
         pixels[2, 2] = 125  # Set 3rd pixel blue
-        pixels[0, 3] = 255  # Set 1st pixel red
-        pixels[1, 4] = 255  # Set 2nd pixel green
-        pixels[2, 5] = 255  # Set 3rd pixel blue
 
         serialClass = SerialOutput(True, number_of_pixels, name)
 

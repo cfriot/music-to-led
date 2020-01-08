@@ -5,18 +5,18 @@ class AlternateColors():
     def initAlternateColors(self):
         self.alternate_colors_index = 0
 
-    def drawAlternateColors(self):
+    def drawAlternateColorChunks(self):
 
-        color_scheme = self.strip_config.formatted_color_schemes[self.strip_config.active_color_scheme_index]
+        color_scheme = self.active_state.formatted_color_schemes[self.active_state.active_color_scheme_index]
 
         which_color = 0
-        self.alternateColorsInterval = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.time_interval)
+        self.alternateColorsInterval = self.timeSinceStart.getMsIntervalFromBpm(self.active_state.time_interval)
 
-        if(self.strip_config.chunk_size == 0):
-            self.strip_config.chunk_size = 1
+        if(self.active_state.chunk_size == 0):
+            self.active_state.chunk_size = 1
 
         for i in range(self.number_of_pixels):
-            if(i % self.strip_config.chunk_size == 0):
+            if(i % self.active_state.chunk_size == 0):
                 which_color += 1
                 if(which_color >= len(color_scheme)):
                     which_color = 0
@@ -24,18 +24,18 @@ class AlternateColors():
             self.pixels[1][i] = color_scheme[which_color][1]
             self.pixels[2][i] = color_scheme[which_color][2]
 
-    def visualizeAlternateColors(self):
+    def visualizeAlternateColorChunks(self):
         """Effect that alternate two colors moving forward"""
 
         self.pixels = np.roll(
-            self.pixels, int(1 * (self.strip_config.time_interval / 100)) + 1, axis=1)
+            self.pixels, int(1 * (self.active_state.time_interval / 100)) + 1, axis=1)
         return self.pixelReshaper.reshapeFromPixels(self.pixels)
 
-    def visualizeAlternateColorsForShapes(self):
+    def visualizeAlternateColorShapes(self):
         """Effect that alternate two colors moving forward"""
-        color_scheme = self.strip_config.formatted_color_schemes[self.strip_config.active_color_scheme_index]
+        color_scheme = self.active_state.formatted_color_schemes[self.active_state.active_color_scheme_index]
 
-        interval = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.time_interval)
+        interval = self.timeSinceStart.getMsIntervalFromBpm(self.active_state.time_interval)
 
         if(self.timeSinceStart.getMs() >= interval):
             self.alternate_colors_index += 1

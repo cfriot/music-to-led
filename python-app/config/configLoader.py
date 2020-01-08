@@ -72,14 +72,6 @@ class ShapeConfig() :
         for pixel_number in self.shape:
             self.number_of_pixels += pixel_number
 
-        self.offsets = []
-        for i, bock_size in enumerate(self.shape):
-            if(i - 1 >= 0):
-                self.offsets.append(bock_size + self.offsets[i - 1])
-            else:
-                self.offsets.append(bock_size)
-
-
     def print(self):
         print("--")
         print("----------------")
@@ -88,24 +80,17 @@ class ShapeConfig() :
         print("shape -> ", self.shape)
         print("number_of_substrip -> ", self.number_of_substrip)
         print("number_of_pixels -> ", self.number_of_pixels)
-        print("shape chunks offset -> ", self.offsets)
         print("----------------")
         print("--")
 
 
-class StripConfig() :
+class StateConfig() :
 
     def __init__(
         self,
-        name = "strip",
-        serial_port_name = "/dev/tty.usbserial-14240",
-        is_online= False,
+        name = "statename",
         max_brightness = 120,
-        midi_ports_for_changing_mode = [],
-        midi_ports_for_visualization = [],
         active_visualizer_effect = "scroll",
-        active_visualizer_mode = 0,
-        real_shape = [52],
         shapes = [[26,26],[12,12]],
         active_audio_channel_index = 0,
         active_shape_index = 0,
@@ -119,36 +104,16 @@ class StripConfig() :
     ):
 
         self.name = name
-        self.serial_port_name = serial_port_name
-        self.is_online = is_online
-        self.max_brightness = max_brightness
-        self.midi_ports_for_changing_mode = midi_ports_for_changing_mode
-        self.midi_ports_for_visualization = midi_ports_for_visualization
         self.active_audio_channel_index = active_audio_channel_index
 
-        real_shape_number_of_pixels = 0
-        for pixel_number in real_shape:
-            real_shape_number_of_pixels += pixel_number
-        self.pixels = np.tile(0., (3, real_shape_number_of_pixels)).tolist()
-
-        if(debug):
-            SerialOutput.tryPort(serial_port_name)
-            if(midi_ports_for_visualization):
-                for name in midi_ports_for_visualization:
-                    MidiInput.tryPort(name)
-            if(midi_ports_for_changing_mode):
-                for name in midi_ports_for_changing_mode:
-                    MidiInput.tryPort(name)
-
         self.active_shape_index = active_shape_index
-        self.real_shape = ShapeConfig(real_shape)
         self.shapes = []
         for shape in shapes:
             self.shapes.append(ShapeConfig(shape))
         self.number_of_shapes = len(self.shapes)
 
         self.active_visualizer_effect = active_visualizer_effect
-        self.active_visualizer_mode = active_visualizer_mode
+        self.max_brightness = max_brightness
 
         self.time_interval = time_interval
         self.chunk_size = chunk_size
@@ -168,55 +133,99 @@ class StripConfig() :
     def print(self):
         print("--")
         print("----------------")
-        print("Strip Config : ")
+        print("State Config : ")
         print("----------------")
-        print("name -> ", self.name)
-        print("serial_port_name -> ", self.serial_port_name)
-        print("max_brightness -> ", self.max_brightness)
-        print("midi_ports_for_changing_mode -> ", self.midi_ports_for_changing_mode)
-        print("midi_ports_for_visualization -> ", self.midi_ports_for_visualization)
         print("active_audio_channel_index -> ", self.active_audio_channel_index)
-        print("active_shape_index -> ", self.active_shape_index)
-        print("real_shape -> ", self.real_shape)
+        print("max_brightness -> ", self.max_brightness)
         for shape in self.shapes:
             shape.print()
+        print("active_shape_index -> ", self.active_shape_index)
         print("number_of_shapes -> ", self.number_of_shapes)
         print("active_visualizer_effect -> ", self.active_visualizer_effect)
-        print("active_visualizer_mode -> ", self.active_visualizer_mode)
         print("time_interval -> ", self.time_interval)
         print("chunk_size -> ", self.chunk_size)
         print("is_reverse -> ", self.is_reverse)
         print("is_mirror -> ", self.is_mirror)
-        print("active_color_scheme_index -> ", self.active_color_scheme_index)
         print("color_schemes -> ", self.color_schemes)
+        print("active_color_scheme_index -> ", self.active_color_scheme_index)
         print("formatted_color_schemes -> ", self.formatted_color_schemes)
         print("----------------")
         print("--")
 
+class StripConfig() :
+
+    def __init__(
+        self,
+        name = "strip",
+        serial_port_name = "/dev/tty.usbserial-14240",
+        is_online= False,
+        midi_ports_for_changing_mode = [],
+        midi_ports_for_visualization = [],
+        active_state_index = 0,
+        physical_shape = [20,20],
+        debug = False
+    ):
+
+        self.name = name
+        self.serial_port_name = serial_port_name
+        self.is_online = is_online
+        self.midi_ports_for_changing_mode = midi_ports_for_changing_mode
+        self.midi_ports_for_visualization = midi_ports_for_visualization
+        self.physical_shape = ShapeConfig(physical_shape)
+        self.active_state_index = active_state_index
+
+        if(debug):
+            SerialOutput.tryPort(serial_port_name)
+            if(midi_ports_for_visualization):
+                for name in midi_ports_for_visualization:
+                    MidiInput.tryPort(name)
+            if(midi_ports_for_changing_mode):
+                for name in midi_ports_for_changing_mode:
+                    MidiInput.tryPort(name)
+
+
+    def print(self):
+        print("--")
+        print("----------------")
+        print("Strip Config : ")
+        print("----------------")
+        print("name -> ", self.name)
+        print("serial_port_name -> ", self.serial_port_name)
+        print("midi_ports_for_changing_mode -> ", self.midi_ports_for_changing_mode)
+        print("midi_ports_for_visualization -> ", self.midi_ports_for_visualization)
+        print("physical_shape -> ", self.physical_shape)
+        print("active_state_index -> ", self.active_state_index)
+        print("----------------")
+        print("--")
 
 class Config():
 
     def __init__(
         self,
-        fps = 60,
+        desirated_framerate = 60,
         display_interface = True,
-        number_of_audio_samples = 24,
         debug = False,
         audio_ports = [
             {
                 "name": "Built-in Microphone",
                 "min_frequency": 200,
                 "max_frequency": 12000,
-                "min_volume_threshold": 1e-7,
             }
         ],
         strips = [
             {
                 "name": "strip",
                 "serial_port_name": "/dev/tty.usbserial-14210",
-                "max_brightness": 120,
                 "midi_ports_for_changing_mode": ["Ableton-virtual-midi-ouput ChangeModStripOne"],
                 "midi_ports_for_visualization": ["Ableton-virtual-midi-ouput LeftSynth"],
+                "active_state_index": 0,
+                "physical_shape": [50,50]
+            }
+        ],
+        states = [
+            {
+                "name": "statename",
+                "max_brightness": 120,
                 "active_visualizer_effect": "scroll",
                 "active_visualizer_mode": 0,
                 "shapes": [[26,26],[12,12]],
@@ -230,11 +239,10 @@ class Config():
         ]
     ):
 
-        self.fps = fps
+        self.desirated_framerate = desirated_framerate
         self.display_interface = display_interface
-        self.delay_between_frames = 1 / fps
+        self.delay_between_frames = 1 / desirated_framerate
         self.timeSinceStart = TimeSinceStart()
-        self.number_of_audio_samples = number_of_audio_samples
         self.audio_ports = []
         for audio_port in audio_ports:
             self.audio_ports.append(
@@ -242,13 +250,11 @@ class Config():
                     name = audio_port["name"],
                     min_frequency = audio_port["min_frequency"],
                     max_frequency = audio_port["max_frequency"],
-                    sampling_rate = audio_port["sampling_rate"],
-                    number_of_audio_samples = audio_port["number_of_audio_samples"],
-                    min_volume_threshold = audio_port["min_volume_threshold"],
                     debug = debug
                 )
             )
         self.number_of_audio_ports = len(self.audio_ports)
+
         self.strips = []
         for strip in strips :
             self.strips.append(
@@ -256,25 +262,35 @@ class Config():
                     name = strip["name"],
                     serial_port_name = strip["serial_port_name"],
                     is_online = False,
-                    max_brightness = strip["max_brightness"],
                     midi_ports_for_changing_mode = strip["midi_ports_for_changing_mode"],
                     midi_ports_for_visualization = strip["midi_ports_for_visualization"],
-                    active_visualizer_effect = strip["active_visualizer_effect"],
-                    active_visualizer_mode = strip["active_visualizer_mode"],
-                    real_shape = strip["real_shape"],
-                    shapes = strip["shapes"],
-                    active_audio_channel_index = strip["active_audio_channel_index"],
-                    active_shape_index = strip["active_shape_index"],
-                    active_color_scheme_index = strip["active_color_scheme_index"],
-                    color_schemes = strip["color_schemes"],
-                    time_interval = strip["time_interval"],
-                    chunk_size = strip["chunk_size"],
-                    is_mirror = strip["is_mirror"],
-                    is_reverse = strip["is_reverse"],
+                    physical_shape = strip["physical_shape"],
+                    active_state_index = strip["active_state_index"],
                     debug = debug
                 )
             )
         self.number_of_strips = len(self.strips)
+        self.states = []
+        for state in states :
+            self.states.append(
+                StateConfig(
+                    name = state["name"],
+                    active_audio_channel_index = state["active_audio_channel_index"],
+                    max_brightness = state["max_brightness"],
+                    active_visualizer_effect = state["active_visualizer_effect"],
+                    shapes = state["shapes"],
+                    active_shape_index = state["active_shape_index"],
+                    color_schemes = state["color_schemes"],
+                    active_color_scheme_index = state["active_color_scheme_index"],
+                    time_interval = state["time_interval"],
+                    chunk_size = state["chunk_size"],
+                    is_mirror = state["is_mirror"],
+                    is_reverse = state["is_reverse"],
+                    debug = debug
+                )
+            )
+        self.number_of_states = len(self.states)
+
 
     def getJsonFromConfig(self):
         return json.dumps(self.__dict__, default=lambda o: o.__dict__, indent=4)
@@ -284,7 +300,7 @@ class Config():
         print("----------------")
         print("Config : ")
         print("----------------")
-        print("fps -> ", self.fps)
+        print("desirated_framerate -> ", self.desirated_framerate)
         print("display_interface -> ", self.display_interface)
         print("delay_between_frames -> ", self.delay_between_frames)
         for audio_port in self.audio_ports:
@@ -293,6 +309,9 @@ class Config():
         for strip in self.strips:
             strip.print()
         print("number_of_strips -> ", self.number_of_strips)
+        for state in self.states:
+            state.print()
+        print("number_of_states -> ", self.number_of_states)
         print("----------------")
         print("--")
 
@@ -309,10 +328,11 @@ class ConfigLoader():
                 )
 
                 self.data = Config(
-                    fps = file["fps"],
+                    desirated_framerate = file["desirated_framerate"],
                     display_interface = file["display_interface"],
                     audio_ports = file["audio_ports"],
                     strips = file["strips"],
+                    states = file["states"],
                     debug = debug
                 )
 
@@ -347,6 +367,6 @@ class ConfigLoader():
 
 if __name__ == "__main__":
 
-    config = ConfigLoader.testConfig(verbose=False)
+    config = ConfigLoader.testConfig(verbose=True)
     # method_list = [func for func in dir(Visualizer) if callable(getattr(Visualizer, func)) and not func.startswith("__")]
     # print(method_list)

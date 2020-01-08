@@ -9,7 +9,7 @@ class Scroll():
         self.audio_data /= self.gain.value
         self.audio_data *= 255.0
 
-        active_color_scheme = self.strip_config.formatted_color_schemes[self.strip_config.active_color_scheme_index]
+        active_color_scheme = self.active_state.formatted_color_schemes[self.active_state.active_color_scheme_index]
         length_of_color_scheme = len(active_color_scheme)
         chunk_size = len(self.audio_data) // length_of_color_scheme
         r = 0
@@ -30,7 +30,7 @@ class Scroll():
 
         # self.pixels[:, 2:] = self.pixels[:, :-2]
 
-        roll_value = int(1 * (self.strip_config.time_interval / 100)) + 1
+        roll_value = int(1 * (self.active_state.time_interval / 100)) + 1
         self.pixels = np.roll(self.pixels, roll_value, axis=1)
 
         self.pixels *= 0.98

@@ -1,9 +1,9 @@
 from inputs.midiInput import MidiInput
 
 class MidiDispatcher() :
-    def __init__(self, midi_ports_for_changing_mode, dedicated_midi_ports):
+    def __init__(self, midi_ports_for_changing_mode, midi_ports_for_visualization):
         self.midi_ports_for_changing_mode = midi_ports_for_changing_mode
-        self.midi_ports_for_visualization = dedicated_midi_ports
+        self.midi_ports_for_visualization = midi_ports_for_visualization
         self.midi_input_classes = []
         self.midi_datas = []
         self.midi_datas_for_visualization = []

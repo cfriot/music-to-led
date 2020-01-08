@@ -7,18 +7,18 @@ def clampToNewRange(value, old_min, old_max, new_min, new_max):
 def getValueFromPercentage(value, percentage):
     return value / 100 * percentage
 
-class Envelope():
+class PitchwheelFlash():
 
-    def initEnvelope(self):
+    def initPitchwheelFlash(self):
 
         self.r = 0
         self.g = 0
         self.b = 0
 
-    def visualizeEnvelope(self):
-        """Envelope midi visualizer"""
+    def visualizePitchwheelFlash(self):
+        """PitchwheelFlash midi visualizer"""
 
-        color_scheme = self.strip_config.formatted_color_schemes[self.strip_config.active_color_scheme_index]
+        color_scheme = self.active_state.formatted_color_schemes[self.active_state.active_color_scheme_index]
 
         which_color = 0
         for midi_note in self.midi_datas:

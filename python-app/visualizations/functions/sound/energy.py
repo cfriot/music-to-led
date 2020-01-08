@@ -25,7 +25,7 @@ class Energy():
         r = 0
         g = 0
         b = 0
-        active_color_scheme = self.strip_config.formatted_color_schemes[self.strip_config.active_color_scheme_index]
+        active_color_scheme = self.active_state.formatted_color_schemes[self.active_state.active_color_scheme_index]
         chunk_size =  len(self.audio_data) // len(active_color_scheme)
         for i in range(len(active_color_scheme)) :
             x = chunk_size * i

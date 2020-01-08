@@ -20,6 +20,7 @@ $RECYCLE.BIN/
 
 # Tests
 tests/
+python-app/visualizations/functions/experiments
 python-app/python-tests
 python-app/singleStripMain.py
 python-app/buid

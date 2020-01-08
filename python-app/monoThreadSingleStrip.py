@@ -1,11 +1,11 @@
+# This file is for debugging purpose
+
 import sys, os, struct, serial, time, glob, multiprocessing, logging, argparse
 import concurrent.futures
 from multiprocessing import Pool
 import numpy as np
 
 from config.configLoader import ConfigLoader
-
-from gui.shellInterface import ShellInterface
 
 from helpers.time.timeSinceStart import TimeSinceStart
 from helpers.time.framerateCalculator import FramerateCalculator
@@ -24,24 +24,36 @@ from visualizations.modSwitcher import ModSwitcher
 
 configLoader = ConfigLoader("./CONFIG.yml")
 
-print("Launching -> ", "Front Desk")
+strip_name = "Front Desk"
+
+print("Launching -> ", strip_name)
 
 config = configLoader.data
-index = configLoader.findStripIndexByStripName("Front Desk")
+index = configLoader.findStripIndexByStripName(strip_name)
 strip_config = config.strips[index]
+active_state = config.states[strip_config.active_state_index]
 
-audioDispatcher = AudioDispatcher(config.audio_ports)
+audioDispatcher = AudioDispatcher(
+                    audio_ports = config.audio_ports,
+                    framerate = config.desirated_framerate
+                )
 
-shellInterface = ShellInterface(config)
-
-framerateCalculator = FramerateCalculator(config.fps)
+framerateCalculator = FramerateCalculator(config.desirated_framerate)
 
 midi_ports_for_changing_mode = strip_config.midi_ports_for_changing_mode
-associated_midi_channels = strip_config.associated_midi_channels
+midi_ports_for_visualization = strip_config.midi_ports_for_visualization
 
 midiDispacther = MidiDispatcher(
     midi_ports_for_changing_mode,
-    associated_midi_channels
+    midi_ports_for_visualization
+)
+
+serial_port_name = config.strips[index].serial_port_name
+number_of_pixels = active_state.shapes[active_state.active_shape_index].number_of_pixels
+
+serialOutput = SerialOutput(
+    number_of_pixels = number_of_pixels,
+    port = serial_port_name
 )
 
 visualizer = Visualizer(
@@ -49,18 +61,11 @@ visualizer = Visualizer(
     index
 )
 
-serial_port_name = config.strips[index].serial_port_name
-number_of_pixels = strip_config.shapes[strip_config.active_shape_index].number_of_pixels
-
-serialOutput = SerialOutput(
-    number_of_pixels,
-    serial_port_name
-)
-
 modSwitcher = ModSwitcher(
     visualizer,
     config,
-    index
+    index,
+    True
 )
 
 while 1:
@@ -75,13 +80,9 @@ while 1:
     modSwitcher.changeMod()
 
     pixels = visualizer.drawFrame()
-
-    pixels = np.clip(pixels, 0, strip_config.max_brightness).astype(int)
+    pixels = visualizer.applyMaxBrightness(pixels, active_state.max_brightness)
+    pixels = np.clip(pixels, 0, 255).astype(int)
 
     serialOutput.update(
         pixels
     )
-
-    # shellInterface.printAudio(1, 1, config.audio_ports[index].name, audioDispatcher.audio_datas[index])
-    # shellInterface.printStrip(10, serialOutput.is_connected, strip_config, pixels)
-    # shellInterface.waitForInput()

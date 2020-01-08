@@ -7,12 +7,14 @@ import time
 
 from gui.helpers import *
 
-""" This is a proper debounce function, the way a electrical engineer would think about it.
-    This wrapper never calls sleep.  It has two counters: one for successful calls, and one for rejected calls.
-    If the wrapped function throws an exception, the counters and debounce timer are still correct """
-
+class KeyboardInput():
+    def __init__():
+        print("toto")
 
 class Debounce(object):
+    """ This is a proper debounce function, the way a electrical engineer would think about it.
+    This wrapper never calls sleep.  It has two counters: one for successful calls, and one for rejected calls.
+    If the wrapped function throws an exception, the counters and debounce timer are still correct """
 
     def __init__(self, period):
         self.period = period  # never call the wrapped function more often than this (in seconds)
@@ -117,15 +119,10 @@ class ShellInterface():
 
         space = 2
         self.echo(self.term.move(y + 1, space) + "Music To Led v0.1.1")
-        self.echo(self.term.move(y + 3, space) + "Strips: " + str(len(self.config.strips)) + " | audio source: " + str(self.config.number_of_audio_ports))
+        # add STATES nb
+        self.echo(self.term.move(y + 3, space) + "Strips: " + str(len(self.config.strips)) + " | audio source: " + str(self.config.number_of_audio_ports) + " | states : " + str(self.config.number_of_states))
         self.echo(self.term.move(y + 4, space) + "Shell dimensions: " + str(self.width) + "x" + str(self.height))
-        self.echo(self.term.move(y + 5, space) + "Memory consumed: " + str(self.getConsumedVirtualMemory()))
-
-        # space = 2
-        # self.echo(self.term.move(y + 1, space) + " __  __ _   _ ___ ___ ___   _____ ___    _    ___ ___")
-        # self.echo(self.term.move(y + 2, space) + "|  \\/  | | | / __|_ _/ __| |_   _/ _ \\  | |  | __|   \\")
-        # self.echo(self.term.move(y + 3, space) + "| |\\/| | |_| \__ \\| | (__    | || (_) | | |__| _|| |) |")
-        # self.echo(self.term.move(y + 4, space) + "|_|  |_|\___/|___/___\\___|   |_| \___/  |____|___|___/")
+        self.echo(self.term.move(y + 5, space) + "Memory consumed: " + str(self.getConsumedVirtualMemory()) + " Key input: " + self.input)
 
     def drawBox(self, offset, size, color=(255,255,255)):
         style = "─|┌┐└┘" # ││
@@ -143,10 +140,7 @@ class ShellInterface():
         self.echo(self.term.move(y + h, x) + self.textWithColor(r,g,b,last_line))
 
     def waitForInput(self):
-        self.input = self.term.inkey(timeout=0)
-        self.echo(self.term.move(0, 85) + "input :" + self.input)
-        if(self.input == "f"):
-            print("ditwoula")
+        self.input += self.term.inkey(timeout=0)
 
     def textWithColor(self, r, g, b, text):
         return self.term.color(int(rgbToAnsi256(r, g, b)))(text)
@@ -172,7 +166,7 @@ class ShellInterface():
         self.echo(self.term.move(y + 3, x + 1) + graph)
         self.echo(self.term.move(0, 0))
 
-    def printStrip(self, y, is_connected, framerate, strip_config, pixels):
+    def printStrip(self, y, is_connected, framerate, strip_config, active_state, pixels):
 
         if(self.has_to_draw_static_components):
             total_number_of_lines = self.getTotalLinesOfStrip(strip_config)
@@ -184,13 +178,13 @@ class ShellInterface():
 
         is_connected = self.textWithColor(0, 255, 0, ' ⬤ online') if is_connected else self.textWithColor(255, 0, 0, ' ⬤ offline')
         is_connected_str = is_connected + self.textWithColor(100, 100, 100, ' at ') + str(framerate) + self.textWithColor(100, 100, 100, ' FPS ')
-        mirror_mode = self.textWithColor(255, 255, 255, 'mirror') if strip_config.is_mirror else self.textWithColor(50, 50, 50, 'mirror')
-        reverse_mode = self.textWithColor(255, 255, 255, 'reverse') if strip_config.is_reverse else self.textWithColor(50, 50, 50, 'reverse')
+        mirror_mode = self.textWithColor(255, 255, 255, 'mirror') if active_state.is_mirror else self.textWithColor(50, 50, 50, 'mirror')
+        reverse_mode = self.textWithColor(255, 255, 255, 'reverse') if active_state.is_reverse else self.textWithColor(50, 50, 50, 'reverse')
         color_scheme = ""
-        for current_color in strip_config.formatted_color_schemes[strip_config.active_color_scheme_index]:
+        for current_color in active_state.formatted_color_schemes[active_state.active_color_scheme_index]:
             color_scheme += self.term.color(int(rgbToAnsi256(current_color[0], current_color[1], current_color[2])))('█ ')
         shape = ""
-        for current_shape in strip_config.shapes[strip_config.active_shape_index].shape:
+        for current_shape in active_state.shapes[active_state.active_shape_index].shape:
             shape += "[" + str(current_shape) + "]"
 
         self.echo(self.term.move(y + 1, 2) + strip_config.name
@@ -200,13 +194,13 @@ class ShellInterface():
                                     + self.textWithColor(100, 100, 100, ' on port ')
                                     + strip_config.serial_port_name
                                     + self.textWithColor(100, 100, 100, ' with ')
-                                    + strip_config.active_visualizer_effect
+                                    + active_state.active_visualizer_effect
                                     + self.textWithColor(100, 100, 100, ' visualizer'))
         self.echo(self.term.move(y + 1, self.min_width - 22) + is_connected_str)
 
         self.echo(self.term.move(y + 3, 2) + self.textWithColor(100, 100, 100, 'audio channel'))
         self.echo(self.term.move(y + 4, 2) + "                    ")
-        self.echo(self.term.move(y + 4, 2) + self.config.audio_ports[strip_config.active_audio_channel_index].name)
+        self.echo(self.term.move(y + 4, 2) + self.config.audio_ports[active_state.active_audio_channel_index].name)
 
         self.echo(self.term.move(y + 3, 24) + self.textWithColor(100, 100, 100, 'color scheme'))
         self.echo(self.term.move(y + 4, 24) + "                    ")
@@ -218,15 +212,15 @@ class ShellInterface():
 
         self.echo(self.term.move(y + 3, 69) + self.textWithColor(100, 100, 100, 'time_interval'))
         self.echo(self.term.move(y + 4, 69) + "                    ")
-        self.echo(self.term.move(y + 4, 69) + str(strip_config.time_interval))
+        self.echo(self.term.move(y + 4, 69) + str(active_state.time_interval))
 
         self.echo(self.term.move(y + 3, 85) + self.textWithColor(100, 100, 100, 'brightness'))
         self.echo(self.term.move(y + 4, 85) + "                    ")
-        self.echo(self.term.move(y + 4, 85) + str(strip_config.max_brightness))
+        self.echo(self.term.move(y + 4, 85) + str(active_state.max_brightness))
 
         self.echo(self.term.move(y + 3, 97) + self.textWithColor(100, 100, 100, 'chunk_size'))
         self.echo(self.term.move(y + 4, 97) + "                    ")
-        self.echo(self.term.move(y + 4, 97) + str(strip_config.chunk_size))
+        self.echo(self.term.move(y + 4, 97) + str(active_state.chunk_size))
 
         self.echo(self.term.move(y + 3, 110) + mirror_mode)
         self.echo(self.term.move(y + 3, 120) + reverse_mode)
@@ -240,18 +234,18 @@ class ShellInterface():
         j = 0
         array = ""
 
-        chunk_length = strip_config.real_shape.shape[chunk_index]
+        chunk_length = strip_config.physical_shape.shape[chunk_index]
         if(chunk_index == 0):
             chunk_offset = 0
         else:
-            chunk_offset = strip_config.real_shape.offsets[chunk_index - 1]
+            chunk_offset = strip_config.physical_shape.offsets[chunk_index - 1]
 
         for i in range(chunk_offset, chunk_offset + chunk_length):
             if(i >= chunk_offset + chunk_length - 1):
                 array = array[:len(array)] + "]"
 
                 self.echo(self.term.move(y + total_number_of_lines, x) + array)
-                if(i != strip_config.real_shape.number_of_pixels):
+                if(i != strip_config.physical_shape.number_of_pixels):
                     total_number_of_lines += 1
                 return total_number_of_lines
             elif(j >= self.min_width - 4):
@@ -275,18 +269,18 @@ class ShellInterface():
 
         total_number_of_lines = 0
 
-        for k, chunk in enumerate(strip_config.real_shape.shape):
+        for k, chunk in enumerate(strip_config.physical_shape.shape):
 
             j = 0
-            chunk_length = strip_config.real_shape.shape[k]
+            chunk_length = strip_config.physical_shape.shape[k]
             if(k == 0):
                 chunk_offset = 0
             else:
-                chunk_offset = strip_config.real_shape.offsets[k - 1]
+                chunk_offset = strip_config.physical_shape.offsets[k - 1]
 
             for i in range(chunk_offset, chunk_offset + chunk_length):
                 if(i >= chunk_offset + chunk_length - 1):
-                    if(i != strip_config.real_shape.number_of_pixels):
+                    if(i != strip_config.physical_shape.number_of_pixels):
                         total_number_of_lines += 1
                     break
                 elif(j >= self.min_width - 4):
@@ -300,7 +294,7 @@ class ShellInterface():
     def printPixels(self, y, x, strip_config, pixels):
 
         total_number_of_lines = 0
-        for i, chunk in enumerate(strip_config.real_shape.shape):
+        for i, chunk in enumerate(strip_config.physical_shape.shape):
             total_number_of_lines += self.printChunk(y + total_number_of_lines, 2, strip_config, pixels, i)
 
         return total_number_of_lines
@@ -311,6 +305,7 @@ class ShellInterface():
         audio_datas = shared_list[1]
         pixels = [[],[],[]]
         total_number_of_lines = 0
+
         self.frameIndex += 1
         with self.term.hidden_cursor(), self.term.cbreak(), self.term.location():
 
@@ -332,18 +327,23 @@ class ShellInterface():
                 for index in range(config.number_of_strips):
                     pixels = shared_list[2 + index][0]
                     strip_config = shared_list[2 + index][1]
-                    fps = shared_list[2 + index][2]
+                    active_state = shared_list[2 + index][2]
+                    fps = shared_list[2 + index][3]
                     is_online = shared_list[2 + config.number_of_strips + index]
                     total_number_of_lines += self.printStrip(
                                                 self.strip_offset + (index * 7 + total_number_of_lines),
                                                 is_online,
                                                 fps,
                                                 strip_config,
+                                                active_state,
                                                 pixels
                                             )
+
                 self.printHeader(self.header_offset)
 
                 if(self.has_to_draw_static_components):
                     self.has_to_draw_static_components = False
 
-                time.sleep(0.015)
+                self.waitForInput()
+
+                #time.sleep(0.015)

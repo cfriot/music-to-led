@@ -8,19 +8,19 @@ from helpers.audio.melbank import MelBank
 class AudioProcessing():
     def __init__(
         self,
-        fps = 60,
-        min_frequency=200,
-        max_frequency=12000,
-        sampling_rate=44100,
+        min_frequency = 200,
+        max_frequency = 12000,
+        sampling_rate = 44100,
         number_of_audio_samples = 24,
-        min_volume_threshold=1e-7,
-        n_rolling_history=4
+        min_volume_threshold = 1e-7,
+        n_rolling_history = 4,
+        framerate = 60
     ):
 
-        self.samples_per_frame = int(sampling_rate / fps)
+        self.samples_per_frame = int(sampling_rate / framerate)
         self.y_roll = np.random.rand(n_rolling_history, self.samples_per_frame) / 1e16
         self.min_volume_threshold = min_volume_threshold
-        self.melBank = MelBank(fps, min_frequency, max_frequency, sampling_rate, number_of_audio_samples, min_volume_threshold)
+        self.melBank = MelBank(framerate, min_frequency, max_frequency, sampling_rate, number_of_audio_samples, min_volume_threshold)
 
         self.fft_plot_filter = ExpFilter(
             np.tile(1e-1, number_of_audio_samples),

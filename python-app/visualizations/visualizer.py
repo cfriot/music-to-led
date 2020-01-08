@@ -7,16 +7,15 @@ from helpers.audio.expFilter import ExpFilter
 
 from visualizations.functions.sound.scroll import Scroll
 from visualizations.functions.sound.energy import Energy
-from visualizations.functions.sound.spectrum import Spectrum
-from visualizations.functions.sound.intensityChannels import IntensityChannels
+from visualizations.functions.sound.channelIntensity import ChannelIntensity
+from visualizations.functions.sound.channelFlash import ChannelFlash
 
-from visualizations.functions.midi.piano import Piano
-from visualizations.functions.midi.piano2 import Piano2
-from visualizations.functions.midi.envelope import Envelope
+from visualizations.functions.midi.pianoNote import PianoNote
+from visualizations.functions.midi.pianoScroll import PianoScroll
+from visualizations.functions.midi.pitchwheelFlash import PitchwheelFlash
 
 from visualizations.functions.time.alternateColors import AlternateColors
 from visualizations.functions.time.drawLine import DrawLine
-from visualizations.functions.time.neonFadeIn import NeonFadeIn
 
 from visualizations.functions.generic.full import Full
 from visualizations.functions.generic.fire import Fire
@@ -27,15 +26,21 @@ def clampToNewRange(value, old_min, old_max, new_min, new_max):
     new_value = (((value - old_min) * (new_max - new_min)) // (old_max - old_min)) + new_min
     return new_value
 
-class Visualizer(Full, AlternateColors, DrawLine, Scroll, IntensityChannels, Energy, Spectrum, Piano, Piano2, Fire, Envelope, NeonFadeIn):
+class Visualizer(Full, AlternateColors, DrawLine, Scroll, ChannelIntensity, ChannelFlash, Energy, PianoNote, PianoScroll, Fire, PitchwheelFlash):
 
     def __init__(self, config, index):
         """ The main class that contain all viz functions """
 
+        self.config = config
         self.strip_config = config.strips[index]
-        self.number_of_audio_samples = config.audio_ports[config.strips[index].active_audio_channel_index].number_of_audio_samples
+        self.strip_index = index
+        self.active_state_index = config.strips[index].active_state_index
+        self.active_state = config.states[self.active_state_index]
+
+        self.number_of_audio_samples = config.audio_ports[config.states[self.active_state_index].active_audio_channel_index].number_of_audio_samples
         self.timeSinceStart = config.timeSinceStart
-        self.time_interval_ms_interval = self.timeSinceStart.getMsIntervalFromBpm(self.strip_config.time_interval)
+        self.time_interval_ms_interval = self.timeSinceStart.getMsIntervalFromBpm(self.active_state.time_interval)
+
         self.initVizualiser()
         self.resetFrame()
 
@@ -43,10 +48,14 @@ class Visualizer(Full, AlternateColors, DrawLine, Scroll, IntensityChannels, Ene
         self.audio_data = []
         self.midi_datas = []
 
-        self.pixelReshaper = PixelReshaper(config.strips[index])
+        self.pixelReshaper = PixelReshaper(self.active_state)
 
     def initVizualiser(self):
-        self.number_of_pixels = self.strip_config.shapes[self.strip_config.active_shape_index].number_of_pixels
+
+        self.number_of_pixels = self.active_state.shapes[self.active_state.active_shape_index].number_of_pixels
+        self.active_state_index = self.config.strips[self.strip_index].active_state_index
+        self.active_state = self.config.states[self.active_state_index]
+
         self.gain = ExpFilter(
             np.tile(0.01, self.number_of_audio_samples),
             alpha_decay = 0.001,
@@ -54,12 +63,12 @@ class Visualizer(Full, AlternateColors, DrawLine, Scroll, IntensityChannels, Ene
         )
 
         self.initEnergy()
-        self.initIntensityChannels()
-        self.initSpectrum()
+        self.initChannelIntensity()
+        self.initChannelFlash()
 
-        self.initPiano()
-        self.initPiano2()
-        self.initEnvelope()
+        self.initPianoNote()
+        self.initPianoScroll()
+        self.initPitchwheelFlash()
 
         self.initAlternateColors()
 
@@ -90,44 +99,44 @@ class Visualizer(Full, AlternateColors, DrawLine, Scroll, IntensityChannels, Ene
 
     def drawFrame(self):
         """ Return current pixels """
-        self.audio_data = self.audio_datas[self.strip_config.active_audio_channel_index]
+        self.audio_data = self.audio_datas[self.active_state.active_audio_channel_index]
 
         pixels = []
 
         # SOUND BASED
-        if(self.strip_config.active_visualizer_effect == "scroll"):
+        if(self.active_state.active_visualizer_effect == "scroll"):
             pixels = self.visualizeScroll()
-        if(self.strip_config.active_visualizer_effect == "energy"):
+        if(self.active_state.active_visualizer_effect == "energy"):
             pixels = self.visualizeEnergy()
-        if(self.strip_config.active_visualizer_effect == "spectrum"):
-            pixels = self.visualizeSpectrum()
-        if(self.strip_config.active_visualizer_effect == "intensity_channels"):
-            pixels = self.visualizeIntensityChannels()
+        if(self.active_state.active_visualizer_effect == "channel_intensity"):
+            pixels = self.visualizeChannelIntensity()
+        if(self.active_state.active_visualizer_effect == "channel_flash"):
+            pixels = self.visualizeChannelFlash()
 
         # MIDI BASED
-        if(self.strip_config.active_visualizer_effect == "piano"):
-            pixels = self.visualizePiano()
-        if(self.strip_config.active_visualizer_effect == "piano2"):
-            pixels = self.visualizePiano2()
-        if(self.strip_config.active_visualizer_effect == "envelope"):
-            pixels = self.visualizeEnvelope()
+        if(self.active_state.active_visualizer_effect == "piano_scroll"):
+            pixels = self.visualizePianoScroll()
+        if(self.active_state.active_visualizer_effect == "piano_note"):
+            pixels = self.visualizePianoNote()
+        if(self.active_state.active_visualizer_effect == "pitchwheel_flash"):
+            pixels = self.visualizePitchwheelFlash()
 
         # TIME BASED
-        if(self.strip_config.active_visualizer_effect == "alternate_colors"):
-            pixels = self.visualizeAlternateColors()
-        if(self.strip_config.active_visualizer_effect == "alternate_colors_for_shapes"):
-            pixels = self.visualizeAlternateColorsForShapes()
-        if(self.strip_config.active_visualizer_effect == "draw_line"):
+        if(self.active_state.active_visualizer_effect == "alternate_color_chunks"):
+            pixels = self.visualizeAlternateColorChunks()
+        if(self.active_state.active_visualizer_effect == "alternate_color_shapes"):
+            pixels = self.visualizeAlternateColorShapes()
+        if(self.active_state.active_visualizer_effect == "draw_line"):
             pixels = self.visualizeDrawLine()
 
         # GENERIC
-        if(self.strip_config.active_visualizer_effect == "full"):
+        if(self.active_state.active_visualizer_effect == "full"):
             pixels = self.visualizeFull()
-        if(self.strip_config.active_visualizer_effect == "fade_to_black"):
+        if(self.active_state.active_visualizer_effect == "fade_to_black"):
             pixels = self.VisualizeFadeToBlack()
-        if(self.strip_config.active_visualizer_effect == "clear_frame"):
+        if(self.active_state.active_visualizer_effect == "clear_frame"):
             pixels = self.visualizeClear()
-        if(self.strip_config.active_visualizer_effect == "fire"):
+        if(self.active_state.active_visualizer_effect == "fire"):
             pixels = self.visualizeFire()
 
         return pixels

@@ -3,7 +3,7 @@
   # README AND DOC
     - Faire un helper imprimable sur piano
     - Bel exemple réel en gif
-    - Update de la doc pour fiter aux derniers changements
+    OK # - Update de la doc pour fiter aux derniers changements
 
   # VISUAL LANGUAGE
   # - définir chaque entitée et stabiliser en fonction
@@ -14,12 +14,12 @@
     OK -- gérer multiline
     OK -- gérer physicalshape
     OK -- gérer inférieur à min_width et resize
-    -- voir pour mieux gérer les refresh en cas de resize
 
   # FINIR MAIN
     OK # Faire le nouveau fichier de conf
     OK # --with-config :  lance le programme suivant le config à lemplacement donné
-    # Faire le systeme de states et permettre une modification rapide d'un state
+    OK # Faire le systeme de states
+    # permettre une modification rapide d'un state
 
   # STRESS TEST
    -- macbook
@@ -27,19 +27,22 @@
 
 # OPTIONAL
 
-    - Permettre l'utilisation sur clavier d'ordi histoire de test
-
+    # - voir pour mieux gérer les refresh en cas de resize
     # - Courbes d'acceleration sur les propagations type scroll
     # - Permettre l'utilisation sur clavier d'ordi histoire de test
     # Rendre midi et audio inputs comme serial, si port non existant, tentative de connection permanente
+
+    # dmx_lights:
+    #   -
+    #     name: ""
+    #     serial_port_name: ""
+    #     number_of_channels: 512
 
     # SUPER OPTIONNEL
     # Rendre le fire generic à color et speed ?
     # Faire un meteor ?
 
  -->
-
-
 
 <p align="center">
   <a href="https://github.com/tfrere/music-2-led" title="haxe.org"><img src="images/logo.svg" width="400"></a>
@@ -194,52 +197,42 @@ You can validate the config file with
 
 ```yml
 
+
 ---  # document start
 
-# Desired framerate
+# Desired framerate for all the strips
 
-fps: 60
+desirated_framerate: 60
 
-# Display the GUI or not.
+# Display the GUI
 
-display_interface: false
+display_interface: True
 
 # Audio ports
 # List of used audio ports
-# Can be listed with --list-devices
-# Can be changed with "Change audio channel"
+# Available ports can be listed with --list-devices
+# Can be changed with the option "Change audio channel"
 
 audio_ports:
   -
     name: Built-in Microphone
     min_frequency: 200
     max_frequency: 12000
-    sampling_rate: 44000
-    number_of_audio_samples: 24
-    min_volume_threshold: 1e-7
-    n_rolling_history: 4
 
 # Strips
 # They represents independant Arduino cases
 
 strips:
   -
-
     # Name of the strip
     # Only used in the GUI
 
     name: Led strip name
 
     # Name of the associated serial port
-    # Can be listed with --list-devices
+    # Available ports can be found with --list-devices
 
     serial_port_name: /dev/tty.usbserial-14210
-
-    # Maximum allowed brightness
-    # Can be used to limit the power consumption
-    # Check the Arduino part readme for more informations about it
-
-    max_brightness: 255
 
     # Midi channels
     # Can be listed with --list-devices
@@ -247,9 +240,93 @@ strips:
     # midi_ports_for_changing_mode : used for live changing modes
 
     midi_ports_for_visualization:
-      - Audio2Led Synth
+      - USB MIDI Interface
     midi_ports_for_changing_mode:
-      - Audio2Led ChangeMod
+      - LPK25
+
+    # Default state that have to be used on start up
+
+    active_state_index: 0
+
+    # Physical shape
+    # Represents the physical shape of the strip
+    # Only used in the GUI
+
+    physical_shape:
+      - 254
+
+# States
+# These are default states for strips
+# They contains all the variables that the visualizer need to run properly
+
+states:
+  -
+    # Name of the strip
+    # Only used in the GUI
+
+    name: "Mirrored Energy light blue"
+
+    # Visualizer function
+    # These functions can be found in the documentation below
+
+    active_visualizer_effect: energy
+
+    # The propagation curve is used to determine how scroll propagation will
+    # work
+
+    active_propagation_curve: ease_in
+
+    # Default audio channel
+
+    active_audio_channel_index: 0
+
+    # Filters
+
+    audio_channel_min_frequency: 200
+    audio_channel_max_frequency: 12000
+
+    # Shapes
+    # Represents virtual shape that are used by the visualizer
+    # Be sure they not contains odd numbers
+
+    shapes:
+      -
+        - 50
+        - 50
+
+    # Active shape index
+    # Determine what shape have to be used
+
+    active_shape_index: 0
+
+    # Available color schemes
+    # Can be changed via "Change color scheme" function
+    #
+    # You can call them using hexadecimal notation or using a real name according
+    # to the color list that can be found here ->
+    # python-app/helpers/color/colorSchemeFormatter.py
+
+    color_schemes:
+      -
+        - "#FF0000"
+        - "#00FF00"
+        - "#0000FF"
+      -
+        - red
+        - green
+        - blue
+
+    # Active color scheme index
+    # Determine what color scheme have to be used
+
+    active_color_scheme_index: 0
+
+
+    # Maximum allowed brightness
+    # Can be used to limit the power consumption
+    # Check the Arduino part readme for more informations about it
+
+    max_brightness: 255
 
     # Reverse and mirror mods
 
@@ -264,75 +341,6 @@ strips:
 
     chunk_size: 5
 
-    # Shapes
-    # Real shape : represents the physical shape of the strip
-    # Shapes : represents virtual shapes
-    # Be sure that both of them not contains odd numbers,
-    # it may cause crash
-
-    real_shape:
-      - 252
-    shapes:
-      -
-        - 126
-        - 126
-      -
-        - 62
-        - 62
-        - 62
-        - 62
-
-    # Available color schemes
-    # Can be changed via "Change color scheme"
-    # True colors names are available
-    # check the file python-app/helpers/color/colorSchemeFormatter.py
-    # for the complete list
-
-    color_schemes:
-      # pink blue
-      -
-        - "#FF00C8"
-        - "#00EDFF"
-      # orange blue
-      -
-        - "#FFA200"
-        - "#00C6FF"
-      # red green
-      -
-        - "#FF002E"
-        - "#00FFA4"
-      # purple green
-      -
-        - "#F900FF"
-        - "#22FF00"
-      # blue yellow
-      -
-        - "#0024FF"
-        - "#FFE500"
-      -
-        - red
-        - green
-        - blue
-      -
-        - red
-      -
-        - green
-      -
-        - blue
-      -
-        - white
-
-    # Default parameters for various stuff
-    # Be sure that you are not attempting to access to an index that not
-    # exists, it may cause crash
-
-    active_visualizer_mode: 0
-    active_audio_channel_index: 0
-    active_shape_index: 0
-    active_color_index: 0
-    active_color_scheme_index: 0
-    active_visualizer_effect: scroll
-
 ...  # document end
 
 ```
@@ -344,12 +352,12 @@ Music To Led has 16 visualization effects and 8 mods.
 
 They can be live changed via dedicated Midi channels. You can choose to use programs like Ableton Live to automate these changes or use a dedicated synthetiser / pad to change them manually during the show.
 
-**Principle**
+**Big principle**
 You have to send a midi note signal for activating / modifying effects. The table just after will show you the documentation.
 
 ## Effects
 
-There is four kind of effects. All the examples are based on a ["red", "green", "blue"] color scheme
+All the examples are based on a ["red", "green", "blue"] color scheme.
 
 ### Sound based
 
@@ -357,24 +365,24 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 |:--|:--|:--|:--|:--
 | 0 | C-2 | **Scroll** | - | ![scroll](images/scroll.gif)
 | 1 | C#-2 | **Energy** | - | ![energy](images/energy.gif)
-| 2 | D-2 | **Intensity** | - | ![intensity](images/intensity.gif)
-| 3 | D#-2 | **Light** | - | ![spectrum](images/spectrum.gif)
+| 2 | D-2 | **ChannelIntensity** | - | ![intensity](images/intensity.gif)
+| 3 | D#-2 | **ChannelFlash** | - | ![spectrum](images/envelope.gif)
 
 ### Midi based
 
 | *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
 |:--|:--|:--|:--|:--
-| 5 | F-2   | **Piano** | - | ![scroll](images/piano.gif)
-| 6 | F#-2  | **Piano2** | - | TO ADD
-| 7 | G-2   | **Envelope** | Color intensity based on pitch bend | ![scroll](images/envelope.gif)
+| 5 | F-2   | **PianoScroll** | - | ![scroll](images/piano.gif)
+| 6 | F#-2  | **PianoNote** | - | TO ADD
+| 7 | G-2   | **PitchwheelFlash** | Color intensity based on pitch bend | ![scroll](images/envelope.gif)
 | 8 | G#-2  | - | - | ![scroll](images/nothing.gif)
 
 ### Time based
 
 | *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
 |:--|:--|:--|:--|:--
-| 10 | A#-2   | **AlternateColors** | Chunk size based on velocity | ![scroll](images/alternate-chunks.gif)
-| 11 | B-2    | **AlternateColorsForStrips** | - | ![scroll](images/alternate-strips.gif)
+| 10 | A#-2   | **AlternateColorChunks** | Chunk size based on velocity | ![scroll](images/alternate-chunks.gif)
+| 11 | B-2    | **AlternateColorShapes** | - | ![scroll](images/alternate-strips.gif)
 | 12 | C-1    | **DrawLine** | - | ![scroll](images/nothing.gif)
 | 13 | C#-1   | - | - | ![scroll](images/nothing.gif)
 
@@ -399,6 +407,7 @@ There is four kind of effects. All the examples are based on a ["red", "green", 
 | 25 | C#-0  | **Change audio channel** | Update based on velocity | ![scroll](images/nothing.gif)
 | 26 | D-0 | **Change max Brightness** | Update based on velocity | ![scroll](images/nothing.gif)
 | 27 | D#-0 | **Change chunk size** | Update based on velocity | ![scroll](images/nothing.gif)
+| 28 | D#-0 | **Change state** | Update based on velocity | ![scroll](images/nothing.gif)
 
 
 # Credits
@@ -409,9 +418,14 @@ If you have any idea to improve this project or any problem using this, please f
 
 # Future Roadmap
 
-- Beat detection with aubio
-- Add some
-- Change audio library ?
+By priority order
+
+- Handle more than the WS2812B led strip
+- DMX handling
+- Effect mixer
+- Electron interface
+- Rewrite audio acquisition part
+- Beat detection with Aubio
 
 # License
 This project was developed by Thibaud FRERE and is released
