@@ -17,7 +17,9 @@ from visualizations.functions.midi.pitchwheelFlash import PitchwheelFlash
 from visualizations.functions.time.alternateColors import AlternateColors
 from visualizations.functions.time.drawLine import DrawLine
 
-from visualizations.functions.generic.full import Full
+from visualizations.functions.generic.fullColor import FullColor
+from visualizations.functions.generic.fadeOut import FadeOut
+from visualizations.functions.generic.clear import Clear
 from visualizations.functions.generic.fire import Fire
 
 from scipy.ndimage.filters import gaussian_filter1d
@@ -26,7 +28,7 @@ def clampToNewRange(value, old_min, old_max, new_min, new_max):
     new_value = (((value - old_min) * (new_max - new_min)) // (old_max - old_min)) + new_min
     return new_value
 
-class Visualizer(Full, AlternateColors, DrawLine, Scroll, ChannelIntensity, ChannelFlash, Energy, PianoNote, PianoScroll, Fire, PitchwheelFlash):
+class Visualizer(FullColor, FadeOut, Clear, AlternateColors, DrawLine, Scroll, ChannelIntensity, ChannelFlash, Energy, PianoNote, PianoScroll, Fire, PitchwheelFlash):
 
     def __init__(self, config, index):
         """ The main class that contain all viz functions """
@@ -72,7 +74,8 @@ class Visualizer(Full, AlternateColors, DrawLine, Scroll, ChannelIntensity, Chan
 
         self.initAlternateColors()
 
-        self.initFull()
+        self.initFullColor()
+        self.initFadeOut()
         self.initFire()
 
     @staticmethod
@@ -90,6 +93,9 @@ class Visualizer(Full, AlternateColors, DrawLine, Scroll, ChannelIntensity, Chan
         return pixels
 
     def applyMaxBrightness(self, pixels, max_brightness):
+
+        # self.pixels = np.clip(self.pixels, 0, 255)
+
         tmp = [[],[],[]]
         for i in range(3):
             for y in range(len(pixels[0])):
@@ -106,37 +112,41 @@ class Visualizer(Full, AlternateColors, DrawLine, Scroll, ChannelIntensity, Chan
         # SOUND BASED
         if(self.active_state.active_visualizer_effect == "scroll"):
             pixels = self.visualizeScroll()
-        if(self.active_state.active_visualizer_effect == "energy"):
+        elif(self.active_state.active_visualizer_effect == "energy"):
             pixels = self.visualizeEnergy()
-        if(self.active_state.active_visualizer_effect == "channel_intensity"):
+        elif(self.active_state.active_visualizer_effect == "channel_intensity"):
             pixels = self.visualizeChannelIntensity()
-        if(self.active_state.active_visualizer_effect == "channel_flash"):
+        elif(self.active_state.active_visualizer_effect == "channel_flash"):
             pixels = self.visualizeChannelFlash()
 
         # MIDI BASED
-        if(self.active_state.active_visualizer_effect == "piano_scroll"):
+        elif(self.active_state.active_visualizer_effect == "piano_scroll"):
             pixels = self.visualizePianoScroll()
-        if(self.active_state.active_visualizer_effect == "piano_note"):
+        elif(self.active_state.active_visualizer_effect == "piano_note"):
             pixels = self.visualizePianoNote()
-        if(self.active_state.active_visualizer_effect == "pitchwheel_flash"):
+        elif(self.active_state.active_visualizer_effect == "pitchwheel_flash"):
             pixels = self.visualizePitchwheelFlash()
 
         # TIME BASED
-        if(self.active_state.active_visualizer_effect == "alternate_color_chunks"):
+        elif(self.active_state.active_visualizer_effect == "alternate_color_chunks"):
             pixels = self.visualizeAlternateColorChunks()
-        if(self.active_state.active_visualizer_effect == "alternate_color_shapes"):
+        elif(self.active_state.active_visualizer_effect == "alternate_color_shapes"):
             pixels = self.visualizeAlternateColorShapes()
-        if(self.active_state.active_visualizer_effect == "draw_line"):
+        elif(self.active_state.active_visualizer_effect == "draw_line"):
             pixels = self.visualizeDrawLine()
 
         # GENERIC
-        if(self.active_state.active_visualizer_effect == "full"):
-            pixels = self.visualizeFull()
-        if(self.active_state.active_visualizer_effect == "fade_to_black"):
-            pixels = self.VisualizeFadeToBlack()
-        if(self.active_state.active_visualizer_effect == "clear_frame"):
+        elif(self.active_state.active_visualizer_effect == "full_color"):
+            pixels = self.visualizeFullColor()
+        elif(self.active_state.active_visualizer_effect == "fade_out"):
+            pixels = self.VisualizeFadeOut()
+        elif(self.active_state.active_visualizer_effect == "clear_frame"):
             pixels = self.visualizeClear()
-        if(self.active_state.active_visualizer_effect == "fire"):
+        elif(self.active_state.active_visualizer_effect == "fire"):
             pixels = self.visualizeFire()
+
+        else:
+            print("Oops... There is no visualization function that match with the active visualizer effect")
+            pixels = self.visualizeClear()
 
         return pixels

@@ -6,7 +6,7 @@
     OK # - Update de la doc pour fiter aux derniers changements
 
   # VISUAL LANGUAGE
-  # - définir chaque entitée et stabiliser en fonction
+    OK # - définir chaque entitée et stabiliser en fonction
 
   # BLESSED  GUI
     OK -- Terminer le print de pixels en ajoutant les splits sur pixels
@@ -19,7 +19,8 @@
     OK # Faire le nouveau fichier de conf
     OK # --with-config :  lance le programme suivant le config à lemplacement donné
     OK # Faire le systeme de states
-    # permettre une modification rapide d'un state
+    OK # permettre une modification rapide d'un state
+    - Make State system work properly
 
   # STRESS TEST
    -- macbook

@@ -72,6 +72,14 @@ class ShapeConfig() :
         for pixel_number in self.shape:
             self.number_of_pixels += pixel_number
 
+        self.offsets = []
+        for i, bock_size in enumerate(self.shape):
+            if(i - 1 >= 0):
+                self.offsets.append(bock_size + self.offsets[i - 1])
+            else:
+                self.offsets.append(bock_size)
+
+
     def print(self):
         print("--")
         print("----------------")
@@ -80,6 +88,7 @@ class ShapeConfig() :
         print("shape -> ", self.shape)
         print("number_of_substrip -> ", self.number_of_substrip)
         print("number_of_pixels -> ", self.number_of_pixels)
+        print("shape chunks offset -> ", self.offsets)
         print("----------------")
         print("--")
 
@@ -171,7 +180,9 @@ class StripConfig() :
         self.is_online = is_online
         self.midi_ports_for_changing_mode = midi_ports_for_changing_mode
         self.midi_ports_for_visualization = midi_ports_for_visualization
+        print(physical_shape)
         self.physical_shape = ShapeConfig(physical_shape)
+        self.physical_shape.print()
         self.active_state_index = active_state_index
 
         if(debug):

@@ -1,6 +1,4 @@
-# Python app
-
-If you encounter any problems running program, please open a new issue. Also, please consider opening an issue if you have any questions or suggestions for improving the installation process.
+# Python installlation for developement purpose
 
 Code is compatible with Python 3.7.
 
@@ -8,10 +6,6 @@ Code is compatible with Python 3.7.
 pip install -r requirements.txt
 conda install --file requirements.txt
 ```
-
-
-# CROSS COMPATIBILITY STUFF
-# - Passer sur audiodevice par rapport a pyaudio
 
 ## Deploy on raspberrypi
 
@@ -48,3 +42,11 @@ sudo apt-get install python3-pyaudio
 sudo apt-get install python3-rtmidi
 sudo apt-get install libatlas-base-dev
 sudo apt-get install python3-numpy
+
+# Release
+
+
+
+# Contribute
+
+If you encounter any problems running program, please open a new issue. Also, please consider opening an issue if you have any questions or suggestions for improving the installation process.

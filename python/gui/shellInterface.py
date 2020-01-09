@@ -151,7 +151,7 @@ class ShellInterface():
             offset = (x - 1, self.audio_offset)
             size = (29, 4)
             self.drawBox(offset, size, self.rgb_border_color)
-            self.echo(self.term.move(y + 2, 0) + self.textWithColor(50,50,50,"├" + ("─" * (29 - 2)) + "┤"))
+            self.echo(self.term.move(y + 2, x - 1) + self.textWithColor(50,50,50,"├" + ("─" * (29 - 2)) + "┤"))
 
         self.echo(self.term.move(y + 1, x + 1) + name)
 
