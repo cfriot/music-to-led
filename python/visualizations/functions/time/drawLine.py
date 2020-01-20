@@ -6,8 +6,6 @@ class DrawLine():
         """Effect that alternate two colors moving forward"""
         color_scheme = self.active_state.formatted_color_schemes[self.active_state.active_color_scheme_index]
 
-        print(self.active_state.time_interval)
-
         self.pixels = np.roll(
             self.pixels, int(1 * (self.active_state.time_interval / 100)) + 1, axis=1)
 

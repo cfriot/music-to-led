@@ -115,35 +115,26 @@ class Visualizer(FullColor, FadeOut, Clear, AlternateColors, TransitionColors, D
 
         # MIDI BASED
         elif(self.active_state.active_visualizer_effect == "piano_scroll"):
-            self.resetFrame()
             pixels = self.visualizePianoScroll()
         elif(self.active_state.active_visualizer_effect == "piano_note"):
-            self.resetFrame()
             pixels = self.visualizePianoNote()
         elif(self.active_state.active_visualizer_effect == "pitchwheel_flash"):
-            self.resetFrame()
             pixels = self.visualizePitchwheelFlash()
 
         # TIME BASED
         elif(self.active_state.active_visualizer_effect == "alternate_color_chunks"):
-            self.drawAlternateColorChunks()
             pixels = self.visualizeAlternateColorChunks()
         elif(self.active_state.active_visualizer_effect == "alternate_color_shapes"):
             pixels = self.visualizeAlternateColorShapes()
         elif(self.active_state.active_visualizer_effect == "transition_color_shapes"):
             pixels = self.visualizeTransitionColorShapes()
         elif(self.active_state.active_visualizer_effect == "draw_line"):
-            self.resetFrame()
             pixels = self.visualizeDrawLine()
 
         # GENERIC
         elif(self.active_state.active_visualizer_effect == "full_color"):
-            self.old_full_intensity = 0
-            self.old_fade_out_intensity = 0
             pixels = self.visualizeFullColor()
         elif(self.active_state.active_visualizer_effect == "fade_out"):
-            self.old_full_intensity = 1
-            self.old_fade_out_intensity = 1
             pixels = self.VisualizeFadeOut()
         elif(self.active_state.active_visualizer_effect == "clear_frame"):
             pixels = self.visualizeClear()

@@ -12,8 +12,6 @@ class AlternateColors():
         which_color = 0
         self.alternateColorsInterval = self.timeSinceStart.getMsIntervalFromBpm(self.active_state.time_interval)
 
-        print(self.alternateColorsInterval)
-
         if(self.active_state.chunk_size == 0):
             self.active_state.chunk_size = 1
 

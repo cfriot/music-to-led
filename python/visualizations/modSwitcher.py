@@ -55,27 +55,36 @@ class ModSwitcher:
 
                         # MIDI BASED
                         elif(mode == 4):
+                            self.visualizer.resetFrame()
                             self.active_state.active_visualizer_effect = "piano_scroll"
                         elif(mode == 5):
+                            self.visualizer.resetFrame()
                             self.active_state.active_visualizer_effect = "piano_note"
                         elif(mode == 6):
+                            self.visualizer.resetFrame()
                             self.active_state.active_visualizer_effect = "pitchwheel_flash"
                         elif(mode == 7):
                             self.logger(self.strip_config.name, "Empty slot. This note is not assigned to any effect...")
 
                         # TIME BASED
                         elif(mode == 8):
+                            self.visualizer.drawAlternateColorChunks()
                             self.active_state.active_visualizer_effect = "alternate_color_chunks"
                         elif(mode == 9):
                             self.active_state.active_visualizer_effect = "alternate_color_shapes"
                         elif(mode == 10):
                             self.active_state.active_visualizer_effect = "transition_color_shapes"
                         elif(mode == 11):
+                            self.visualizer.resetFrame()
                             self.active_state.active_visualizer_effect = "draw_line"
                         # GENERIC
                         elif(mode == 12):
+                            self.visualizer.old_full_intensity = 0
+                            self.visualizer.old_fade_out_intensity = 0
                             self.active_state.active_visualizer_effect = "full_color"
                         elif(mode == 13):
+                            self.visualizer.old_full_intensity = 1
+                            self.visualizer.old_fade_out_intensity = 1
                             self.active_state.active_visualizer_effect = "fade_out"
                         elif(mode == 14):
                             self.active_state.active_visualizer_effect = "clear_frame"
