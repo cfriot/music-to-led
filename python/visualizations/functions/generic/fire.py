@@ -11,10 +11,6 @@ def qadd8(i, j):
     if( t > 255): t = 255
     return t
 
-def clampToNewRange(OldValue, OldMin, OldMax, NewMin, NewMax):
-    NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) // (OldMax - OldMin)) + NewMin
-    return NewValue
-
 def scale8(i, scale):
     return (i * scale) >> 8
 
@@ -42,7 +38,7 @@ class Fire():
     def heatColor(temperature):
 
         heatColor = [0, 0, 0]
-        # t192 = clampToNewRange(temperature, 0, 255, 0, 192)
+        # t192 = self.clampToNewRange(temperature, 0, 255, 0, 192)
         t192 = scale8(temperature, 192)
 
         heatramp = t192 & 0x3F # 0..63

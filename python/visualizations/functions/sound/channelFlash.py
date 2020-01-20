@@ -3,7 +3,6 @@ import numpy as np
 
 from helpers.audio.expFilter import ExpFilter
 
-
 class ChannelFlash():
 
     def initChannelFlash(self):

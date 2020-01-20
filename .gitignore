@@ -17,7 +17,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-
+.vscode
 # Tests
 tests/
 python-app/visualizations/functions/experiments

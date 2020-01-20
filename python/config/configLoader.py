@@ -1,6 +1,6 @@
 import yaml, json, sys, os
 import numpy as np
-
+from copy import deepcopy
 
 from helpers.time.timeSinceStart import TimeSinceStart
 from helpers.color.colorSchemeFormatter import ColorSchemeFormatter
@@ -101,6 +101,7 @@ class StateConfig() :
         max_brightness = 120,
         active_visualizer_effect = "scroll",
         shapes = [[26,26],[12,12]],
+        number_of_shapes = 0,
         active_audio_channel_index = 0,
         active_shape_index = 0,
         is_reverse = False,
@@ -116,11 +117,14 @@ class StateConfig() :
         self.active_audio_channel_index = active_audio_channel_index
 
         self.active_shape_index = active_shape_index
-        self.shapes = []
-        for shape in shapes:
-            self.shapes.append(ShapeConfig(shape))
-        self.number_of_shapes = len(self.shapes)
-
+        self.number_of_shapes = number_of_shapes
+        if isinstance(shapes[0], list):
+            self.shapes = []
+            for shape in shapes:
+                self.shapes.append(ShapeConfig(shape))
+            self.number_of_shapes = len(self.shapes)
+        else:
+            self.shapes = shapes
         self.active_visualizer_effect = active_visualizer_effect
         self.max_brightness = max_brightness
 
@@ -138,6 +142,23 @@ class StateConfig() :
         colorSchemeFormatter = ColorSchemeFormatter()
         for scheme in self.color_schemes:
             self.formatted_color_schemes.append(colorSchemeFormatter.render(scheme))
+
+    def copy(self):
+        return StateConfig(
+            self.name,
+            self.max_brightness,
+            self.active_visualizer_effect,
+            self.shapes,
+            self.number_of_shapes,
+            self.active_audio_channel_index,
+            self.active_shape_index,
+            self.is_reverse,
+            self.time_interval,
+            self.chunk_size,
+            self.is_mirror,
+            self.active_color_scheme_index,
+            self.color_schemes
+        )
 
     def print(self):
         print("--")
@@ -171,6 +192,7 @@ class StripConfig() :
         midi_ports_for_changing_mode = [],
         midi_ports_for_visualization = [],
         active_state_index = 0,
+        active_state = 0,
         physical_shape = [20,20],
         debug = False
     ):
@@ -180,10 +202,10 @@ class StripConfig() :
         self.is_online = is_online
         self.midi_ports_for_changing_mode = midi_ports_for_changing_mode
         self.midi_ports_for_visualization = midi_ports_for_visualization
-        print(physical_shape)
         self.physical_shape = ShapeConfig(physical_shape)
-        self.physical_shape.print()
         self.active_state_index = active_state_index
+        self.active_state = active_state.copy()
+
 
         if(debug):
             SerialOutput.tryPort(serial_port_name)
@@ -266,21 +288,6 @@ class Config():
             )
         self.number_of_audio_ports = len(self.audio_ports)
 
-        self.strips = []
-        for strip in strips :
-            self.strips.append(
-                StripConfig(
-                    name = strip["name"],
-                    serial_port_name = strip["serial_port_name"],
-                    is_online = False,
-                    midi_ports_for_changing_mode = strip["midi_ports_for_changing_mode"],
-                    midi_ports_for_visualization = strip["midi_ports_for_visualization"],
-                    physical_shape = strip["physical_shape"],
-                    active_state_index = strip["active_state_index"],
-                    debug = debug
-                )
-            )
-        self.number_of_strips = len(self.strips)
         self.states = []
         for state in states :
             self.states.append(
@@ -301,6 +308,23 @@ class Config():
                 )
             )
         self.number_of_states = len(self.states)
+
+        self.strips = []
+        for strip in strips :
+            self.strips.append(
+                StripConfig(
+                    name = strip["name"],
+                    serial_port_name = strip["serial_port_name"],
+                    is_online = False,
+                    midi_ports_for_changing_mode = strip["midi_ports_for_changing_mode"],
+                    midi_ports_for_visualization = strip["midi_ports_for_visualization"],
+                    physical_shape = strip["physical_shape"],
+                    active_state_index = strip["active_state_index"],
+                    active_state = self.states[strip["active_state_index"]],
+                    debug = debug
+                )
+            )
+        self.number_of_strips = len(self.strips)
 
 
     def getJsonFromConfig(self):
@@ -363,7 +387,6 @@ class ConfigLoader():
         except IOError:
             print("Cannot load this config file. Please check your path.")
             quit()
-
 
     @staticmethod
     def testConfig(path=os.path.abspath(os.path.dirname(sys.argv[0])) + '/../CONFIG.yml', verbose=False):

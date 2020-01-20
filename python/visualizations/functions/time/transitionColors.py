@@ -1,18 +1,16 @@
 import numpy as np
 
-class AlternateColors():
+class TransitionColors():
 
-    def initAlternateColors(self):
+    def initTransitionColorShapes(self):
         self.alternate_colors_index = 0
 
-    def drawAlternateColorChunks(self):
+    def drawTransitionColorShapes(self):
 
         color_scheme = self.active_state.formatted_color_schemes[self.active_state.active_color_scheme_index]
 
         which_color = 0
         self.alternateColorsInterval = self.timeSinceStart.getMsIntervalFromBpm(self.active_state.time_interval)
-
-        print(self.alternateColorsInterval)
 
         if(self.active_state.chunk_size == 0):
             self.active_state.chunk_size = 1
@@ -26,15 +24,11 @@ class AlternateColors():
             self.pixels[1][i] = color_scheme[which_color][1]
             self.pixels[2][i] = color_scheme[which_color][2]
 
-    def visualizeAlternateColorChunks(self):
+    def visualizeTransitionColorShapes(self):
         """Effect that alternate two colors moving forward"""
 
-        self.pixels = np.roll(
-            self.pixels, int(1 * (self.active_state.time_interval / 100)) + 1, axis=1)
-        return self.pixelReshaper.reshapeFromPixels(self.pixels)
-
-    def visualizeAlternateColorShapes(self):
-        """Effect that alternate two colors moving forward"""
+        # TO DO
+        
         color_scheme = self.active_state.formatted_color_schemes[self.active_state.active_color_scheme_index]
 
         interval = self.timeSinceStart.getMsIntervalFromBpm(self.active_state.time_interval)

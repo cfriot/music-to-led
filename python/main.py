@@ -1,4 +1,4 @@
-import sys, os, struct, serial, time, glob, multiprocessing, logging, argparse
+import sys, os, time, multiprocessing, argparse
 import concurrent.futures
 from multiprocessing import Pool
 import numpy as np
@@ -18,23 +18,45 @@ from inputs.midiInput import MidiInput
 from outputs.serialOutput import SerialOutput
 
 from visualizations.visualizer import Visualizer
-from visualizations.pixelReshaper import PixelReshaper
 from visualizations.modSwitcher import ModSwitcher
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("--list-devices", help="List available devices.", action="store_true")
+parser.add_argument(
+    "--list-devices",
+    help="List available devices.",
+    action="store_true"
+)
 
-parser.add_argument("--test-audio-device", help="Test a given audio port.", type=str, metavar="PORT_NAME")
-parser.add_argument("--test-midi-device", help="Test a given midi port.", type=str, metavar="PORT_NAME")
-parser.add_argument("--test-serial-device", help="Test a given serial port.", type=str, metavar="PORT_NAME")
+parser.add_argument(
+    "--test-audio-device",
+    help="Test a given audio port.",
+    type=str,
+    metavar="PORT_NAME"
+)
+parser.add_argument(
+    "--test-midi-device",
+    help="Test a given midi port.",
+    type=str,
+    metavar="PORT_NAME"
+)
+parser.add_argument(
+    "--test-serial-device",
+    help="Test a given serial port.",
+    type=str,
+    metavar="PORT_NAME"
+)
 parser.add_argument(
     "--test-config-file",
     help="Test a given config file. If your type \"\", it will test the default config file.",
     metavar="FILE_PATH"
 )
 
-parser.add_argument("--single-strip", help="Launch on the first strip.", type=str)
+parser.add_argument(
+    "--single-strip",
+    help="Launch on the first strip.",
+    type=str
+)
 
 parser.add_argument(
     "--with-config-file",
@@ -133,9 +155,6 @@ elif not len(sys.argv) > 1:
             index
         )
 
-        serial_port_name = strip_config.serial_port_name
-        number_of_pixels = active_state.shapes[active_state.active_shape_index].number_of_pixels
-
         modSwitcher = ModSwitcher(
             visualizer,
             config,
@@ -158,11 +177,11 @@ elif not len(sys.argv) > 1:
             if(len(strip_config.midi_logs) > 10):
                 strip_config.midi_logs.pop(0)
 
-            modSwitcher.changeMod()
+            strip_config = modSwitcher.changeMod()
+            active_state = strip_config.active_state
 
             pixels = visualizer.drawFrame()
             pixels = visualizer.applyMaxBrightness(pixels, active_state.max_brightness)
-            pixels = np.clip(pixels, 0, 255).astype(int)
 
             shared_list[2 + index] = [pixels, strip_config, active_state, framerateCalculator.getFps()]
 

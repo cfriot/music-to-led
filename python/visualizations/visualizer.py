@@ -1,4 +1,7 @@
 import numpy as np
+
+from copy import deepcopy
+
 from scipy.ndimage.filters import gaussian_filter1d
 
 from visualizations.pixelReshaper import PixelReshaper
@@ -15,6 +18,7 @@ from visualizations.functions.midi.pianoScroll import PianoScroll
 from visualizations.functions.midi.pitchwheelFlash import PitchwheelFlash
 
 from visualizations.functions.time.alternateColors import AlternateColors
+from visualizations.functions.time.transitionColors import TransitionColors
 from visualizations.functions.time.drawLine import DrawLine
 
 from visualizations.functions.generic.fullColor import FullColor
@@ -24,39 +28,29 @@ from visualizations.functions.generic.fire import Fire
 
 from scipy.ndimage.filters import gaussian_filter1d
 
-def clampToNewRange(value, old_min, old_max, new_min, new_max):
-    new_value = (((value - old_min) * (new_max - new_min)) // (old_max - old_min)) + new_min
-    return new_value
 
-class Visualizer(FullColor, FadeOut, Clear, AlternateColors, DrawLine, Scroll, ChannelIntensity, ChannelFlash, Energy, PianoNote, PianoScroll, Fire, PitchwheelFlash):
+class Visualizer(FullColor, FadeOut, Clear, AlternateColors, TransitionColors, DrawLine, Scroll, ChannelIntensity, ChannelFlash, Energy, PianoNote, PianoScroll, Fire, PitchwheelFlash):
 
     def __init__(self, config, index):
         """ The main class that contain all viz functions """
 
         self.config = config
         self.strip_config = config.strips[index]
-        self.strip_index = index
-        self.active_state_index = config.strips[index].active_state_index
-        self.active_state = config.states[self.active_state_index]
-
-        self.number_of_audio_samples = config.audio_ports[config.states[self.active_state_index].active_audio_channel_index].number_of_audio_samples
-        self.timeSinceStart = config.timeSinceStart
-        self.time_interval_ms_interval = self.timeSinceStart.getMsIntervalFromBpm(self.active_state.time_interval)
-
-        self.initVizualiser()
-        self.resetFrame()
+        self.pixelReshaper = PixelReshaper(self.config, index)
 
         self.audio_datas = []
         self.audio_data = []
         self.midi_datas = []
 
-        self.pixelReshaper = PixelReshaper(self.active_state)
+        self.initVizualiser()
 
     def initVizualiser(self):
 
+        self.active_state = self.strip_config.active_state
         self.number_of_pixels = self.active_state.shapes[self.active_state.active_shape_index].number_of_pixels
-        self.active_state_index = self.config.strips[self.strip_index].active_state_index
-        self.active_state = self.config.states[self.active_state_index]
+
+        self.timeSinceStart = self.config.timeSinceStart
+        self.number_of_audio_samples = self.config.audio_ports[self.active_state.active_audio_channel_index].number_of_audio_samples
 
         self.gain = ExpFilter(
             np.tile(0.01, self.number_of_audio_samples),
@@ -77,6 +71,14 @@ class Visualizer(FullColor, FadeOut, Clear, AlternateColors, DrawLine, Scroll, C
         self.initFullColor()
         self.initFadeOut()
         self.initFire()
+        self.resetFrame()
+
+        self.pixelReshaper.initActiveShape()
+
+    @staticmethod
+    def clampToNewRange(value, old_min, old_max, new_min, new_max):
+        new_value = (((value - old_min) * (new_max - new_min)) // (old_max - old_min)) + new_min
+        return new_value
 
     @staticmethod
     def lerp(start, end, d):
@@ -93,15 +95,7 @@ class Visualizer(FullColor, FadeOut, Clear, AlternateColors, DrawLine, Scroll, C
         return pixels
 
     def applyMaxBrightness(self, pixels, max_brightness):
-
-        # self.pixels = np.clip(self.pixels, 0, 255)
-
-        tmp = [[],[],[]]
-        for i in range(3):
-            for y in range(len(pixels[0])):
-                tmp[i].append(clampToNewRange(pixels[i][y], 0, 255, 0, max_brightness))
-            tmp[i] = np.array(tmp[i])
-        return tmp
+        return np.clip(pixels, 0, max_brightness)
 
     def drawFrame(self):
         """ Return current pixels """
@@ -121,24 +115,35 @@ class Visualizer(FullColor, FadeOut, Clear, AlternateColors, DrawLine, Scroll, C
 
         # MIDI BASED
         elif(self.active_state.active_visualizer_effect == "piano_scroll"):
+            self.resetFrame()
             pixels = self.visualizePianoScroll()
         elif(self.active_state.active_visualizer_effect == "piano_note"):
+            self.resetFrame()
             pixels = self.visualizePianoNote()
         elif(self.active_state.active_visualizer_effect == "pitchwheel_flash"):
+            self.resetFrame()
             pixels = self.visualizePitchwheelFlash()
 
         # TIME BASED
         elif(self.active_state.active_visualizer_effect == "alternate_color_chunks"):
+            self.drawAlternateColorChunks()
             pixels = self.visualizeAlternateColorChunks()
         elif(self.active_state.active_visualizer_effect == "alternate_color_shapes"):
             pixels = self.visualizeAlternateColorShapes()
+        elif(self.active_state.active_visualizer_effect == "transition_color_shapes"):
+            pixels = self.visualizeTransitionColorShapes()
         elif(self.active_state.active_visualizer_effect == "draw_line"):
+            self.resetFrame()
             pixels = self.visualizeDrawLine()
 
         # GENERIC
         elif(self.active_state.active_visualizer_effect == "full_color"):
+            self.old_full_intensity = 0
+            self.old_fade_out_intensity = 0
             pixels = self.visualizeFullColor()
         elif(self.active_state.active_visualizer_effect == "fade_out"):
+            self.old_full_intensity = 1
+            self.old_fade_out_intensity = 1
             pixels = self.VisualizeFadeOut()
         elif(self.active_state.active_visualizer_effect == "clear_frame"):
             pixels = self.visualizeClear()

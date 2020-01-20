@@ -21,7 +21,6 @@ from visualizations.visualizer import Visualizer
 from visualizations.pixelReshaper import PixelReshaper
 from visualizations.modSwitcher import ModSwitcher
 
-
 configLoader = ConfigLoader("./CONFIG.yml")
 
 strip_name = "Front Desk"
@@ -31,7 +30,8 @@ print("Launching -> ", strip_name)
 config = configLoader.data
 index = configLoader.findStripIndexByStripName(strip_name)
 strip_config = config.strips[index]
-active_state = config.states[strip_config.active_state_index]
+active_state = strip_config.active_state
+print(active_state)
 
 audioDispatcher = AudioDispatcher(
                     audio_ports = config.audio_ports,
@@ -77,11 +77,12 @@ while 1:
     modSwitcher.midi_datas = midiDispacther.midi_datas_for_changing_mode
     visualizer.midi_datas =  midiDispacther.midi_datas_for_visualization
 
-    modSwitcher.changeMod()
+    strip_config = modSwitcher.changeMod()
+    # print("main ")
+    # print(strip_config)
 
     pixels = visualizer.drawFrame()
     pixels = visualizer.applyMaxBrightness(pixels, active_state.max_brightness)
-    pixels = np.clip(pixels, 0, 255).astype(int)
 
     serialOutput.update(
         pixels

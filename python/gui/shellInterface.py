@@ -171,10 +171,10 @@ class ShellInterface():
         if(self.has_to_draw_static_components):
             total_number_of_lines = self.getTotalLinesOfStrip(strip_config)
             offset = (0, y)
-            size = (self.min_width, 6 + total_number_of_lines)
+            size = (self.min_width, 7 + total_number_of_lines)
             self.drawBox(offset, size, self.rgb_border_color)
             self.echo(self.term.move(offset[1] + 2, 0) + self.textWithColor(50,50,50,"├" + ("─" * (self.min_width - 2)) + "┤"))
-            self.echo(self.term.move(offset[1] + 5, 0) + self.textWithColor(50,50,50,"├" + ("─" * (self.min_width - 2)) + "┤"))
+            self.echo(self.term.move(offset[1] + 6, 0) + self.textWithColor(50,50,50,"├" + ("─" * (self.min_width - 2)) + "┤"))
 
         is_connected = self.textWithColor(0, 255, 0, ' ⬤ online') if is_connected else self.textWithColor(255, 0, 0, ' ⬤ offline')
         is_connected_str = is_connected + self.textWithColor(100, 100, 100, ' at ') + str(framerate) + self.textWithColor(100, 100, 100, ' FPS ')
@@ -192,40 +192,43 @@ class ShellInterface():
                                     + "                                                                        ")
         self.echo(self.term.move(y + 1, 2) + strip_config.name
                                     + self.textWithColor(100, 100, 100, ' on port ')
-                                    + strip_config.serial_port_name
-                                    + self.textWithColor(100, 100, 100, ' with ')
-                                    + active_state.active_visualizer_effect
-                                    + self.textWithColor(100, 100, 100, ' visualizer'))
+                                    + strip_config.serial_port_name)
+
         self.echo(self.term.move(y + 1, self.min_width - 22) + is_connected_str)
 
-        self.echo(self.term.move(y + 3, 2) + self.textWithColor(100, 100, 100, 'audio channel'))
-        self.echo(self.term.move(y + 4, 2) + "                    ")
-        self.echo(self.term.move(y + 4, 2) + self.config.audio_ports[active_state.active_audio_channel_index].name)
+        self.echo(self.term.move(y + 3, 2) + self.textWithColor(100, 100, 100, 'state ')
+                                    + active_state.name
+                                    + self.textWithColor(100, 100, 100, ' with visualizer ')
+                                    + active_state.active_visualizer_effect)
 
-        self.echo(self.term.move(y + 3, 24) + self.textWithColor(100, 100, 100, 'color scheme'))
-        self.echo(self.term.move(y + 4, 24) + "                    ")
-        self.echo(self.term.move(y + 4, 24) + color_scheme)
+        self.echo(self.term.move(y + 4, 2) + self.textWithColor(100, 100, 100, 'audio channel'))
+        self.echo(self.term.move(y + 5, 2) + "                    ")
+        self.echo(self.term.move(y + 5, 2) + self.config.audio_ports[active_state.active_audio_channel_index].name)
 
-        self.echo(self.term.move(y + 3, 42) + self.textWithColor(100, 100, 100, 'shape'))
-        self.echo(self.term.move(y + 4, 42) + "                    ")
-        self.echo(self.term.move(y + 4, 42) + shape)
+        self.echo(self.term.move(y + 4, 24) + self.textWithColor(100, 100, 100, 'color scheme'))
+        self.echo(self.term.move(y + 5, 24) + "                    ")
+        self.echo(self.term.move(y + 5, 24) + color_scheme)
 
-        self.echo(self.term.move(y + 3, 69) + self.textWithColor(100, 100, 100, 'time_interval'))
-        self.echo(self.term.move(y + 4, 69) + "                    ")
-        self.echo(self.term.move(y + 4, 69) + str(active_state.time_interval))
+        self.echo(self.term.move(y + 4, 42) + self.textWithColor(100, 100, 100, 'shape'))
+        self.echo(self.term.move(y + 5, 42) + "                    ")
+        self.echo(self.term.move(y + 5, 42) + shape)
 
-        self.echo(self.term.move(y + 3, 85) + self.textWithColor(100, 100, 100, 'brightness'))
-        self.echo(self.term.move(y + 4, 85) + "                    ")
-        self.echo(self.term.move(y + 4, 85) + str(active_state.max_brightness))
+        self.echo(self.term.move(y + 4, 69) + self.textWithColor(100, 100, 100, 'time_interval'))
+        self.echo(self.term.move(y + 5, 69) + "                    ")
+        self.echo(self.term.move(y + 5, 69) + str(active_state.time_interval))
 
-        self.echo(self.term.move(y + 3, 97) + self.textWithColor(100, 100, 100, 'chunk_size'))
-        self.echo(self.term.move(y + 4, 97) + "                    ")
-        self.echo(self.term.move(y + 4, 97) + str(active_state.chunk_size))
+        self.echo(self.term.move(y + 4, 85) + self.textWithColor(100, 100, 100, 'brightness'))
+        self.echo(self.term.move(y + 5, 85) + "                    ")
+        self.echo(self.term.move(y + 5, 85) + str(active_state.max_brightness))
 
-        self.echo(self.term.move(y + 3, 110) + mirror_mode)
-        self.echo(self.term.move(y + 3, 120) + reverse_mode)
+        self.echo(self.term.move(y + 4, 97) + self.textWithColor(100, 100, 100, 'chunk_size'))
+        self.echo(self.term.move(y + 5, 97) + "                    ")
+        self.echo(self.term.move(y + 5, 97) + str(active_state.chunk_size))
 
-        total_number_of_lines = self.printPixels(y + 6, 2, strip_config, pixels)
+        self.echo(self.term.move(y + 4, 110) + mirror_mode)
+        self.echo(self.term.move(y + 4, 120) + reverse_mode)
+
+        total_number_of_lines = self.printPixels(y + 7, 2, strip_config, pixels)
         return total_number_of_lines
 
     def printChunk(self, y, x, strip_config, pixels, chunk_index):
@@ -331,7 +334,7 @@ class ShellInterface():
                     fps = shared_list[2 + index][3]
                     is_online = shared_list[2 + config.number_of_strips + index]
                     total_number_of_lines += self.printStrip(
-                                                self.strip_offset + (index * 7 + total_number_of_lines),
+                                                self.strip_offset + (index * 8 + total_number_of_lines),
                                                 is_online,
                                                 fps,
                                                 strip_config,

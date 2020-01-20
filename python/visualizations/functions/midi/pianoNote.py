@@ -3,10 +3,6 @@
 #
 # from scipy.ndimage.filters import gaussian_filter1d
 #
-# def clampToNewRange(value, old_min, old_max, new_min, new_max):
-#     new_value = (((value - old_min) * (new_max - new_min)) // (old_max - old_min)) + new_min
-#     return new_value
-#
 # def putPixel(strip, ledIndex, r, g, b, velocity):
 #     # if(ledIndex < len(strip[0]) and ledIndex > -len(strip[0])):
 #     if(ledIndex < len(strip[0]) and ledIndex > 0):
@@ -50,7 +46,7 @@
 #             if(midi_note["type"] == "pitchwheel"):
 #                 self.pitch = midi_note["pitch"]
 #
-#         value = clampToNewRange(self.pitch, -8191, 8191, 127, 255)
+#         value = self.clampToNewRange(self.pitch, -8191, 8191, 127, 255)
 #         roll_value = int(1 * (self.active_state.time_interval / 100)) + 1
 #
 #         which_color = 0
@@ -62,7 +58,7 @@
 #
 #         for note in self.notes_on:
 #
-#             note_value = clampToNewRange(note["note"], 0,127, 0, len(self.pixels[0]))
+#             note_value = self.clampToNewRange(note["note"], 0,127, 0, len(self.pixels[0]))
 #             if(note["note"] > 65):
 #                 color = 1
 #             else:
@@ -118,10 +114,6 @@ import time
 
 from scipy.ndimage.filters import gaussian_filter1d
 
-def clampToNewRange(value, old_min, old_max, new_min, new_max):
-    new_value = (((value - old_min) * (new_max - new_min)) // (old_max - old_min)) + new_min
-    return new_value
-
 def putPixel(strip, ledIndex, r, g, b, velocity):
     if(ledIndex <= len(strip[0])):
         strip[0][ledIndex] = r / 127 * (velocity + 1)
@@ -167,7 +159,7 @@ class PianoNote():
             if(midi_note["type"] == "pitchwheel"):
                 self.pitch = midi_note["pitch"]
 
-        value = clampToNewRange(self.pitch, -8191, 8191, 127, 255)
+        value = self.clampToNewRange(self.pitch, -8191, 8191, 127, 255)
         roll_value = int(1 * (self.active_state.time_interval / 100)) + 1
 
         fadeOutPixels(self.pixels, 5)
@@ -178,7 +170,7 @@ class PianoNote():
 
             putPixel(
                 self.pixels,
-                clampToNewRange(note["note"], 0,127, 0, len(self.pixels[0])),
+                self.clampToNewRange(note["note"], 0,127, 0, len(self.pixels[0])),
                 color_scheme[note["color"]][0],
                 color_scheme[note["color"]][1],
                 color_scheme[note["color"]][2],

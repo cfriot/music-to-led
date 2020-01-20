@@ -28,6 +28,7 @@
 
 # OPTIONAL
 
+    # - audio input state limits
     # - voir pour mieux gérer les refresh en cas de resize
     # - Courbes d'acceleration sur les propagations type scroll
     # - Permettre l'utilisation sur clavier d'ordi histoire de test
@@ -354,7 +355,7 @@ Music To Led has 16 visualization effects and 8 mods.
 They can be live changed via dedicated Midi channels. You can choose to use programs like Ableton Live to automate these changes or use a dedicated synthetiser / pad to change them manually during the show.
 
 **Big principle**
-You have to send a midi note signal for activating / modifying effects. The table just after will show you the documentation.
+You have to send a midi note signal for activating / modifying effects. See the doc below.
 
 ## Effects
 
@@ -384,8 +385,8 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 |:--|:--|:--|:--|:--
 | 10 | A#-2   | **AlternateColorChunks** | Chunk size based on velocity | ![scroll](images/alternate-chunks.gif)
 | 11 | B-2    | **AlternateColorShapes** | - | ![scroll](images/alternate-strips.gif)
-| 12 | C-1    | **DrawLine** | - | ![scroll](images/nothing.gif)
-| 13 | C#-1   | - | - | ![scroll](images/nothing.gif)
+| 12 | C-1    | **TransitionColorShapes** | - | TO DO
+| 13 | C#-1   | **DrawLine** | - | TO DO
 
 ### Generic
 
@@ -409,7 +410,6 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 | 26 | D-0 | **Change max Brightness** | Update based on velocity | ![scroll](images/nothing.gif)
 | 27 | D#-0 | **Change chunk size** | Update based on velocity | ![scroll](images/nothing.gif)
 | 28 | D#-0 | **Change state** | Update based on velocity | ![scroll](images/nothing.gif)
-
 
 # Credits
 This project was a fork of the great [audio-reactive-led-strip](https://github.com/scottlawsonbc/audio-reactive-led-strip). A lot of code has been rewritten since the beginning but it still remains some of the visualizers and audio processing code.

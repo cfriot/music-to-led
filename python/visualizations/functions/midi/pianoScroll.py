@@ -3,10 +3,6 @@ import time
 
 from scipy.ndimage.filters import gaussian_filter1d
 
-def clampToNewRange(value, old_min, old_max, new_min, new_max):
-    new_value = (((value - old_min) * (new_max - new_min)) // (old_max - old_min)) + new_min
-    return new_value
-
 def getValueFromPercentage(value, percentage):
     return value / 100 * percentage
 
@@ -86,7 +82,7 @@ class PianoScroll():
             g = color_scheme[which_color][1]
             b = color_scheme[which_color][2]
 
-            value = clampToNewRange(self.pitch, -8191, 8191, 0, 127)
+            value = self.clampToNewRange(self.pitch, -8191, 8191, 0, 127)
 
             for i in range(roll_value):
                 putPixel(self.pixels, i, r, g, b, self.notes_on[len(self.notes_on) - 1]["velocity"] / 2 + value )

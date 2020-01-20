@@ -1,9 +1,5 @@
 import numpy as np
 
-def clampToNewRange(value, old_min, old_max, new_min, new_max):
-    new_value = (((value - old_min) * (new_max - new_min)) // (old_max - old_min)) + new_min
-    return new_value
-
 def getValueFromPercentage(value, percentage):
     return value / 100 * percentage
 
@@ -26,7 +22,7 @@ class PitchwheelFlash():
             if(midi_note["type"] == "pitchwheel"):
                 pitch = midi_note["pitch"]
 
-                value = clampToNewRange(pitch, 500, 8191, 0, 100)
+                value = self.clampToNewRange(pitch, 500, 8191, 0, 100)
 
                 self.r = getValueFromPercentage(color_scheme[which_color][0], value)
                 self.g = getValueFromPercentage(color_scheme[which_color][1], value)
