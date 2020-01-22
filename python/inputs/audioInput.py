@@ -79,7 +79,7 @@ class AudioInput:
     def printDeviceList():
         print('Audio ports available :')
         for port in AudioInput.listAvailablePortsName():
-            print("- " + port["name"])
+            print("- '" + port["name"] + "'")
 
     @staticmethod
     def testDevice(name):

@@ -34,7 +34,7 @@ class MidiInput:
         print('Midi ports available :')
         ports = MidiInput.listAvailablePortsName()
         for port in ports:
-            print("- " + port)
+            print("- '" + port + "'")
 
     @staticmethod
     def testDevice(name):

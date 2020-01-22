@@ -67,7 +67,7 @@ class SerialOutput:
 
         ports = SerialOutput.listAvailablePortsName()
         for port in ports:
-            print("- " + port)
+            print("- '" + port + "'")
 
     @staticmethod
     def testDevice(name):
