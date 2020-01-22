@@ -75,6 +75,24 @@ class Visualizer(FullColor, FadeOut, Clear, AlternateColors, TransitionColors, D
 
         self.pixelReshaper.initActiveShape()
 
+
+    def filterAudioDatas(self, audio_data):
+
+        # self.config.audio_datas
+
+        min = self.active_state.audio_samples_filter_min
+        max = self.active_state.audio_samples_filter_max
+
+        new_audio_data = audio_data.copy()
+        # audio_channel_min_frequency, audio_channel_max_frequency
+        for i, sample in enumerate(audio_data):
+            if(i < min or i > max):
+                new_audio_data[i] = sample * 0
+            else:
+                new_audio_data[i] = sample
+
+        return new_audio_data
+
     @staticmethod
     def clampToNewRange(value, old_min, old_max, new_min, new_max):
         new_value = (((value - old_min) * (new_max - new_min)) // (old_max - old_min)) + new_min
@@ -100,6 +118,8 @@ class Visualizer(FullColor, FadeOut, Clear, AlternateColors, TransitionColors, D
     def drawFrame(self):
         """ Return current pixels """
         self.audio_data = self.audio_datas[self.active_state.active_audio_channel_index]
+        self.audio_data = self.filterAudioDatas(self.audio_datas[self.active_state.active_audio_channel_index])
+
 
         pixels = []
 
@@ -145,4 +165,5 @@ class Visualizer(FullColor, FadeOut, Clear, AlternateColors, TransitionColors, D
             print("Oops... There is no visualization function that match with the active visualizer effect")
             pixels = self.visualizeClear()
 
+        # filterAudioDatas(self.audio_datas)
         return pixels

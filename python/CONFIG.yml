@@ -17,10 +17,14 @@ audio_ports:
     name: Built-in Microphone
     min_frequency: 200
     max_frequency: 12000
-  -
-    name: 'AK5371                   '
-    min_frequency: 200
-    max_frequency: 12000
+  # -
+  #   name: Built-in Microphone
+  #   min_frequency: 200
+  #   max_frequency: 12000
+  # -
+  #   name: 'AK5371                   '
+  #   min_frequency: 200
+  #   max_frequency: 12000
 
 strips:
   -
@@ -31,7 +35,7 @@ strips:
       # - USB MIDI Interface
       # - "Audio2Led Synth"
     midi_ports_for_changing_mode:
-      #- "Launchpad Mini"
+      # - "Launchpad Mini"
       # - LPK25
       - "Audio2Led Synth"
 
@@ -57,22 +61,21 @@ strips:
   #     - 50
   #     - 50
   #     - 50
-  #
 
 states:
   -
     name: "Mirrored Energy light blue"
-    active_visualizer_effect: energy
+    active_visualizer_effect: fire
     active_propagation_curve: ease_in
 
     active_audio_channel_index: 0
-    audio_channel_min_frequency: 200
-    audio_channel_max_frequency: 12000
+    audio_samples_filter_min: 12
+    audio_samples_filter_max: 24
 
     active_shape_index: 0
     shapes:
-      -
-        - 80
+      # -
+      #   - 80
       -
         - 20
         - 20
@@ -106,7 +109,7 @@ states:
 
     is_reverse: false
     is_mirror: false
-    time_interval: 5
+    time_interval: 50
     chunk_size: 5
     max_brightness: 55
 
@@ -116,14 +119,13 @@ states:
     active_propagation_curve: ease_out
 
     active_audio_channel_index: 0
-    audio_channel_min_frequency: 200
-    audio_channel_max_frequency: 12000
+    audio_samples_filter_min: 12
+    audio_samples_filter_max: 24
 
     active_shape_index: 0
     shapes:
       -
-        - 40
-        - 40
+        - 80
       -
         - 10
         - 10
@@ -141,8 +143,6 @@ states:
 
     active_color_scheme_index: 1
     color_schemes:
-      -
-        - "#FF00C8"
       -
         - red
         - green
@@ -168,8 +168,8 @@ states:
 
     is_reverse: true
     is_mirror: true
-    time_interval: 100
+    time_interval: 50
     chunk_size: 20
-    max_brightness: 250
+    max_brightness: 50
 
 ...  # document end

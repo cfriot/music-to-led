@@ -103,6 +103,8 @@ class StateConfig() :
         shapes = [[26,26],[12,12]],
         number_of_shapes = 0,
         active_audio_channel_index = 0,
+        audio_samples_filter_min = 0,
+        audio_samples_filter_max = 24,
         active_shape_index = 0,
         is_reverse = False,
         time_interval = 120,
@@ -115,6 +117,8 @@ class StateConfig() :
 
         self.name = name
         self.active_audio_channel_index = active_audio_channel_index
+        self.audio_samples_filter_min = audio_samples_filter_min
+        self.audio_samples_filter_max = audio_samples_filter_max
 
         self.active_shape_index = active_shape_index
         self.number_of_shapes = number_of_shapes
@@ -151,6 +155,8 @@ class StateConfig() :
             self.shapes,
             self.number_of_shapes,
             self.active_audio_channel_index,
+            self.audio_samples_filter_min,
+            self.audio_samples_filter_max,
             self.active_shape_index,
             self.is_reverse,
             self.time_interval,
@@ -166,6 +172,8 @@ class StateConfig() :
         print("State Config : ")
         print("----------------")
         print("active_audio_channel_index -> ", self.active_audio_channel_index)
+        print("audio_samples_filter_min -> ", self.audio_samples_filter_min)
+        print("audio_samples_filter_max -> ", self.audio_samples_filter_max)
         print("max_brightness -> ", self.max_brightness)
         for shape in self.shapes:
             shape.print()
@@ -263,6 +271,8 @@ class Config():
                 "active_visualizer_mode": 0,
                 "shapes": [[26,26],[12,12]],
                 "active_audio_channel_index": 0,
+                "audio_samples_filter_min": 0,
+                "audio_samples_filter_max": 24,
                 "active_shape_index": 0,
                 "is_reverse" : False,
                 "time_interval" : 120,
@@ -294,6 +304,8 @@ class Config():
                 StateConfig(
                     name = state["name"],
                     active_audio_channel_index = state["active_audio_channel_index"],
+                    audio_samples_filter_min = state["audio_samples_filter_min"],
+                    audio_samples_filter_max = state["audio_samples_filter_max"],
                     max_brightness = state["max_brightness"],
                     active_visualizer_effect = state["active_visualizer_effect"],
                     shapes = state["shapes"],
