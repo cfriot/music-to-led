@@ -20,6 +20,7 @@ $RECYCLE.BIN/
 .vscode
 # Tests
 tests/
+python/LOCAL_CONFIG.yml
 python-app/visualizations/functions/experiments
 python-app/python-tests
 python-app/singleStripMain.py
