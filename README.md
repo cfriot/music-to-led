@@ -151,8 +151,6 @@ PS : For now, please consider not using more than 254 leds by arduino.
 
 ### Advanced arduino device
 
-![device](images/device.jpg)
-
 In case you need a complete packaged product, there is a more advanced version available in the [Arduino folder](/arduino/). You will find 3d printed arduino cases and a more complete electronic scheme.
 
 # Configuration

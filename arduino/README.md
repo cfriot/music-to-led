@@ -1,5 +1,7 @@
 # Arduino part
 
+![device](../images/device.jpg)
+
 ### Component list
 
 - 1x [**Alim 5V 10A**](https://www.amazon.fr/gp/product/B06XCMQ212/ref=ppx_yo_dt_b_asin_title_o00_s00?ie=UTF8&psc=1)  *~25$*
