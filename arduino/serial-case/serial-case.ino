@@ -2,6 +2,8 @@
    Audio 2 Led project
 
    Arduino Nano Led controller firmware v0.1
+   Originaly forked from ???
+   still can't remember where
 
    COMMANDS
    -----------------------------------------------

@@ -10,6 +10,7 @@
     OK - LOCAL and GLOBAL config
     OK - custom config file
     OK # - Update de la doc pour fiter aux derniers changements
+    - Raspberry pi README
 
   # VISUAL LANGUAGE
     OK # - définir chaque entitée et stabiliser en fonction
@@ -89,6 +90,7 @@ All you need is a **computer** *( works on Raspi 4 )*, an **arduino** and a **le
 - [Installation](#installation)
   * [Python part](#python-part)
   * [Arduino part](#arduino-part)
+    + [Advanced arduino device](#advanced-arduino-device)
 - [Configuration](#configuration)
   * [Audio channels](#audio-channels)
     + [Virtual audio sources](#virtual-audio-source)
@@ -115,7 +117,7 @@ All you need is a **computer** *( works on Raspi 4 )*, an **arduino** and a **le
 
 ## Python part
 
-The binary file is [here(DEADLINK)](/toto)
+First, download binary file that can be downloaded [here(DEADLINK)](/toto)
 
 ```
 ./music2led --help
@@ -141,9 +143,11 @@ The binary file is [here(DEADLINK)](/toto)
 
 ## Arduino part
 
+In addition of the software, you need to create an arduino "serial to led" device.
+
 As each led project has very specific needs, i kept this part as simple as possible.
 
-The arduino code is [here](arduino/serial-case/serial-case.ino).
+Arduino code can be found [here](arduino/serial-case/serial-case.ino).
 
 PS : For now, please consider not using more than 254 leds by arduino.
 
@@ -151,7 +155,13 @@ PS : For now, please consider not using more than 254 leds by arduino.
 
 ### Advanced arduino device
 
-In case you need a complete packaged product, there is a more advanced version available in the [Arduino folder](/arduino/). You will find 3d printed arduino cases and a more complete electronic scheme.
+If you need a complete packaged product, there is a more advanced version available in the [Arduino folder](/arduino/).
+
+You will find :
+
+- OBJ of 3d printed arduino cases
+- Complete electronic scheme
+- Device assembly and code upload tutorial
 
 # Configuration
 
@@ -314,7 +324,7 @@ states:
     # Can be changed via "Change color scheme" function
     #
     # You can call them using hexadecimal notation or using a real name according
-    # to the color list that can be found here ->
+    # to the color list that can be found below ->
     # python-app/helpers/color/colorSchemeFormatter.py
 
     color_schemes:
@@ -372,9 +382,9 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 
 ### Sound based
 
-| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
+| *Number* | *Midi Note* | *Effect name* | *Doc* | *Example*
 |:--|:--|:--|:--|:--
-| 0 | C-2 | **Scroll** | - | ![scroll](images/scroll.gif)
+| 0 | C-2 | **Scroll** | Split the sound samples into N parts according to the color number of color scheme. Then mix theses colors according to the sound samples intensity. Then scroll the strip to the right.  | ![scroll](images/scroll.gif)
 | 1 | C#-2 | **Energy** | - | ![energy](images/energy.gif)
 | 2 | D-2 | **ChannelIntensity** | - | ![intensity](images/intensity.gif)
 | 3 | D#-2 | **ChannelFlash** | - | ![spectrum](images/envelope.gif)
@@ -430,9 +440,10 @@ If you have any idea to improve this project or any problem using this, please f
 
 By priority order
 
+- Plug and play on all ports
+- Effect blender
 - Handle more than the WS2812B led strip
 - DMX handling
-- Effect mixer
 - Electron interface
 - Rewrite audio acquisition part
 - Beat detection with Aubio
