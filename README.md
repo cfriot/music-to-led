@@ -384,7 +384,9 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 
 | *Number* | *Midi Note* | *Effect name* | *Explanation* | *Example*
 |:--|:--|:--|:--|:--
-| 0 | C-2 | **Scroll** | Split the sound samples into N parts according to the color number in the color scheme. Then mix theses colors according to the sound samples intensity. Then scroll the strip to the right  | ![scroll](images/scroll.gif)
+| 0 | C-2 | **Scroll** | Split the sound samples into N parts according to the color number in the color scheme. Then mix theses colors according to the sound samples intensity. Then scroll the strip to the right  | ![scroll](images/scroll.gif | width=100)
+
+
 | 1 | C#-2 | **Energy** | Split the sound samples into N parts according to the color number of color scheme. Then make them appear all along the strip with a length based on sample intensity and mixed with others  | ![energy](images/energy.gif)
 | 2 | D-2 | **ChannelIntensity** | Split the sound samples into N parts according to the shape parts length. Then draw a line with a length based on sample intensity with the first color of the color scheme. Then add a pixel on top on max intensity with the second color of the color scheme if available | ![intensity](images/intensity.gif)
 | 3 | D#-2 | **ChannelFlash** | Split the sound samples into N parts according to the shape parts length. Then illuminate the shape part with an brightness based on sample intensity. It will take all colors available and repeat the pattern if needed | ![spectrum](images/envelope.gif)
