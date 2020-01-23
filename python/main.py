@@ -85,7 +85,7 @@ elif(args.test_serial_device):
 elif(args.test_config_file):
     ConfigLoader.testConfig(path=args.test_config_file, verbose=False)
 
-elif not len(sys.argv) > 1:
+elif((not len(sys.argv) > 1) or (len(sys.argv) > 1 and args.with_config_file)):
 
     def audioProcess(shared_list):
 
