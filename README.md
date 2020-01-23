@@ -3,6 +3,12 @@
   # README AND DOC
     - Faire un helper imprimable sur piano
     - Bel exemple réel en gif
+    - Color transition
+    - Faire un bundle
+    - Belle photo packshot du truc déssasemblé et assemblé
+    OK - States examples
+    OK - LOCAL and GLOBAL config
+    OK - custom config file
     OK # - Update de la doc pour fiter aux derniers changements
 
   # VISUAL LANGUAGE
@@ -20,7 +26,7 @@
     OK # --with-config :  lance le programme suivant le config à lemplacement donné
     OK # Faire le systeme de states
     OK # permettre une modification rapide d'un state
-    - Make State system work properly
+    OK - Make State system work properly
 
   # STRESS TEST
    -- macbook
@@ -137,13 +143,17 @@ The binary file is [here(DEADLINK)](/toto)
 
 As each led project has very specific needs, i kept this part as simple as possible.
 
-In case you need a complete packaged product, there is a more advanced version available in the [Arduino folder](/arduino/). You will find 3d printed arduino cases and a more complete electronic scheme.
-
 The arduino code is [here](arduino/serial-case/serial-case.ino).
 
 PS : For now, please consider not using more than 254 leds by arduino.
 
 ![electronic-scheme](images/simple-electronic-scheme.png)
+
+### Advanced arduino device
+
+![device](images/device.jpg)
+
+In case you need a complete packaged product, there is a more advanced version available in the [Arduino folder](/arduino/). You will find 3d printed arduino cases and a more complete electronic scheme.
 
 # Configuration
 
@@ -158,7 +168,7 @@ will list all available ports for each of them.
 
 ## Audio channels
 
-This program streams audio from the default audio input device (set by the operating system).
+This program is streaming audio from the default audio input device (set by the operating system).
 
 Examples of typical audio sources:
 - Audio cable connected to the audio input jack (requires USB sound card on Raspberry Pi)
@@ -177,15 +187,16 @@ On OSX, [Loopback](https://www.rogueamoeba.com/loopback/) can be use to create a
 
 ## Midi channels
 
-...
+This program is streaming midi from the default midi input device (set by the operating system).
 
 ### Virtual MIDI Sources
 
 On OSX, it's pretty easy to make some virtual MIDI channels.
 Here is an example for using them with ableton live.
 
-![osx-midi-settings](images/osx-midi-settings.png)
-![ableton-midi-settings](images/ableton-midi-settings.png)
+![osx-midi-settings](images/OSX-midi-conf.jpg)
+
+To virtually test MIDI, you can use VMPK. It's a virtual midi keyboard right in your operating system.
 
 ## CONFIG.yml
 
