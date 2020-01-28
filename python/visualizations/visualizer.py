@@ -67,6 +67,7 @@ class Visualizer(FullColor, FadeOut, Clear, AlternateColors, TransitionColors, D
         self.initPitchwheelFlash()
 
         self.initAlternateColors()
+        self.initTransitionColorShapes()
 
         self.initFullColor()
         self.initFadeOut()

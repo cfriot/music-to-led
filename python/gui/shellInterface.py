@@ -11,43 +11,44 @@ class KeyboardInput():
     def __init__():
         print("toto")
 
-class Debounce(object):
-    """ This is a proper debounce function, the way a electrical engineer would think about it.
-    This wrapper never calls sleep.  It has two counters: one for successful calls, and one for rejected calls.
-    If the wrapped function throws an exception, the counters and debounce timer are still correct """
-
-    def __init__(self, period):
-        self.period = period  # never call the wrapped function more often than this (in seconds)
-        self.count = 0  # how many times have we successfully called the function
-        self.count_rejected = 0  # how many times have we rejected the call
-        self.last = None  # the last time it was called
-
-    # force a reset of the timer, aka the next call will always work
-    def reset(self):
-        self.last = None
-
-    def __call__(self, f):
-        def wrapped(*args, **kwargs):
-            now = time.time()
-            willcall = False
-            if self.last is not None:
-                # amount of time since last call
-                delta = now - self.last
-                if delta >= self.period:
-                    willcall = True
-                else:
-                    willcall = False
-            else:
-                willcall = True  # function has never been called before
-
-            if willcall:
-                # set these first incase we throw an exception
-                self.last = now  # don't use time.time()
-                self.count += 1
-                f(*args, **kwargs)  # call wrapped function
-            else:
-                self.count_rejected += 1
-        return wrapped
+# class Debounce(object):
+#     """ This is a proper debounce function, the way a electrical engineer would think about it.
+#     This wrapper never calls sleep.  It has two counters: one for successful calls, and one for rejected calls.
+#     If the wrapped function throws an exception, the counters and debounce timer are still correct """
+#
+#     def __init__(self, period):
+#         self.period = period  # never call the wrapped function more often than this (in seconds)
+#         self.count = 0  # how many times have we successfully called the function
+#         self.count_rejected = 0  # how many times have we rejected the call
+#         self.last = None  # the last time it was called
+#         self.old_active_state = 0
+#
+#     # force a reset of the timer, aka the next call will always work
+#     def reset(self):
+#         self.last = None
+#
+#     def __call__(self, f):
+#         def wrapped(*args, **kwargs):
+#             now = time.time()
+#             willcall = False
+#             if self.last is not None:
+#                 # amount of time since last call
+#                 delta = now - self.last
+#                 if delta >= self.period:
+#                     willcall = True
+#                 else:
+#                     willcall = False
+#             else:
+#                 willcall = True  # function has never been called before
+#
+#             if willcall:
+#                 # set these first incase we throw an exception
+#                 self.last = now  # don't use time.time()
+#                 self.count += 1
+#                 f(*args, **kwargs)  # call wrapped function
+#             else:
+#                 self.count_rejected += 1
+#         return wrapped
 
 class ShellInterface():
     def __init__(self, config):
@@ -61,7 +62,7 @@ class ShellInterface():
         self.strip_offset = 12
         self.rgb_border_color = (100,100,100)
         self.rgb_inner_border_color = (50,50,50)
-        self.debounce = Debounce(1.0)
+        # self.debounce = Debounce(1.0)
         self.has_to_draw_static_components = True
         self.frameIndex = 0
 
@@ -98,7 +99,6 @@ class ShellInterface():
         self.term.location(0,0)
         self.updateIsBellowMinWidth()
         clearTerminal()
-        # self.debounce(self.drawStaticComponents)()
         self.has_to_draw_static_components = True
 
     def updateIsBellowMinWidth(self):
@@ -171,10 +171,10 @@ class ShellInterface():
         if(self.has_to_draw_static_components):
             total_number_of_lines = self.getTotalLinesOfStrip(strip_config)
             offset = (0, y)
-            size = (self.min_width, 7 + total_number_of_lines)
+            size = (self.min_width, 8 + total_number_of_lines)
             self.drawBox(offset, size, self.rgb_border_color)
             self.echo(self.term.move(offset[1] + 2, 0) + self.textWithColor(50,50,50,"├" + ("─" * (self.min_width - 2)) + "┤"))
-            self.echo(self.term.move(offset[1] + 6, 0) + self.textWithColor(50,50,50,"├" + ("─" * (self.min_width - 2)) + "┤"))
+            self.echo(self.term.move(offset[1] + 7, 0) + self.textWithColor(50,50,50,"├" + ("─" * (self.min_width - 2)) + "┤"))
 
         is_connected = self.textWithColor(0, 255, 0, ' ⬤ online') if is_connected else self.textWithColor(255, 0, 0, ' ⬤ offline')
         is_connected_str = is_connected + self.textWithColor(100, 100, 100, ' at ') + str(framerate) + self.textWithColor(100, 100, 100, ' FPS ')
@@ -201,34 +201,36 @@ class ShellInterface():
                                     + self.textWithColor(100, 100, 100, ' with visualizer ')
                                     + active_state.active_visualizer_effect)
 
-        self.echo(self.term.move(y + 4, 2) + self.textWithColor(100, 100, 100, 'audio channel'))
-        self.echo(self.term.move(y + 5, 2) + "                    ")
-        self.echo(self.term.move(y + 5, 2) + self.config.audio_ports[active_state.active_audio_channel_index].name)
+        self.echo(self.term.move(y + 4, 0) + self.textWithColor(50,50,50,"├" + ("─" * (self.min_width - 2)) + "┤"))
 
-        self.echo(self.term.move(y + 4, 24) + self.textWithColor(100, 100, 100, 'color scheme'))
-        self.echo(self.term.move(y + 5, 24) + "                    ")
-        self.echo(self.term.move(y + 5, 24) + color_scheme)
+        self.echo(self.term.move(y + 5, 2) + self.textWithColor(100, 100, 100, 'audio channel'))
+        self.echo(self.term.move(y + 6, 2) + "                    ")
+        self.echo(self.term.move(y + 6, 2) + self.config.audio_ports[active_state.active_audio_channel_index].name)
 
-        self.echo(self.term.move(y + 4, 42) + self.textWithColor(100, 100, 100, 'shape'))
-        self.echo(self.term.move(y + 5, 42) + "                    ")
-        self.echo(self.term.move(y + 5, 42) + shape)
+        self.echo(self.term.move(y + 5, 24) + self.textWithColor(100, 100, 100, 'color scheme'))
+        self.echo(self.term.move(y + 6, 24) + "                    ")
+        self.echo(self.term.move(y + 6, 24) + color_scheme)
 
-        self.echo(self.term.move(y + 4, 69) + self.textWithColor(100, 100, 100, 'time_interval'))
-        self.echo(self.term.move(y + 5, 69) + "                    ")
-        self.echo(self.term.move(y + 5, 69) + str(active_state.time_interval))
+        self.echo(self.term.move(y + 5, 42) + self.textWithColor(100, 100, 100, 'shape'))
+        self.echo(self.term.move(y + 6, 42) + "                    ")
+        self.echo(self.term.move(y + 6, 42) + shape)
 
-        self.echo(self.term.move(y + 4, 85) + self.textWithColor(100, 100, 100, 'brightness'))
-        self.echo(self.term.move(y + 5, 85) + "                    ")
-        self.echo(self.term.move(y + 5, 85) + str(active_state.max_brightness))
+        self.echo(self.term.move(y + 5, 69) + self.textWithColor(100, 100, 100, 'time_interval'))
+        self.echo(self.term.move(y + 6, 69) + "                    ")
+        self.echo(self.term.move(y + 6, 69) + str(active_state.time_interval))
 
-        self.echo(self.term.move(y + 4, 97) + self.textWithColor(100, 100, 100, 'chunk_size'))
-        self.echo(self.term.move(y + 5, 97) + "                    ")
-        self.echo(self.term.move(y + 5, 97) + str(active_state.chunk_size))
+        self.echo(self.term.move(y + 5, 85) + self.textWithColor(100, 100, 100, 'brightness'))
+        self.echo(self.term.move(y + 6, 85) + "                    ")
+        self.echo(self.term.move(y + 6, 85) + str(active_state.max_brightness))
 
-        self.echo(self.term.move(y + 4, 110) + mirror_mode)
-        self.echo(self.term.move(y + 4, 120) + reverse_mode)
+        self.echo(self.term.move(y + 5, 97) + self.textWithColor(100, 100, 100, 'chunk_size'))
+        self.echo(self.term.move(y + 6, 97) + "                    ")
+        self.echo(self.term.move(y + 6, 97) + str(active_state.chunk_size))
 
-        total_number_of_lines = self.printPixels(y + 7, 2, strip_config, pixels)
+        self.echo(self.term.move(y + 5, 110) + mirror_mode)
+        self.echo(self.term.move(y + 5, 120) + reverse_mode)
+
+        total_number_of_lines = self.printPixels(y + 8, 2, strip_config, pixels)
         return total_number_of_lines
 
     def printChunk(self, y, x, strip_config, pixels, chunk_index):
@@ -309,6 +311,7 @@ class ShellInterface():
         pixels = [[],[],[]]
         total_number_of_lines = 0
 
+
         self.frameIndex += 1
         with self.term.hidden_cursor(), self.term.cbreak(), self.term.location():
 
@@ -333,6 +336,7 @@ class ShellInterface():
                     active_state = shared_list[2 + index][2]
                     fps = shared_list[2 + index][3]
                     is_online = shared_list[2 + config.number_of_strips + index]
+
                     total_number_of_lines += self.printStrip(
                                                 self.strip_offset + (index * 8 + total_number_of_lines),
                                                 is_online,

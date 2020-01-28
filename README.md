@@ -89,6 +89,7 @@ All you need is a **computer** *( works on Raspi 4 )*, an **arduino** and a **le
 # Table of contents
 - [Installation](#installation)
   * [Python part](#python-part)
+    + [Raspberry Pi installation](#raspberry-pi-installation)
   * [Arduino part](#arduino-part)
     + [Advanced arduino device](#advanced-arduino-device)
 - [Configuration](#configuration)
@@ -140,6 +141,10 @@ First, download binary file that can be downloaded [here(DEADLINK)](/toto)
                       Launch with spectific config file. Default one is
                       CONFIG.yml just near the executable.
 ```
+
+## Raspberry Pi installation
+
+Raspberry installation tutorial can be found in the [pyton folder](/python).
 
 ## Arduino part
 
@@ -200,7 +205,8 @@ This program is streaming midi from the default midi input device (set by the op
 ### Virtual MIDI Sources
 
 On OSX, it's pretty easy to make some virtual MIDI channels.
-Here is an example for using them with ableton live.
+
+Example for using them with ableton live :
 
 ![osx-midi-settings](images/OSX-midi-conf.jpg)
 
@@ -384,7 +390,7 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 
 | *Number* | *Midi Note* | *Effect name* | *Explanation* | *Example*
 |:--|:--|:--|:--|:--
-| 0 | C-2 | **Scroll** | Split the sound samples into N parts according to the color number in the color scheme. Then mix theses colors according to the sound samples intensity. Then scroll the strip to the right  | ![scroll](images/scroll.gif | width=100)
+| 0 | C-2 | **Scroll** | Split the sound samples into N parts according to the color number in the color scheme. Then mix theses colors according to the sound samples intensity. Then scroll the strip to the right.| ![scroll](images/scroll.gif | width=100)
 
 
 | 1 | C#-2 | **Energy** | Split the sound samples into N parts according to the color number of color scheme. Then make them appear all along the strip with a length based on sample intensity and mixed with others  | ![energy](images/energy.gif)

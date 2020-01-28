@@ -21,7 +21,7 @@ from visualizations.visualizer import Visualizer
 from visualizations.pixelReshaper import PixelReshaper
 from visualizations.modSwitcher import ModSwitcher
 
-configLoader = ConfigLoader("./CONFIG.yml")
+configLoader = ConfigLoader("./LOCAL_CONFIG.yml")
 
 strip_name = "Front Desk"
 
