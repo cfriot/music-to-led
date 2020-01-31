@@ -429,7 +429,7 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 
 | *Example* | *Midi Note* | *Mode name* | *Params*
 |:--|:--|:--|:--
-| <img src="https://github.com/tfrere/music-to-led/blob/master/images/reverse.gif?raw=true" width="150" height="20" /> | G#-1  | **toggle_reverse_mode** | Toggle reverse effect on the strip.
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/reverse.gif?raw=true" width="150px" height="20px" /> | G#-1  | **toggle_reverse_mode** | Toggle reverse effect on the strip.
 | <img src="https://github.com/tfrere/music-to-led/blob/master/images/mirror.gif" width="400" height="20" />  | A-1  | **toggle_mirror_mode** | Toggle mirror effect on the strip.
 | <img src="https://github.com/tfrere/music-to-led/blob/master/images/shape.gif" width="400" height="20" />  | A#-1 | **change_shape** | Change active shape.<br/><br/><ul><li> The chosen shape is based on the note's velocity. If the note's velocity is higher than the **shapes parameter** length, take the next shape.</li></ul>
 | <img src="https://github.com/tfrere/music-to-led/blob/master/images/color.gif" width="400" height="20" />  | B-1 | **change_color_scheme** | Change active color scheme. <br/><br/><ul><li>The chosen color scheme is based on the note's velocity. If the note's velocity is higher than the **color schemes parameter** length, take the next color scheme.</li></ul>
@@ -461,5 +461,5 @@ By priority order
 This project was developed by Thibaud FRERE and is released
 under the MIT License.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTExOTcwMTA5MDAsLTExNTQ4Nzc4M119
+eyJoaXN0b3J5IjpbLTExODI4ODY1OTYsLTExNTQ4Nzc4M119
 -->
