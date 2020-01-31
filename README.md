@@ -1,4 +1,5 @@
 
+
 <!--
 
   # README AND DOC
@@ -391,27 +392,27 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 
 | *Example* | *Midi Note* | *Effect name* | *Explanation*
 |:--|:--|:--|:--
-| ![scroll](images/scroll.gif) | C-2 | **Scroll** | Split the sound samples into N parts according to the color number in the color scheme. Then mix theses colors according to the sound samples intensity. Then scroll the strip to the right. <br/><br/><ul><li>**Speed** time_interval</li></ul>
-| ![energy](images/energy.gif) | C#-2 | **Energy** | Split the sound samples into N parts according to the color number of color scheme. Then make them appear all along the strip with a length based on sample intensity and mixed with others.
-| ![intensity](images/intensity.gif) | D-2 | **ChannelIntensity** | Split the sound samples into N parts according to the shape parts length. Then draw a line with a length based on sample intensity with the first color of the color scheme. Then add a pixel on top on max intensity with the second color of the color scheme if available.<br/><br/><ul><li>**color** first and second color of the scheme</li></ul>
-| ![spectrum](images/envelope.gif) | D#-2 | **ChannelFlash** | Split the sound samples into N parts according to the shape parts length. Then illuminate the shape part with an brightness based on sample intensity.<br/><br/><ul><li>**color** Repeating the color scheme</li></ul>
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/scroll.gif" width="400" height="20" />  | C-2 | **Scroll** | Split the sound samples into N parts according to the color number in the color scheme. Then mix theses colors according to the sound samples intensity. Then scroll the strip to the right. <br/><br/><ul><li>**Speed** time_interval</li></ul>
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/energy.gif" width="400" height="20" />  | C#-2 | **Energy** | Split the sound samples into N parts according to the color number of color scheme. Then make them appear all along the strip with a length based on sample intensity and mixed with others.
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/intensity.gif" width="400" height="20" />  | D-2 | **ChannelIntensity** | Split the sound samples into N parts according to the shape parts length. Then draw a line with a length based on sample intensity with the first color of the color scheme. Then add a pixel on top on max intensity with the second color of the color scheme if available.<br/><br/><ul><li>**color** first and second color of the scheme</li></ul>
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/envelope.gif" width="400" height="20" />  | D#-2 | **ChannelFlash** | Split the sound samples into N parts according to the shape parts length. Then illuminate the shape part with an brightness based on sample intensity.<br/><br/><ul><li>**color** Repeating the color scheme</li></ul>
 
 
 ### Midi based
 
 | *Example* | *Midi Note* | *Effect name* | *Params*
 |:--|:--|:--|:--
-| ![scroll](images/piano.gif) | F-2 | **piano_scroll** | Make a smooth scrolled light based on the note you play. <br/><br/><ul><li>**color** Index in color scheme according to the number of notes you are playing at the same time. </li></ul>
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/piano.gif" width="400" height="20" />  | F-2 | **piano_scroll** | Make a smooth scrolled light based on the note you play. <br/><br/><ul><li>**color** Index in color scheme according to the number of notes you are playing at the same time. </li></ul>
 | TO ADD | F#-2 | **piano_note** | Make a light appear based on the position where you typed on the keyboard. <br/><br/><ul><li>**color** Index in color scheme according to the number of notes you are playing at the same time. </li>
-| ![scroll](images/envelope.gif) | G-2 | **pitchwheel_flash** | Make the whole strip illuminates according to the pitch bend intensity of your keyboard. Begin on a black strip.<br/><br/><ul><li>**brightness** Based on pitchbend. </li> <li>**color** First color of the scheme. </li> 
-| ![scroll](images/nothing.gif) | G#-2 | - | -
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/envelope.gif" width="400" height="20" />  | G-2 | **pitchwheel_flash** | Make the whole strip illuminates according to the pitch bend intensity of your keyboard. Begin on a black strip.<br/><br/><ul><li>**brightness** Based on pitchbend. </li> <li>**color** First color of the scheme. </li> 
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/nothing.gif" width="400" height="20" />  | G#-2 | - | -
 
 ### Time based
 
 | *Example* | *Midi Note* | *Effect name* | *Params*
 |:--|:--|:--|:--
-| ![scroll](images/alternate-chunks.gif) | A#-2 | **alternate_color_chunks** | Make a pattern with chunks of colors scrolling to the right.<br/><br/><ul><li>**chunk_size** Size of a chunk </li><li>**color** Repeated color scheme </li><li>**time_interval** Relative speed of the scroll </li></ul>
-| ![scroll](images/alternate-strips.gif) | B-2  | **alternate_color_shapes** | Make chunks of colors with size based on shapes. <br/><br/><ul><li>**chunk_size** Based on shape </li><li>**color** Repeated color scheme </li><li>**time_interval** Relative speed of the scroll </li></ul>
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/alternate-chunks.gif" width="400" height="20" />  | A#-2 | **alternate_color_chunks** | Make a pattern with chunks of colors scrolling to the right.<br/><br/><ul><li>**chunk_size** Size of a chunk </li><li>**color** Repeated color scheme </li><li>**time_interval** Relative speed of the scroll </li></ul>
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/alternate-strips.gif" width="400" height="20" />  | B-2  | **alternate_color_shapes** | Make chunks of colors with size based on shapes. <br/><br/><ul><li>**chunk_size** Based on shape </li><li>**color** Repeated color scheme </li><li>**time_interval** Relative speed of the scroll </li></ul>
 | TO DO | C-1 | **transition_color_shapes** | Make the whole strip illuminates with a smooth color transition.  <br/><br/><ul><li>**color** First color of the scheme </li></ul>
 | TO DO | C#-1 | **draw_line** | Draw a line.<br/><br/><ul><li>**chunk_size** Based on shape </li><li>**color** First color in the scheme </li><li>**time_interval** Relative speed of the scroll </li></ul>
 
@@ -419,24 +420,24 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 
 | *Example* | *Midi Note* | *Effect name* | *Params*
 |:--|:--|:--|:--
-| ![scroll](images/full.gif) | D#-1  | **full** | Illuminates the whole strip with the first color in your active color scheme. <br/><br/><ul><li>**color** First color in the scheme </li></ul>
-| ![scroll](images/nothing.gif) | E-1   | **fade_to_nothing** | Stop current visualization. Then slowly fade to black the whole strip.
-| ![scroll](images/nothing.gif) | F-1  | **clear** | Stop current visualization. Instant clear of the frame.
-| ![scroll](images/fire.gif) | F#-1  | **fire** | A beautiful fire. Based on nothing for the moment.
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/full.gif" width="400" height="20" />  | D#-1  | **full** | Illuminates the whole strip with the first color in your active color scheme. <br/><br/><ul><li>**color** First color in the scheme </li></ul>
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/nothing.gif" width="400" height="20" />  | E-1   | **fade_to_nothing** | Stop current visualization. Then slowly fade to black the whole strip.
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/nothing.gif" width="400" height="20" />  | F-1  | **clear** | Stop current visualization. Instant clear of the frame.
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/fire.gif" width="400" height="20" />  | F#-1  | **fire** | A beautiful fire. Based on nothing for the moment.
 
 ## Modes
 
 | *Example* | *Midi Note* | *Mode name* | *Params*
 |:--|:--|:--|:--
 | <img src="https://github.com/tfrere/music-to-led/blob/master/images/reverse.gif?raw=true" width="400" height="20" /> | G#-1  | **toggle_reverse_mode** | Toggle reverse effect on the strip.
-| ![scroll](images/mirror.gif) | A-1  | **toggle_mirror_mode** | Toggle mirror effect on the strip.
-| ![scroll](images/shape.gif) | A#-1 | **change_shape** | Change active shape.<br/><br/><ul><li> The chosen shape is based on the note's velocity. If the note's velocity is higher than the **shapes parameter** length, take the next shape.</li></ul>
-| ![scroll](images/color.gif) | B-1 | **change_color_scheme** | Change active color scheme. <br/><br/><ul><li>The chosen color scheme is based on the note's velocity. If the note's velocity is higher than the **color schemes parameter** length, take the next color scheme.</li></ul>
-| ![scroll](images/nothing.gif) | C-0  | **change_time_interval in ms** | Change active time_interval. <br/><br/><ul><li>The chosen time_interval is based on the note's velocity.</li></ul>
-| ![scroll](images/nothing.gif) | C#-0  | **change audio_channel** | Change active audio_channel. <br/><br/><ul><li>The chosen audio_channel is based on the note's velocity. If the note's velocity is higher than the **audio_channels parameter** length, take the next audio_channel.</li></ul>
-| ![scroll](images/nothing.gif) | D-0 | **change_max_Brightness** | Change active max_brightness. <br/><br/><ul><li>The chosen max_brightness is based on the note's velocity. If the note's velocity is higher than 255, take 255.</li></ul>
-| ![scroll](images/nothing.gif) | D#-0 | **change_chunk_size** | Change active max_brightness. <br/><br/><ul><li>The chosen chunk_size is based on the note's velocity.</li></ul>
-| ![scroll](images/nothing.gif) | D#-0 | **change_state** | Change active state. <br/><br/><ul><li>The chosen state is based on the note's velocity. If the note's velocity is higher than the **states parameter** length, take the next state.</li></ul>
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/mirror.gif" width="400" height="20" />  | A-1  | **toggle_mirror_mode** | Toggle mirror effect on the strip.
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/shape.gif" width="400" height="20" />  | A#-1 | **change_shape** | Change active shape.<br/><br/><ul><li> The chosen shape is based on the note's velocity. If the note's velocity is higher than the **shapes parameter** length, take the next shape.</li></ul>
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/color.gif" width="400" height="20" />  | B-1 | **change_color_scheme** | Change active color scheme. <br/><br/><ul><li>The chosen color scheme is based on the note's velocity. If the note's velocity is higher than the **color schemes parameter** length, take the next color scheme.</li></ul>
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/nothing.gif" width="400" height="20" />  | C-0  | **change_time_interval in ms** | Change active time_interval. <br/><br/><ul><li>The chosen time_interval is based on the note's velocity.</li></ul>
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/nothing.gif" width="400" height="20" />  | C#-0  | **change audio_channel** | Change active audio_channel. <br/><br/><ul><li>The chosen audio_channel is based on the note's velocity. If the note's velocity is higher than the **audio_channels parameter** length, take the next audio_channel.</li></ul>
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/nothing.gif" width="400" height="20" />  | D-0 | **change_max_Brightness** | Change active max_brightness. <br/><br/><ul><li>The chosen max_brightness is based on the note's velocity. If the note's velocity is higher than 255, take 255.</li></ul>
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/nothing.gif" width="400" height="20" />  | D#-0 | **change_chunk_size** | Change active max_brightness. <br/><br/><ul><li>The chosen chunk_size is based on the note's velocity.</li></ul>
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/nothing.gif" width="400" height="20" />  | D#-0 | **change_state** | Change active state. <br/><br/><ul><li>The chosen state is based on the note's velocity. If the note's velocity is higher than the **states parameter** length, take the next state.</li></ul>
 
 # Credits
 This project was a fork of the great [audio-reactive-led-strip](https://github.com/scottlawsonbc/audio-reactive-led-strip). A lot of code has been rewritten since the beginning but it still remains some of the visualizers and audio processing code.
@@ -460,5 +461,5 @@ By priority order
 This project was developed by Thibaud FRERE and is released
 under the MIT License.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTM3ODg5MjQ5MiwtMTE1NDg3NzgzXX0=
+eyJoaXN0b3J5IjpbLTQ0MzYwMTcwOCwtMTE1NDg3NzgzXX0=
 -->
