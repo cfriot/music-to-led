@@ -162,7 +162,7 @@ class PianoNote():
         value = self.clampToNewRange(self.pitch, -8191, 8191, 127, 255)
         roll_value = int(1 * (self.active_state.time_interval / 100)) + 1
 
-        fadeOutPixels(self.pixels, 5)
+        fadeOutPixels(self.pixels, 10)
 
         for note in self.notes_on:
 

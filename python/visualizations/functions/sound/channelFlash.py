@@ -48,7 +48,7 @@ class ChannelFlash():
             maxStripItensities.append(intensity)
 
             if(self.oldStripItensities != [] and stripItensities[i] < self.oldStripItensities[i]) :
-                stripItensities[i] = self.oldStripItensities[i] - 2
+                stripItensities[i] = self.oldStripItensities[i] - 1
 
             if(self.oldMaxStripItensities != [] and maxStripItensities[i] < self.oldMaxStripItensities[i]) :
                 maxStripItensities[i] = self.oldMaxStripItensities[i] - 1

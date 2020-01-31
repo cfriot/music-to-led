@@ -12,6 +12,7 @@ from visualizations.functions.sound.scroll import Scroll
 from visualizations.functions.sound.energy import Energy
 from visualizations.functions.sound.channelIntensity import ChannelIntensity
 from visualizations.functions.sound.channelFlash import ChannelFlash
+from visualizations.functions.sound.spectrum import Spectrum
 
 from visualizations.functions.midi.pianoNote import PianoNote
 from visualizations.functions.midi.pianoScroll import PianoScroll
@@ -29,7 +30,7 @@ from visualizations.functions.generic.fire import Fire
 from scipy.ndimage.filters import gaussian_filter1d
 
 
-class Visualizer(FullColor, FadeOut, Clear, AlternateColors, TransitionColors, DrawLine, Scroll, ChannelIntensity, ChannelFlash, Energy, PianoNote, PianoScroll, Fire, PitchwheelFlash):
+class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, TransitionColors, DrawLine, Scroll, ChannelIntensity, ChannelFlash, Energy, PianoNote, PianoScroll, Fire, PitchwheelFlash):
 
     def __init__(self, config, index):
         """ The main class that contain all viz functions """
@@ -59,6 +60,7 @@ class Visualizer(FullColor, FadeOut, Clear, AlternateColors, TransitionColors, D
         )
 
         self.initEnergy()
+        self.initSpectrum()
         self.initChannelIntensity()
         self.initChannelFlash()
 
@@ -133,6 +135,8 @@ class Visualizer(FullColor, FadeOut, Clear, AlternateColors, TransitionColors, D
             pixels = self.visualizeChannelIntensity()
         elif(self.active_state.active_visualizer_effect == "channel_flash"):
             pixels = self.visualizeChannelFlash()
+        elif(self.active_state.active_visualizer_effect == "spectrum"):
+            pixels = self.visualizeSpectrum()
 
         # MIDI BASED
         elif(self.active_state.active_visualizer_effect == "piano_scroll"):
@@ -147,8 +151,8 @@ class Visualizer(FullColor, FadeOut, Clear, AlternateColors, TransitionColors, D
             pixels = self.visualizeAlternateColorChunks()
         elif(self.active_state.active_visualizer_effect == "alternate_color_shapes"):
             pixels = self.visualizeAlternateColorShapes()
-        elif(self.active_state.active_visualizer_effect == "transition_color_shapes"):
-            pixels = self.visualizeTransitionColorShapes()
+        # elif(self.active_state.active_visualizer_effect == "transition_color_shapes"):
+        #     pixels = self.visualizeTransitionColorShapes()
         elif(self.active_state.active_visualizer_effect == "draw_line"):
             pixels = self.visualizeDrawLine()
 

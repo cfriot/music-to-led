@@ -6,6 +6,14 @@ class TransitionColors():
         self.color_index = 0
 
     @staticmethod
+    def lerp2(a, b, t):
+        return [
+            a[0]*(1 - t) + b[0]*t,
+            a[1]*(1 - t) + b[1]*t,
+            a[2]*(1 - t) + b[2]*t
+        ]
+
+    @staticmethod
     def rgbLerp(a, b, time):
         return [a[0] + (b[0] - a[0]) * time,
         a[1] + (b[1] - a[1]) * time,
@@ -34,13 +42,12 @@ class TransitionColors():
 
         # print("current time " + str(currentTime))
 
-        color = self.rgbLerp(color_scheme[self.color_index], color_scheme[self.color_index + 1], currentTime)
+        color = self.lerp2(color_scheme[self.color_index], color_scheme[self.color_index + 1], currentTime)
         self.pixels[0] = color[0]
         self.pixels[1] = color[1]
         self.pixels[2] = color[2]
 
         # print("color " + str(self.pixels[0][0]) + ", " + str(self.pixels[1][0]) + ", " + str(self.pixels[2][0]))
-
 
         return self.pixelReshaper.reshapeFromPixels(self.pixels)
 

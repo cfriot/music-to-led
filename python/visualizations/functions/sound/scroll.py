@@ -34,7 +34,7 @@ class Scroll():
         self.pixels = np.roll(self.pixels, roll_value, axis=1)
 
         self.pixels *= 0.98
-        self.pixels = self.blurFrame(self.pixels, 0.2)
+        self.pixels = self.blurFrame(self.pixels, 0.5)
         for i in range(roll_value):
             self.pixels[0, i] = r
             self.pixels[1, i] = g

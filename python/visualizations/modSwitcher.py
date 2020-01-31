@@ -73,7 +73,8 @@ class ModSwitcher:
                         elif(mode == 9):
                             self.active_state.active_visualizer_effect = "alternate_color_shapes"
                         elif(mode == 10):
-                            self.active_state.active_visualizer_effect = "transition_color_shapes"
+                            self.logger(self.strip_config.name, "Empty slot. This note is not assigned to any effect...")
+                            # self.active_state.active_visualizer_effect = "transition_color_shapes"
                         elif(mode == 11):
                             self.visualizer.resetFrame()
                             self.active_state.active_visualizer_effect = "draw_line"
@@ -116,6 +117,8 @@ class ModSwitcher:
                                 self.active_state.number_of_shapes,
                                 1
                             )
+                            self.visualizer.initVizualiser()
+
                             message = "is changing shape to -> " + str(self.active_state.shapes[self.active_state.active_shape_index].shape)
                             self.logger(self.strip_config.name, message)
 

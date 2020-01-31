@@ -21,6 +21,22 @@ from visualizations.visualizer import Visualizer
 from visualizations.pixelReshaper import PixelReshaper
 from visualizations.modSwitcher import ModSwitcher
 
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument(
+    "--visualizer-effect",
+    help="Override visualizer effect.",
+)
+
+args = parser.parse_args()
+
+visualizer_effect = ""
+
+if(args.visualizer_effect):
+    visualizer_effect = args.visualizer_effect
+
+
 configLoader = ConfigLoader("./LOCAL_CONFIG.yml")
 
 strip_name = "Front Desk"
@@ -31,6 +47,10 @@ config = configLoader.data
 index = configLoader.findStripIndexByStripName(strip_name)
 strip_config = config.strips[index]
 active_state = strip_config.active_state
+
+if(visualizer_effect != ""):
+    active_state.active_visualizer_effect = visualizer_effect
+
 print(active_state)
 
 audioDispatcher = AudioDispatcher(

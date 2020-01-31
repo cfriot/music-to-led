@@ -231,6 +231,9 @@ class ShellInterface():
         self.echo(self.term.move(y + 5, 120) + reverse_mode)
 
         total_number_of_lines = self.printPixels(y + 8, 2, strip_config, pixels)
+
+        if(strip_config.midi_logs):
+            self.echo(self.term.move(y + 8 + total_number_of_lines, 5) + str(strip_config.midi_logs[0]["port"]) + " note played : " + str(strip_config.midi_logs[0]["note"]))
         return total_number_of_lines
 
     def printChunk(self, y, x, strip_config, pixels, chunk_index):
@@ -338,7 +341,7 @@ class ShellInterface():
                     is_online = shared_list[2 + config.number_of_strips + index]
 
                     total_number_of_lines += self.printStrip(
-                                                self.strip_offset + (index * 8 + total_number_of_lines),
+                                                self.strip_offset + (index * 9 + total_number_of_lines),
                                                 is_online,
                                                 fps,
                                                 strip_config,
