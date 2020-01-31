@@ -390,7 +390,7 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 
 | *Example* | *Midi Note* | *Effect name* | *Explanation*
 |:--|:--|:--|:--
-| ![scroll](images/scroll.gif) | C-2 | **Scroll** | Split the sound samples into N parts according to the color number in the color scheme. Then mix theses colors according to the sound samples intensity. Then scroll the strip to the right.
+| ![scroll](images/scroll.gif) | C-2 | **Scroll** | Split the sound samples into N parts according to the color number in the color scheme. Then mix theses colors according to the sound samples intensity. Then scroll the strip to the right. <ul><li>Speed : time_interval</li><li>item2</li></ul>
 | ![energy](images/energy.gif) | C#-2 | **Energy** | Split the sound samples into N parts according to the color number of color scheme. Then make them appear all along the strip with a length based on sample intensity and mixed with others
 | ![intensity](images/intensity.gif) | D-2 | **ChannelIntensity** | Split the sound samples into N parts according to the shape parts length. Then draw a line with a length based on sample intensity with the first color of the color scheme. Then add a pixel on top on max intensity with the second color of the color scheme if available
 | ![spectrum](images/envelope.gif) | D#-2 | **ChannelFlash** | Split the sound samples into N parts according to the shape parts length. Then illuminate the shape part with an brightness based on sample intensity. It will take all colors available and repeat the pattern if needed
@@ -458,5 +458,5 @@ By priority order
 This project was developed by Thibaud FRERE and is released
 under the MIT License.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzAyMjkwODJdfQ==
+eyJoaXN0b3J5IjpbODk3NjExNTcyXX0=
 -->
