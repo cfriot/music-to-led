@@ -428,7 +428,7 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 
 | *Example* | *Midi Note* | *Mode name* | *Params*
 |:--|:--|:--|:--
-| ![scroll](images/reverse.gif) <img src="https://github.com/tfrere/music-to-led/blob/master/images/scroll.gif?raw=true" width="400" height="40" /> | G#-1  | **toggle_reverse_mode** | Toggle reverse effect on the strip.
+| <img src="https://github.com/tfrere/music-to-led/blob/master/images/reverse.gif?raw=true" width="400" height="20" /> | G#-1  | **toggle_reverse_mode** | Toggle reverse effect on the strip.
 | ![scroll](images/mirror.gif) | A-1  | **toggle_mirror_mode** | Toggle mirror effect on the strip.
 | ![scroll](images/shape.gif) | A#-1 | **change_shape** | Change active shape.<br/><br/><ul><li> The chosen shape is based on the note's velocity. If the note's velocity is higher than the **shapes parameter** length, take the next shape.</li></ul>
 | ![scroll](images/color.gif) | B-1 | **change_color_scheme** | Change active color scheme. <br/><br/><ul><li>The chosen color scheme is based on the note's velocity. If the note's velocity is higher than the **color schemes parameter** length, take the next color scheme.</li></ul>
@@ -460,5 +460,5 @@ By priority order
 This project was developed by Thibaud FRERE and is released
 under the MIT License.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQzNzU5ODY2MSwtMTE1NDg3NzgzXX0=
+eyJoaXN0b3J5IjpbLTM3ODg5MjQ5MiwtMTE1NDg3NzgzXX0=
 -->
