@@ -390,18 +390,17 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 
 | *Example* | *Midi Note* | *Effect name* | *Explanation*
 |:--|:--|:--|:--
-| ![scroll](images/scroll.gif) | C-2 | **Scroll** | Split the sound samples into N parts according to the color number in the color scheme. Then mix theses colors according to the sound samples intensity. Then scroll the strip to the right. <ul><li>Speed : time_interval</li></ul>
+| ![scroll](images/scroll.gif) | C-2 | **Scroll** | Split the sound samples into N parts according to the color number in the color scheme. Then mix theses colors according to the sound samples intensity. Then scroll the strip to the right. <ul><li>**Speed** time_interval</li></ul>
 | ![energy](images/energy.gif) | C#-2 | **Energy** | Split the sound samples into N parts according to the color number of color scheme. Then make them appear all along the strip with a length based on sample intensity and mixed with others.
-| ![intensity](images/intensity.gif) | D-2 | **ChannelIntensity** | Split the sound samples into N parts according to the shape parts length. Then draw a line with a length based on sample intensity with the first color of the color scheme. Then add a pixel on top on max intensity with the second color of the color scheme if available.
-<ul><li>Colors : first and second color of the scheme</li></ul>
-| ![spectrum](images/envelope.gif) | D#-2 | **ChannelFlash** | Split the sound samples into N parts according to the shape parts length. Then illuminate the shape part with an brightness based on sample intensity.<ul><li>Colors : Repeating the color scheme</li></ul>
+| ![intensity](images/intensity.gif) | D-2 | **ChannelIntensity** | Split the sound samples into N parts according to the shape parts length. Then draw a line with a length based on sample intensity with the first color of the color scheme. Then add a pixel on top on max intensity with the second color of the color scheme if available.<ul><li>**Colors** first and second color of the scheme</li></ul>
+| ![spectrum](images/envelope.gif) | D#-2 | **ChannelFlash** | Split the sound samples into N parts according to the shape parts length. Then illuminate the shape part with an brightness based on sample intensity.<ul><li>**Colors** Repeating the color scheme</li></ul>
 
 
 ### Midi based
 
 | *Example* | *Midi Note* | *Effect name* | *Params*
 |:--|:--|:--|:--
-| ![scroll](images/piano.gif) | F-2 | **piano_scroll** | Make a smooth scrolled light based on the note you play. Color is based on the number of notes you are playing at the same time
+| ![scroll](images/piano.gif) | F-2 | **piano_scroll** | Make a smooth scrolled light based on the note you play. <ul><li>**Colors** Index in color scheme according to the number of notes you are playing at the same time. </li></ul>
 | TO ADD | F#-2 | **piano_note** | Make a light appear based on the position where you typed on the keyboard
 | ![scroll](images/envelope.gif) | G-2 | **pitchwheel_flash** | Make the whole strip illuminates according to the pitch bend intensity of your keyboard. Brightness is based on pitch bend. Begin on a black strip.
 | ![scroll](images/nothing.gif) | G#-2 | - | -
@@ -460,5 +459,5 @@ By priority order
 This project was developed by Thibaud FRERE and is released
 under the MIT License.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTUwODc0MzI2NF19
+eyJoaXN0b3J5IjpbNzgzMTg4NjddfQ==
 -->
