@@ -388,8 +388,8 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 
 ### Sound based
 
-| *Example* *Midi Note* | *Effect name* | *Explanation*
-|:--|:--|:--|:--|:--
+| *Example* | *Midi Note* | *Effect name* | *Explanation*
+|:--|:--|:--|:--
 | ![scroll](images/scroll.gif) | C-2 | **Scroll** | Split the sound samples into N parts according to the color number in the color scheme. Then mix theses colors according to the sound samples intensity. Then scroll the strip to the right.
 
 
@@ -400,7 +400,7 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 ### Midi based
 
 | *Example* | *Midi Note* | *Effect name* | *Params*
-|:--|:--|:--|:--|:--
+|:--|:--|:--|:--
 | ![scroll](images/piano.gif) | F-2   | **piano_scroll** | Make a smooth scrolled light based on the note you play. Color is based on the number of notes you are playing at the same time
 | TO ADD | 6 | F#-2  | **piano_note** | Make a light appear based on the position where you typed on the keyboard
 | ![scroll](images/envelope.gif) | G-2   | **pitchwheel_flash** | Make the whole strip illuminates according to the pitch bend intensity of your keyboard. Brightness is based on pitch bend. Begin on a black strip.
@@ -409,7 +409,7 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 ### Time based
 
 | *Example* | *Midi Note* | *Effect name* | *Params*
-|:--|:--|:--|:--|:--
+|:--|:--|:--|:--
 | ![scroll](images/alternate-chunks.gif) | A#-2   | **alternate_color_chunks** | Make a pattern with chunks of colors scrolling to the right, size is based on **chunk_size parameter**, speed is based on **bpm parameter**, color are based on **color scheme parameter**
 | ![scroll](images/alternate-strips.gif) | B-2    | **alternate_color_shapes** | Make chunks of colors with size based on shapes, speed is based on **bpm parameter**, color are based on **color scheme parameter**
 | TO DO | C-1 | **transition_color_shapes** | Make the whole strip illuminates with a smooth color transition. Color based on **color scheme parameter**
@@ -418,7 +418,7 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 ### Generic
 
 | *Example* | *Midi Note* | *Effect name* | *Params*
-|:--|:--|:--|:--|:--
+|:--|:--|:--|:--
 | ![scroll](images/full.gif) | D#-1  | **full** | Illuminates the whole strip with the first color in your active color scheme.
 | ![scroll](images/nothing.gif) | E-1   | **fade_to_nothing** | Stop current visualization. Then slowly fade to black the whole strip.
 | ![scroll](images/nothing.gif) | F-1  | **clear** | Stop current visualization. Instant clear of the frame.
@@ -427,7 +427,7 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 ## Modes
 
 | *Example* | *Midi Note* | *Mode name* | *Params*
-|:--|:--|:--|:--|:--
+|:--|:--|:--|:--
 | ![scroll](images/reverse.gif) | G#-1  | **toggle_reverse_mode** | Toggle reverse effect on the strip.
 | ![scroll](images/mirror.gif) | A-1  | **toggle_mirror_mode** | Toggle mirror effect on the strip.
 | ![scroll](images/shape.gif) | A#-1 | **change_shape** | Change active shape. The chosen shape is based on the note's velocity. If the note's velocity is higher than the **shapes parameter** length, take the next shape.
