@@ -431,12 +431,12 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 | ![scroll](images/reverse.gif) | G#-1  | **toggle_reverse_mode** | Toggle reverse effect on the strip.
 | ![scroll](images/mirror.gif) | A-1  | **toggle_mirror_mode** | Toggle mirror effect on the strip.
 | ![scroll](images/shape.gif) | A#-1 | **change_shape** | Change active shape.<br/><br/><ul><li> The chosen shape is based on the note's velocity. If the note's velocity is higher than the **shapes parameter** length, take the next shape.</li></ul>
-| ![scroll](images/color.gif) | B-1 | **change_color_scheme** | Change active color scheme. The chosen color scheme is based on the note's velocity. If the note's velocity is higher than the **color schemes parameter** length, take the next color scheme.
-| ![scroll](images/nothing.gif) | C-0  | **change_time_interval in ms** | Change active time_interval. The chosen time_interval is based on the note's velocity.
-| ![scroll](images/nothing.gif) | C#-0  | **change audio_channel** | Change active audio_channel. The chosen audio_channel is based on the note's velocity. If the note's velocity is higher than the **audio_channels parameter** length, take the next audio_channel.
-| ![scroll](images/nothing.gif) | D-0 | **change_max_Brightness** | Change active max_brightness. The chosen max_brightness is based on the note's velocity. If the note's velocity is higher than 255, take 255.
-| ![scroll](images/nothing.gif) | D#-0 | **change_chunk_size** | Change active max_brightness. The chosen chunk_size is based on the note's velocity.
-| ![scroll](images/nothing.gif) | D#-0 | **change_state** | Change active state. The chosen state is based on the note's velocity. If the note's velocity is higher than the **states parameter** length, take the next state.
+| ![scroll](images/color.gif) | B-1 | **change_color_scheme** | Change active color scheme. <br/><br/><ul><li>The chosen color scheme is based on the note's velocity. If the note's velocity is higher than the **color schemes parameter** length, take the next color scheme.</li></ul>
+| ![scroll](images/nothing.gif) | C-0  | **change_time_interval in ms** | Change active time_interval. <br/><br/><ul><li>The chosen time_interval is based on the note's velocity.</li></ul>
+| ![scroll](images/nothing.gif) | C#-0  | **change audio_channel** | Change active audio_channel. <br/><br/><ul><li>The chosen audio_channel is based on the note's velocity. If the note's velocity is higher than the **audio_channels parameter** length, take the next audio_channel.</li></ul>
+| ![scroll](images/nothing.gif) | D-0 | **change_max_Brightness** | Change active max_brightness. <br/><br/><ul><li>The chosen max_brightness is based on the note's velocity. If the note's velocity is higher than 255, take 255.</li></ul>
+| ![scroll](images/nothing.gif) | D#-0 | **change_chunk_size** | Change active max_brightness. <br/><br/><ul><li>The chosen chunk_size is based on the note's velocity.</li></ul>
+| ![scroll](images/nothing.gif) | D#-0 | **change_state** | Change active state. <br/><br/><ul><li>The chosen state is based on the note's velocity. If the note's velocity is higher than the **states parameter** length, take the next state.</li></ul>
 
 # Credits
 This project was a fork of the great [audio-reactive-led-strip](https://github.com/scottlawsonbc/audio-reactive-led-strip). A lot of code has been rewritten since the beginning but it still remains some of the visualizers and audio processing code.
@@ -460,5 +460,5 @@ By priority order
 This project was developed by Thibaud FRERE and is released
 under the MIT License.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyNjcwNDk3NjMsLTExNTQ4Nzc4M119
+eyJoaXN0b3J5IjpbLTQxODE1MTM5LC0xMTU0ODc3ODNdfQ==
 -->
