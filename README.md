@@ -430,7 +430,7 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 |:--|:--|:--|:--
 | ![scroll](images/reverse.gif) | G#-1  | **toggle_reverse_mode** | Toggle reverse effect on the strip.
 | ![scroll](images/mirror.gif) | A-1  | **toggle_mirror_mode** | Toggle mirror effect on the strip.
-| ![scroll](images/shape.gif) | A#-1 | **change_shape** | Change active shape. The chosen shape is based on the note's velocity. If the note's velocity is higher than the **shapes parameter** length, take the next shape.
+| ![scroll](images/shape.gif) | A#-1 | **change_shape** | Change active shape.<br/><br/><ul><li> The chosen shape is based on the note's velocity. If the note's velocity is higher than the **shapes parameter** length, take the next shape.</li></ul>
 | ![scroll](images/color.gif) | B-1 | **change_color_scheme** | Change active color scheme. The chosen color scheme is based on the note's velocity. If the note's velocity is higher than the **color schemes parameter** length, take the next color scheme.
 | ![scroll](images/nothing.gif) | C-0  | **change_time_interval in ms** | Change active time_interval. The chosen time_interval is based on the note's velocity.
 | ![scroll](images/nothing.gif) | C#-0  | **change audio_channel** | Change active audio_channel. The chosen audio_channel is based on the note's velocity. If the note's velocity is higher than the **audio_channels parameter** length, take the next audio_channel.
@@ -460,5 +460,5 @@ By priority order
 This project was developed by Thibaud FRERE and is released
 under the MIT License.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTQ4ODA3MDg4NywtMTE1NDg3NzgzXX0=
+eyJoaXN0b3J5IjpbLTEyNjcwNDk3NjMsLTExNTQ4Nzc4M119
 -->
