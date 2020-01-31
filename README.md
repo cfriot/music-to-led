@@ -457,3 +457,6 @@ By priority order
 # License
 This project was developed by Thibaud FRERE and is released
 under the MIT License.
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbNzAyMjkwODJdfQ==
+-->
