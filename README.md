@@ -401,15 +401,15 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 | *Example* | *Midi Note* | *Effect name* | *Params*
 |:--|:--|:--|:--
 | ![scroll](images/piano.gif) | F-2 | **piano_scroll** | Make a smooth scrolled light based on the note you play. <ul><li>**Colors** Index in color scheme according to the number of notes you are playing at the same time. </li></ul>
-| TO ADD | F#-2 | **piano_note** | Make a light appear based on the position where you typed on the keyboard
-| ![scroll](images/envelope.gif) | G-2 | **pitchwheel_flash** | Make the whole strip illuminates according to the pitch bend intensity of your keyboard. Brightness is based on pitch bend. Begin on a black strip.
+| TO ADD | F#-2 | **piano_note** | Make a light appear based on the position where you typed on the keyboard. <ul><li>**Colors** Index in color scheme according to the number of notes you are playing at the same time. </li>
+| ![scroll](images/envelope.gif) | G-2 | **pitchwheel_flash** | Make the whole strip illuminates according to the pitch bend intensity of your keyboard. Brightness is based on pitch bend. Begin on a black strip.<ul><li>**Colors** First color of the scheme. </li>
 | ![scroll](images/nothing.gif) | G#-2 | - | -
 
 ### Time based
 
 | *Example* | *Midi Note* | *Effect name* | *Params*
 |:--|:--|:--|:--
-| ![scroll](images/alternate-chunks.gif) | A#-2 | **alternate_color_chunks** | Make a pattern with chunks of colors scrolling to the right, size is based on **chunk_size parameter**, speed is based on **bpm parameter**, color are based on **color scheme parameter**
+| ![scroll](images/alternate-chunks.gif) | A#-2 | **alternate_color_chunks** | Make a pattern with chunks of colors scrolling to the right, size is based on **chunk_size parameter**, speed is based on **bpm parameter**, color are based on **color scheme parameter** <ul><li>**chunk_size** Size of a chunk </li><li>**Color** Repeated color scheme </li><li>**chunk_size** Size of a chunk. </li></ul>
 | ![scroll](images/alternate-strips.gif) | B-2  | **alternate_color_shapes** | Make chunks of colors with size based on shapes, speed is based on **bpm parameter**, color are based on **color scheme parameter**
 | TO DO | C-1 | **transition_color_shapes** | Make the whole strip illuminates with a smooth color transition. Color based on **color scheme parameter**
 | TO DO | C#-1 | **draw_line** | Draw a line. Speed is based on **bpm parameter**, color is based on the first color in **color scheme parameter**
@@ -459,5 +459,5 @@ By priority order
 This project was developed by Thibaud FRERE and is released
 under the MIT License.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzgzMTg4NjddfQ==
+eyJoaXN0b3J5IjpbMTg3OTc2Mzc4OF19
 -->
