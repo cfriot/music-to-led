@@ -409,7 +409,7 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 
 | *Example* | *Midi Note* | *Effect name* | *Params*
 |:--|:--|:--|:--
-| ![scroll](images/alternate-chunks.gif) | A#-2 | **alternate_color_chunks** | Make a pattern with chunks of colors scrolling to the right.<ul><li>**chunk_size** Size of a chunk </li><li>**color** Repeated color scheme </li><li>**time_interval** Relative speed of the scroll </li></ul>
+| ![scroll](images/alternate-chunks.gif) | A#-2 | **alternate_color_chunks** | Make a pattern with chunks of colors scrolling to the right.<br/><br/><ul><li>**chunk_size** Size of a chunk </li><li>**color** Repeated color scheme </li><li>**time_interval** Relative speed of the scroll </li></ul>
 | ![scroll](images/alternate-strips.gif) | B-2  | **alternate_color_shapes** | Make chunks of colors with size based on shapes. <ul><li>**chunk_size** Based on shape </li><li>**color** Repeated color scheme </li><li>**time_interval** Relative speed of the scroll </li></ul>
 | TO DO | C-1 | **transition_color_shapes** | Make the whole strip illuminates with a smooth color transition.  <ul><li>**color** First color of the scheme </li></ul>
 | TO DO | C#-1 | **draw_line** | Draw a line.<ul><li>**chunk_size** Based on shape </li><li>**color** First color in the scheme </li><li>**time_interval** Relative speed of the scroll </li></ul>
@@ -459,5 +459,5 @@ By priority order
 This project was developed by Thibaud FRERE and is released
 under the MIT License.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTExNTQ4Nzc4M119
+eyJoaXN0b3J5IjpbLTc2OTEzMjM1OSwtMTE1NDg3NzgzXX0=
 -->
