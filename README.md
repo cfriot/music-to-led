@@ -402,7 +402,7 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 |:--|:--|:--|:--
 | ![scroll](images/piano.gif) | F-2 | **piano_scroll** | Make a smooth scrolled light based on the note you play. <ul><li>**color** Index in color scheme according to the number of notes you are playing at the same time. </li></ul>
 | TO ADD | F#-2 | **piano_note** | Make a light appear based on the position where you typed on the keyboard. <ul><li>**color** Index in color scheme according to the number of notes you are playing at the same time. </li>
-| ![scroll](images/envelope.gif) | G-2 | **pitchwheel_flash** | Make the whole strip illuminates according to the pitch bend intensity of your keyboard. Begin on a black strip.<br/><ul><li>**brightness** Based on pitchbend. </li> <li>**color** First color of the scheme. </li> 
+| ![scroll](images/envelope.gif) | G-2 | **pitchwheel_flash** | Make the whole strip illuminates according to the pitch bend intensity of your keyboard. Begin on a black strip.<ul><li>**brightness** Based on pitchbend. </li> <li>**color** First color of the scheme. </li> 
 | ![scroll](images/nothing.gif) | G#-2 | - | -
 
 ### Time based
@@ -459,5 +459,5 @@ By priority order
 This project was developed by Thibaud FRERE and is released
 under the MIT License.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQ1ODgyNjIxNF19
+eyJoaXN0b3J5IjpbLTExNTQ4Nzc4M119
 -->
