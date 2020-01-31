@@ -409,8 +409,9 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 
 | *Example* | *Midi Note* | *Effect name* | *Params*
 |:--|:--|:--|:--
-| ![scroll](images/alternate-chunks.gif) | A#-2 | **alternate_color_chunks** | Make a pattern with chunks of colors scrolling to the right, size is based on **chunk_size parameter**, speed is based on **bpm parameter**, color are based on **color scheme parameter** <ul><li>**chunk_size** Size of a chunk </li><li>**Color** Repeated color scheme </li><li>**chunk_size** Size of a chunk. </li></ul>
-| ![scroll](images/alternate-strips.gif) | B-2  | **alternate_color_shapes** | Make chunks of colors with size based on shapes, speed is based on **bpm parameter**, color are based on **color scheme parameter**
+| ![scroll](images/alternate-chunks.gif) | A#-2 | **alternate_color_chunks** | Make a pattern with chunks of colors scrolling to the right.<ul><li>**chunk_size** Size of a chunk </li><li>**Color** Repeated color scheme </li><li>**time_interval** Relative speed of the scroll </li></ul>
+| ![scroll](images/alternate-strips.gif) | B-2  | **alternate_color_shapes** | Make chunks of colors with size based on shapes, speed is based on **bpm parameter**, color are based on **color scheme parameter** <ul><li>**chunk_size** Based on shape /li><li>**Color** Repeated color scheme </li><li>**time_interval** Relative speed of the scroll </li></ul>
+
 | TO DO | C-1 | **transition_color_shapes** | Make the whole strip illuminates with a smooth color transition. Color based on **color scheme parameter**
 | TO DO | C#-1 | **draw_line** | Draw a line. Speed is based on **bpm parameter**, color is based on the first color in **color scheme parameter**
 
@@ -459,5 +460,5 @@ By priority order
 This project was developed by Thibaud FRERE and is released
 under the MIT License.
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTg3OTc2Mzc4OF19
+eyJoaXN0b3J5IjpbLTM0MTgwOTQ3Ml19
 -->
