@@ -388,55 +388,55 @@ All the examples are based on a ["red", "green", "blue"] color scheme.
 
 ### Sound based
 
-| *Number* | *Midi Note* | *Effect name* | *Explanation* | *Example*
+| *Example* | *Number* | *Midi Note* | *Effect name* | *Explanation*
 |:--|:--|:--|:--|:--
-| 0 | C-2 | **Scroll** | Split the sound samples into N parts according to the color number in the color scheme. Then mix theses colors according to the sound samples intensity. Then scroll the strip to the right.| ![scroll](images/scroll.gif | width=100)
+| ![scroll](images/scroll.gif | width=100) | 0 | C-2 | **Scroll** | Split the sound samples into N parts according to the color number in the color scheme. Then mix theses colors according to the sound samples intensity. Then scroll the strip to the right.
 
 
-| 1 | C#-2 | **Energy** | Split the sound samples into N parts according to the color number of color scheme. Then make them appear all along the strip with a length based on sample intensity and mixed with others  | ![energy](images/energy.gif)
-| 2 | D-2 | **ChannelIntensity** | Split the sound samples into N parts according to the shape parts length. Then draw a line with a length based on sample intensity with the first color of the color scheme. Then add a pixel on top on max intensity with the second color of the color scheme if available | ![intensity](images/intensity.gif)
-| 3 | D#-2 | **ChannelFlash** | Split the sound samples into N parts according to the shape parts length. Then illuminate the shape part with an brightness based on sample intensity. It will take all colors available and repeat the pattern if needed | ![spectrum](images/envelope.gif)
+| ![energy](images/energy.gif) | 1 | C#-2 | **Energy** | Split the sound samples into N parts according to the color number of color scheme. Then make them appear all along the strip with a length based on sample intensity and mixed with others
+| ![intensity](images/intensity.gif) | 2 | D-2 | **ChannelIntensity** | Split the sound samples into N parts according to the shape parts length. Then draw a line with a length based on sample intensity with the first color of the color scheme. Then add a pixel on top on max intensity with the second color of the color scheme if available
+| ![spectrum](images/envelope.gif) | 3 | D#-2 | **ChannelFlash** | Split the sound samples into N parts according to the shape parts length. Then illuminate the shape part with an brightness based on sample intensity. It will take all colors available and repeat the pattern if needed
 
 ### Midi based
 
-| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
+| *Example* | *Number* | *Midi Note* | *Effect name* | *Params*
 |:--|:--|:--|:--|:--
-| 5 | F-2   | **piano_scroll** | Make a smooth scrolled light based on the note you play. Color is based on the number of notes you are playing at the same time  | ![scroll](images/piano.gif)
-| 6 | F#-2  | **piano_note** | Make a light appear based on the position where you typed on the keyboard | TO ADD
-| 7 | G-2   | **pitchwheel_flash** | Make the whole strip illuminates according to the pitch bend intensity of your keyboard. Brightness is based on pitch bend. Begin on a black strip. | ![scroll](images/envelope.gif)
-| 8 | G#-2  | - | - | ![scroll](images/nothing.gif)
+| ![scroll](images/piano.gif) | 5 | F-2   | **piano_scroll** | Make a smooth scrolled light based on the note you play. Color is based on the number of notes you are playing at the same time
+| TO ADD | 6 | F#-2  | **piano_note** | Make a light appear based on the position where you typed on the keyboard
+| ![scroll](images/envelope.gif) | 7 | G-2   | **pitchwheel_flash** | Make the whole strip illuminates according to the pitch bend intensity of your keyboard. Brightness is based on pitch bend. Begin on a black strip.
+| ![scroll](images/nothing.gif) | 8 | G#-2  | - | -
 
 ### Time based
 
-| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
+| *Example* | *Number* | *Midi Note* | *Effect name* | *Params*
 |:--|:--|:--|:--|:--
-| 10 | A#-2   | **alternate_color_chunks** | Make a pattern with chunks of colors scrolling to the right, size is based on **chunk_size parameter**, speed is based on **bpm parameter**, color are based on **color scheme parameter** | ![scroll](images/alternate-chunks.gif)
-| 11 | B-2    | **alternate_color_shapes** | Make chunks of colors with size based on shapes, speed is based on **bpm parameter**, color are based on **color scheme parameter** | ![scroll](images/alternate-strips.gif)
-| 12 | C-1    | **transition_color_shapes** | Make the whole strip illuminates with a smooth color transition. Color based on **color scheme parameter** | TO DO
-| 13 | C#-1   | **draw_line** | Draw a line. Speed is based on **bpm parameter**, color is based on the first color in **color scheme parameter**  | TO DO
+| ![scroll](images/alternate-chunks.gif) | 10 | A#-2   | **alternate_color_chunks** | Make a pattern with chunks of colors scrolling to the right, size is based on **chunk_size parameter**, speed is based on **bpm parameter**, color are based on **color scheme parameter**
+| ![scroll](images/alternate-strips.gif)| 11 | B-2    | **alternate_color_shapes** | Make chunks of colors with size based on shapes, speed is based on **bpm parameter**, color are based on **color scheme parameter**
+| TO DO | 12 | C-1    | **transition_color_shapes** | Make the whole strip illuminates with a smooth color transition. Color based on **color scheme parameter**
+| TO DO | 13 | C#-1   | **draw_line** | Draw a line. Speed is based on **bpm parameter**, color is based on the first color in **color scheme parameter**
 
 ### Generic
 
-| *Number* | *Midi Note* | *Effect name* | *Params* | *Example*
+| *Example* | *Number* | *Midi Note* | *Effect name* | *Params*
 |:--|:--|:--|:--|:--
-| 15 | D#-1  | **full** | Illuminates the whole strip with the first color in your active color scheme. | ![scroll](images/full.gif)
-| 16 | E-1   | **fade_to_nothing** | Stop current visualization. Then slowly fade to black the whole strip. | ![scroll](images/nothing.gif)
-| 17 | F-1  | **clear** | Stop current visualization. Instant clear of the frame. | ![scroll](images/nothing.gif)
-| 18 | F#-1  | **fire** | A beautiful fire. Based on nothing for the moment. | ![scroll](images/fire.gif)
+| ![scroll](images/full.gif) | 15 | D#-1  | **full** | Illuminates the whole strip with the first color in your active color scheme.
+| ![scroll](images/nothing.gif) | 16 | E-1   | **fade_to_nothing** | Stop current visualization. Then slowly fade to black the whole strip.
+| ![scroll](images/nothing.gif) | 17 | F-1  | **clear** | Stop current visualization. Instant clear of the frame.
+| ![scroll](images/fire.gif) | 18 | F#-1  | **fire** | A beautiful fire. Based on nothing for the moment.
 
 ## Modes
 
-| *Number* | *Midi Note* | *Mode name* | *Params* | *Example*
+| *Example* | *Number* | *Midi Note* | *Mode name* | *Params*
 |:--|:--|:--|:--|:--
-| 20 | G#-1  | **toggle_reverse_mode** | Toggle reverse effect on the strip. | ![scroll](images/reverse.gif)
-| 21 | A-1  | **toggle_mirror_mode** | Toggle mirror effect on the strip. | ![scroll](images/mirror.gif)
-| 22 | A#-1 | **change_shape** | Change active shape. The chosen shape is based on the note's velocity. If the note's velocity is higher than the **shapes parameter** length, take the next shape.  | ![scroll](images/shape.gif)
-| 23 | B-1 | **change_color_scheme** | Change active color scheme. The chosen color scheme is based on the note's velocity. If the note's velocity is higher than the **color schemes parameter** length, take the next color scheme. | ![scroll](images/color.gif)
-| 24 | C-0  | **change_time_interval in ms** | Change active time_interval. The chosen time_interval is based on the note's velocity. | ![scroll](images/nothing.gif)
-| 25 | C#-0  | **change audio_channel** | Change active audio_channel. The chosen audio_channel is based on the note's velocity. If the note's velocity is higher than the **audio_channels parameter** length, take the next audio_channel. | ![scroll](images/nothing.gif)
-| 26 | D-0 | **change_max_Brightness** | Change active max_brightness. The chosen max_brightness is based on the note's velocity. If the note's velocity is higher than 255, take 255. | ![scroll](images/nothing.gif)
-| 27 | D#-0 | **change_chunk_size** | Change active max_brightness. The chosen chunk_size is based on the note's velocity. | ![scroll](images/nothing.gif)
-| 28 | D#-0 | **change_state** | Change active state. The chosen state is based on the note's velocity. If the note's velocity is higher than the **states parameter** length, take the next state. | ![scroll](images/nothing.gif)
+| ![scroll](images/reverse.gif) | 20 | G#-1  | **toggle_reverse_mode** | Toggle reverse effect on the strip.
+| ![scroll](images/mirror.gif) | 21 | A-1  | **toggle_mirror_mode** | Toggle mirror effect on the strip.
+| ![scroll](images/shape.gif) | 22 | A#-1 | **change_shape** | Change active shape. The chosen shape is based on the note's velocity. If the note's velocity is higher than the **shapes parameter** length, take the next shape.
+| ![scroll](images/color.gif) | 23 | B-1 | **change_color_scheme** | Change active color scheme. The chosen color scheme is based on the note's velocity. If the note's velocity is higher than the **color schemes parameter** length, take the next color scheme.
+| ![scroll](images/nothing.gif) | 24 | C-0  | **change_time_interval in ms** | Change active time_interval. The chosen time_interval is based on the note's velocity.
+| ![scroll](images/nothing.gif) | 25 | C#-0  | **change audio_channel** | Change active audio_channel. The chosen audio_channel is based on the note's velocity. If the note's velocity is higher than the **audio_channels parameter** length, take the next audio_channel.
+| ![scroll](images/nothing.gif) | 26 | D-0 | **change_max_Brightness** | Change active max_brightness. The chosen max_brightness is based on the note's velocity. If the note's velocity is higher than 255, take 255.
+| ![scroll](images/nothing.gif) | 27 | D#-0 | **change_chunk_size** | Change active max_brightness. The chosen chunk_size is based on the note's velocity.
+| ![scroll](images/nothing.gif) | 28 | D#-0 | **change_state** | Change active state. The chosen state is based on the note's velocity. If the note's velocity is higher than the **states parameter** length, take the next state.
 
 # Credits
 This project was a fork of the great [audio-reactive-led-strip](https://github.com/scottlawsonbc/audio-reactive-led-strip). A lot of code has been rewritten since the beginning but it still remains some of the visualizers and audio processing code.
